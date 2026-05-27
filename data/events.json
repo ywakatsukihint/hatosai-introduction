@@ -1,0 +1,38 @@
+
+{
+	"events": [
+		{
+			"id": "e001",
+			"title": "吹奏楽部ミニコンサート",
+			"date": "2026-06-10",
+			"time": "13:00",
+			"location": "体育館ステージ",
+			"description": "吹奏楽部による短時間のステージ演奏。ポップスからクラシックまで。",
+			"image": "images/band.jpg",
+			"category": "音楽",
+			"tags": ["吹奏楽", "ステージ"]
+		},
+		{
+			"id": "e002",
+			"title": "演劇部公演",
+			"date": "2026-06-11",
+			"time": "15:30",
+			"location": "視聴覚室",
+			"description": "演劇部によるオリジナル短編劇の上演。観覧自由（先着順）。",
+			"image": "images/theater.jpg",
+			"category": "演劇",
+			"tags": ["演劇", "公演"]
+		},
+		{
+			"id": "e003",
+			"title": "模擬店：クレープ屋",
+			"date": "2026-06-10",
+			"time": "10:00-16:00",
+			"location": "中庭",
+			"description": "生徒会主催のクレープ屋。数種類のトッピングを用意しています。",
+			"image": "images/food.jpg",
+			"category": "模擬店",
+			"tags": ["食べ物", "模擬店"]
+		}
+	]
+}

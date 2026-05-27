@@ -1,0 +1,30 @@
+[
+    {
+    "id": "event-001",
+    "title": "戦慄！暗闇の迷宮",
+    "organizer": "2年1組",
+    "category": "attraction",
+    "tags": ["お化け屋敷", "体験型", "スリル"],
+    "location": "南校舎2階 204教室",
+    "image": "assets/images/events/2b-obake.webp",
+    "description": "今年の2Bは一味違う！過去最高の恐怖をお届けします...",
+    "duration": "1回あたり約10分",
+    "ticket_info": "当日朝9:30より教室前にて整理券を配布（先着100名）",
+    "schedule": null, 
+    "notice": "※心臓の弱い方、未就学児をお連れの方はご遠慮ください。教室内は大変暗くなっています。"
+    },
+  {
+    "id": "event-002",
+    "title": "神秘の森",
+    "organizer": "3年A組",
+    "category": "attraction",
+    "tags": ["自然", "体験型", "癒し"],
+    "location": "北校舎1階 101教室",
+    "image": "assets/images/events/3a-forest.webp",
+    "description": "自然と触れ合う体験型展示。森の奥深くで出会う不思議な存在たち。",
+    "duration": "1回あたり約15分",
+    "ticket_info": "当日朝9:30より教室前にて整理券を配布（先着100名）",
+    "schedule": null,
+    "notice": "※小学生以下のお子様は保護者同伴でご参加ください。教室内は暗くなっています。"
+  }
+]
