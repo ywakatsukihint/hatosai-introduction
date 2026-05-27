@@ -4,41 +4,131 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>鳩祭について - 第70回屋代高校鳩祭公式ウェブサイト</title>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+  >
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css"
+  >
+  <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
   <style>
     body {
-      font-family: sans-serif;
-      line-height: 1.6;
+      font-family: "Hiragino Kaku Gothic Pro", Meiryo, sans-serif;
+      line-height: 1.75;
       margin: 0;
       padding: 0;
-      background: #f7f7f7;
-      color: #333;
+      background: radial-gradient(circle at top, #f8fafc 0%, #e2e8f0 45%, #f4f6fb 100%);
+      color: #1f2937;
     }
     .container {
-      max-width: 960px;
+      max-width: 1080px;
       margin: 0 auto;
-      padding: 20px;
-      background: #fff;
-      box-shadow: 0 0 12px rgba(0,0,0,0.08);
+      padding: 24px;
+      background: #ffffff;
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
+      border-radius: 28px;
     }
     header {
-      border-bottom: 1px solid #ddd;
-      padding-bottom: 16px;
+      padding-bottom: 20px;
       margin-bottom: 24px;
+      border-bottom: 1px solid #e5e7eb;
     }
     h1 {
       margin: 0;
-      font-size: 2rem;
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: 0.02em;
     }
     h2 {
-      margin-top: 1.8rem;
-      margin-bottom: 0.8rem;
-      font-size: 1.4rem;
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      letter-spacing: 0.01em;
     }
     p {
       margin: 0 0 1rem;
     }
     .section {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 24px;
+      padding: 26px;
       margin-bottom: 24px;
+      box-shadow: 0 16px 30px rgba(15, 23, 42, 0.06);
+    }
+    .section + .section {
+      margin-top: 8px;
+    }
+    .hero {
+      background: linear-gradient(135deg, #fb923c 0%, #fcd34d 100%);
+      color: #111827;
+      border-radius: 24px;
+      padding: 26px;
+      margin-bottom: 24px;
+      box-shadow: 0 18px 32px rgba(251, 146, 60, 0.18);
+    }
+    .hero p {
+      margin: 0;
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+    .section h2 {
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .list {
+      background: #f8fafc;
+      border-radius: 20px;
+      padding: 18px 20px;
+      margin: 0 0 1rem;
+      list-style: none;
+      display: grid;
+      gap: 0.85rem;
+    }
+    .list li {
+      padding-left: 0.8rem;
+      position: relative;
+      font-weight: 500;
+    }
+    .list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.55rem;
+      width: 10px;
+      height: 10px;
+      background: #fb923c;
+      border-radius: 50%;
+    }
+    .note {
+      background: #eef2ff;
+      border-left: 4px solid #4f46e5;
+      padding: 18px 20px;
+      border-radius: 18px;
+      margin-top: 1rem;
+    }
+    @media (max-width: 840px) {
+      .container {
+        padding: 20px;
+      }
+      .section {
+        padding: 20px;
+      }
+      .hero {
+        padding: 22px;
+      }
+    }
+    @media (max-width: 640px) {
+      .container {
+        padding: 16px;
+      }
+      .section {
+        padding: 18px;
+      }
+      .hero {
+        padding: 18px;
+      }
     }
   </style>
 </head>
@@ -46,27 +136,42 @@
   <div class="container">
     <header>
       <h1>鳩祭について</h1>
-      <p>本ページでは、鳩祭の概要と特色についてご紹介します。</p>
+      <p>モバイルファーストで見やすく、第70回鳩祭の進捗と開催概要をお届けします。</p>
     </header>
+
+    <section class="hero">
+      <p>こんにちは！第70期鳩三役です。今回はみなさんに、第70回鳩祭の進捗状況と日程をお知らせします！</p>
+    </section>
 
     <section class="section">
       <h2>鳩祭とは</h2>
-      <p>鳩祭は、学校生活の魅力を伝える文化祭の名称です。地域や在校生、卒業生が集い、展示やステージ、模擬店などを通して交流を深める大切な行事です。</p>
+      <p>第70回鳩祭のテーマは「SPARK」に決定しました。SPARKには、「一人一人の鳩祭を楽しむ気持ちやこんなことやってみたい！という思い、そしてそこから生まれる新しいアイデアと実践という、小さな火花がたくさん集まって大きな輝きを持った第70回鳩祭をつくる」という思いが込められています。</p>
+      <p>鳩祭は地域や在校生、卒業生が交流し、展示やステージ、模擬店などを通じてつながりを深める文化祭です。今回も「SPARK」の力で、みんなのアイデアが輝くイベントを目指します。</p>
     </section>
 
     <section class="section">
-      <h2>主な見どころ</h2>
-      <p>鳩祭では、各クラスや部活動、クラブが工夫を凝らした出し物を披露します。音楽ライブや演劇、アート作品、体験コーナーなど多彩な企画が並び、訪れる人々を楽しませます。</p>
+      <h2>開催概要</h2>
+      <p>第70回鳩祭の開催日は、2026年6月26日(金)、27日(土)、28日(日)に決定しました。一般公開日は6月27日(土)・28日(日)の9:30〜15:30です。</p>
+      <ul class="list">
+        <li>開催期間：2026年6月26日(金)〜28日(日)</li>
+        <li>一般公開日：6月27日(土)、6月28日(日)</li>
+        <li>公開時間：9:30〜15:30</li>
+      </ul>
+      <div class="note">ご来校の際は公共交通機関をご利用ください。</div>
     </section>
 
     <section class="section">
-      <h2>目的と意義</h2>
-      <p>この祭典は、生徒の自主性や創造力を育み、学校の魅力を地域に発信することを目的としています。また、準備や運営を通じてチームワークやコミュニケーション能力が高まります。</p>
+      <h2>鳩長からのメッセージ</h2>
+      <p>鳩祭実行委員会としては、新しいことにたくさんチャレンジして、この先10年の鳩祭に対するきっかけづくりになるような第70回鳩祭を目指しています。</p>
+      <p>私たち鳩三役は全校のみんながアイデアを発信できるプラットフォーム「アイデアを形にプロジェクト」を作ったり、様々なアンケートを実施することで、全校の声を受け取っています。</p>
+      <p>一つでも多くのアイデアや意見を鳩祭に反映させたいという強い思いから、全校からの声を、おもしろがりながら、みんなと同じ目線で実践することを大切にしています。実際に現時点で様々なことを実践していますが、まだまだ公開できない情報が数多くありますので、続報を楽しみにしていてくださいね。</p>
+      <p>そして在校生の皆さん！引き続き、アイデアや意見をたくさん聞かせてください！</p>
     </section>
 
     <section class="section">
-      <h2>参加方法</h2>
-      <p>鳩祭は一般公開されるイベントです。開催日に校内へお越しください。詳細なスケジュールやアクセス情報は、トップページまたは当日の案内をご確認ください。</p>
+      <h2>その他</h2>
+      <p>第70回鳩祭では、全校の力を合わせて新しいアイデアを形にし、これまでにない体験をつくり上げます。詳細なスケジュールやアクセス情報は、トップページや当日の案内でご確認ください。</p>
+      <p>ぜひ、ばっちりご予定を抑えてお越しください。みなさんのご来校を心よりお待ちしております。</p>
     </section>
   </div>
 </body>
