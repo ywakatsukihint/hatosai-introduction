@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>お知らせ・ニュース - 第70回屋代高校鳩祭公式ウェブサイト</title>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  
+  <link rel="stylesheet" href="css/common.css">
+
+  <style>
+    /* ==========================================================================
+       お知らせページ固有：おしとやかで上品なカスタマイズスタイル
+       ========================================================================== */
+    body {
+      background: #f4f6f9; /* 少し青み・グレーみを入れた落ち着いた背景 */
+      color: #334155;
+    }
+
+    /* フィルター＆検索コントロールパネル */
+    .news-controls {
+      background: white;
+      border-radius: 12px; /* 少し角丸を控えめにして大人っぽく */
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03); /* 影を極めて薄く */
+      border: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    @media (min-width: 768px) {
+      .news-controls {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .news-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 0;
+    }
+
+    /* タブボタン：おしとやかな藤色・菫色ベース */
+    .btn-tab {
+      background: #f8fafc;
+      color: #64748b;
+      border: 1px solid #e2e8f0;
+      padding: 0.4rem 1.2rem;
+      border-radius: 6px; /* スッキリした角丸 */
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      width: auto;
+      margin: 0;
+    }
+    .btn-tab:hover {
+      background: #f1f5f9;
+      color: #475569;
+      border-color: #cbd5e1;
+    }
+    .btn-tab.active {
+      background: #764ba2; /* index.htmlのメインカラーと統一 */
+      color: white;
+      border-color: #764ba2;
+      box-shadow: 0 4px 10px rgba(118, 75, 162, 0.15);
+    }
+
+    /* 検索ボックス */
+    .news-search {
+      max-width: 280px;
+      width: 100%;
+    }
+    .news-search input {
+      border-radius: 6px;
+      padding: 0.4rem 1rem;
+      font-size: 0.85rem;
+      border: 1px solid #cbd5e1;
+      background-color: #fff;
+      margin: 0;
+      transition: all 0.3s;
+    }
+    .news-search input:focus {
+      border-color: #764ba2;
+      box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.1);
+    }
+
+    /* ニュースリスト */
+    .news-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      margin-bottom: 4rem;
+    }
+
+    /* 各ニュースアイテム */
+    .news-item {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.015);
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+      transition: transform 0.25s, box-shadow 0.25s;
+      /* 🛠️ 安全対策：万が一のJSエラー時も文字が読めるよう、ここからの opacity: 0; は削除しました */
+      scroll-margin-top: 100px;
+    }
+    .news-item:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
+      border-color: #cbd5e1;
+    }
+    
+    /* 重要マーク：おしとやかな深みのある臙脂色（えんじ） */
+    .news-item.important-pinned {
+      border-left: 4px solid #991b1b;
+      background: #fffbfa;
+    }
+
+    /* クリックエリア */
+    .news-header {
+      padding: 1.1rem 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      cursor: pointer;
+      position: relative;
+      user-select: none;
+    }
+    @media (min-width: 768px) {
+      .news-header {
+        flex-direction: row;
+        align-items: center;
+        gap: 1.5rem;
+      }
+    }
+
+    .news-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-size: 0.8rem;
+      color: #64748b;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    
+    /* バッジ：落ち着いたニュアンスカラー */
+    .badge-cat {
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .badge-cat.info { background: #f0f4f8; color: #334e68; }         /* 藍ねずみ色調 */
+    .badge-cat.important { background: #fde8e8; color: #991b1b; }    /* 深みのある赤 */
+    .badge-cat.event { background: #f5f3ff; color: #5b21b6; }        /* 上品な藤色 */
+
+    .badge-target {
+      border: 1px solid #e2e8f0;
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      color: #64748b;
+      background: #f8fafc;
+    }
+
+    .news-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 0;
+      flex: 1;
+      line-height: 1.6;
+    }
+
+    .news-arrow {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #94a3b8;
+      font-size: 0.75rem;
+      transition: transform 0.3s ease;
+    }
+    .news-item.active .news-arrow {
+      transform: rotate(180deg);
+      color: #764ba2;
+    }
+
+    /* 詳細部分 */
+    .news-content-wrapper {
+      height: 0;
+      overflow: hidden;
+      background: #fafafa;
+    }
+    .news-item.important-pinned .news-content-wrapper {
+      background: #fffdfd;
+    }
+    
+    .news-content {
+      padding: 1.25rem 1.5rem;
+      border-top: 1px solid #f1f5f9;
+      font-size: 0.9rem;
+      line-height: 1.75;
+      color: #475569;
+    }
+    .news-content p { margin-bottom: 0; }
+
+    .no-news {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: #64748b;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-content">
+      <div class="header-title">
+        <h1>🕊️ 第70回屋代高校鳩祭</h1>
+        <p>6月27日(土)・28日(日)</p>
+      </div>
+      <button class="menu-toggle" id="menuToggle">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <nav id="navMenu">
+      <a href="exhibit.html">企画展示</a>
+      <a href="index.html#visitor">来場者向け</a>
+      <a href="about.html">鳩祭について</a>
+      <a href="news.html" style="border-bottom-color: white; font-weight:700;">お知らせ</a>
+      <a href="index.html#sitemap">サイトマップ</a>
+    </nav>
+  </header>
+
+  <main>
+    <section style="background:transparent; box-shadow:none; padding:0; margin-bottom: 1.5rem;">
+      <h2 style="color:#764ba2; border-bottom-color:#667eea;">📢 お知らせ・ニュース</h2>
+      <p style="color:#64748b;">鳩祭に関する最新情報や、スケジュール変更などのアナウンスをお届けします。</p>
+    </section>
+
+    <div class="news-controls">
+      <div class="news-tabs">
+        <button class="btn-tab active" data-category="all">すべて表示</button>
+        <button class="btn-tab" data-category="important">重要</button>
+        <button class="btn-tab" data-category="info">お知らせ</button>
+        <button class="btn-tab" data-category="event">イベント</button>
+      </div>
+      <div class="news-search">
+        <input type="text" id="newsSearchInput" placeholder="🔍 キーワードで検索...">
+      </div>
+    </div>
+
+    <div class="news-list" id="newsListContainer">
+      </div>
+
+    <div id="noNewsMessage" class="no-news" style="display: none;">
+      該当するお知らせが見つかりませんでした。
+    </div>
+  </main>
+
+  <footer>
+    <p><strong>第70回屋代高校鳩祭 公式ウェブサイト</strong></p>
+    <p>屋代高等学校鳩祭実行委員会 / 長野県千曲市屋代1000</p>
+    <p style="margin-top: 1.5rem; font-size: 0.8rem; opacity: 0.8;">© 2026 Yashiro High School Hatosai Festival</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/animejs/dist/bundles/anime.umd.min.js"></script>
+  <script src="js/common.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // 💡 修正：index.htmlのルールに合わせ、Anime.js(v4)の適切な呼び出し関数を定義
+      const animate = anime.animate || anime;
+      const stagger = anime.stagger;
+
+      let allNews = [];
+      let activeCategory = 'all';
+      let searchKeyword = '';
+
+      const container = document.getElementById("newsListContainer");
+      const noNewsMsg = document.getElementById("noNewsMessage");
+
+      // 💡 フォールバックデータ（予備データ）
+      const defaultNewsData = [
+        {
+          id: "001",
+          date: "2026-06-01",
+          category: "important",
+          category_label: "重要",
+          is_important: true,
+          title: "第70回鳩祭の一般公開に関する大切なお知らせ",
+          content: "今年の一般公開は6月27日(土)・28日(日)の2日間となります。皆様に安全にお楽しみいただくため、スリッパ等の上履きと、外履きを入れる袋をご持参いただきますようお願い申し上げます。校内は大変混雑が予想されますので、お足元に気をつけてお越しください。",
+          target: "来場者の皆様へ"
+        },
+        {
+          id: "002",
+          date: "2026-06-15",
+          category: "event",
+          category_label: "イベント",
+          is_important: false,
+          title: "メインステージ（体育館）のタイムスケジュールを公開しました",
+          content: "音楽班、軽音楽班、演劇部などによる各団体の発表時間が決定いたしました。詳細なタイムテーブルは、当ホームページの「企画展示」または当日のパンフレットをご確認ください。皆様の温かい拍手をお待ちしております。",
+          target: "全生徒・来場者"
+        },
+        {
+          id: "003",
+          date: "2026-06-20",
+          category: "info",
+          category_label: "お知らせ",
+          is_important: false,
+          title: "公式パンフレットのデジタル版を配布開始しました",
+          content: "校内で配られるパンフレットと同じ内容を、スマートフォンやタブレットからいつでもご覧いただけます。事前に見たい展示やクラス企画をチェックして、当日の巡回計画にお役立てください。",
+          target: "どなたでも"
+        }
+      ];
+
+      // 1. news.json からデータを取得を試みる
+      fetch('data/news.json')
+        .then(response => {
+          if (!response.ok) throw new Error('データ取得失敗（ファイル未配置など）');
+          return response.json();
+        })
+        .then(data => {
+          const newsData = Array.isArray(data)
+            ? data
+            : data.news && Array.isArray(data.news)
+              ? data.news
+              : data.items && Array.isArray(data.items)
+                ? data.items
+                : Object.values(data).find(value => Array.isArray(value)) || [];
+
+          if (!newsData.length) throw new Error('有効な配列データがありませんでした');
+
+          allNews = newsData.sort((a, b) => new Date(b.date || b.published_at) - new Date(a.date || a.published_at));
+          renderNews();
+          checkDirectLink();
+        })
+        .catch(error => {
+          console.warn("データ取得にスキップが発生したため、内蔵データを使用します:", error.message);
+          allNews = defaultNewsData.sort((a, b) => new Date(b.date) - new Date(a.date));
+          renderNews();
+          checkDirectLink();
+        });
+
+      // 2. タブフィルター切り替え
+      document.querySelectorAll('.btn-tab').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          document.querySelectorAll('.btn-tab').forEach(b => b.classList.remove('active'));
+          e.target.classList.add('active');
+          activeCategory = e.target.dataset.category;
+          renderNews();
+        });
+      });
+
+      // 3. リアルタイムキーワード検索
+      document.getElementById("newsSearchInput").addEventListener("input", (e) => {
+        searchKeyword = e.target.value.toLowerCase().trim();
+        renderNews();
+      });
+
+      // 4. お知らせを画面に描写
+      function renderNews() {
+        container.innerHTML = "";
+
+        const filteredNews = allNews.filter(item => {
+          const matchCategory = (activeCategory === 'all' || item.category === activeCategory || (activeCategory === 'important' && item.is_important));
+          const matchKeyword = (!searchKeyword || 
+            item.title.toLowerCase().includes(searchKeyword) || 
+            item.content.toLowerCase().includes(searchKeyword) ||
+            (item.target && item.target.toLowerCase().includes(searchKeyword))
+          );
+          return matchCategory && matchKeyword;
+        });
+
+        if (filteredNews.length === 0) {
+          noNewsMsg.style.display = "block";
+          return;
+        }
+        noNewsMsg.style.display = "none";
+
+        filteredNews.forEach(item => {
+          const newsEl = document.createElement("div");
+          newsEl.className = `news-item ${item.is_important ? 'important-pinned' : ''}`;
+          newsEl.id = `news-${item.id}`;
+
+          const formattedDate = (item.date || '').replace(/-/g, '.');
+
+          newsEl.innerHTML = `
+            <div class="news-header">
+              <div class="news-meta">
+                <span class="news-date">${formattedDate}</span>
+                <span class="badge-cat ${item.category}">${item.category_label || 'お知らせ'}</span>
+                ${item.target ? `<span class="badge-target">${item.target}</span>` : ''}
+              </div>
+              <h4 class="news-title">${item.title}</h4>
+              <div class="news-arrow">▼</div>
+            </div>
+            <div class="news-content-wrapper">
+              <div class="news-content">
+                ${item.content}
+              </div>
+            </div>
+          `;
+
+          const header = newsEl.querySelector('.news-header');
+          header.addEventListener('click', () => toggleAccordion(newsEl, true));
+
+          container.appendChild(newsEl);
+        });
+
+        // 💡 修正：最新の anime.animate 形式に修正し、初期透明度 [0, 1] を明示
+        if (typeof animate === 'function') {
+          animate({
+            targets: '.news-item',
+            opacity: [0, 1],
+            translateY: [10, 0],
+            delay: stagger ? stagger(40) : 0,
+            duration: 350,
+            easing: 'outCubic'
+          });
+        }
+      }
+
+      // 5. アコーディオン開閉アニメーション
+      function toggleAccordion(itemEl, shouldAnimateOther = true) {
+        const wrapper = itemEl.querySelector('.news-content-wrapper');
+        const content = itemEl.querySelector('.news-content');
+        const isActive = itemEl.classList.contains('active');
+
+        if (!isActive && shouldAnimateOther) {
+          document.querySelectorAll('.news-item.active').forEach(activeItem => {
+            if (activeItem !== itemEl) {
+              const activeWrapper = activeItem.querySelector('.news-content-wrapper');
+              activeItem.classList.remove('active');
+              
+              if (typeof animate === 'function') {
+                animate({
+                  targets: activeWrapper, height: 0, duration: 200, easing: 'easeInOutQuad'
+                });
+              } else {
+                activeWrapper.style.height = '0px';
+              }
+            }
+          });
+        }
+
+        itemEl.classList.toggle('active');
+        const targetHeight = isActive ? 0 : content.offsetHeight;
+
+        // 💡 修正：最新の animate.animate 形式に修正
+        if (typeof animate === 'function') {
+          animate({
+            targets: wrapper,
+            height: targetHeight,
+            duration: 300,
+            easing: 'cubicBezier(0.25, 1, 0.5, 1)'
+          });
+        } else {
+          wrapper.style.height = targetHeight + 'px';
+        }
+      }
+
+      // 6. 外部リンク・SNS用自動展開機能
+      function checkDirectLink() {
+        const hash = window.location.hash; 
+        if (hash) {
+          const targetItem = document.querySelector(hash);
+          if (targetItem) {
+            setTimeout(() => {
+              targetItem.scrollIntoView({ behavior: 'smooth' });
+              toggleAccordion(targetItem, false);
+            }, 400);
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
