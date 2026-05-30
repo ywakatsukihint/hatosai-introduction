@@ -6,20 +6,24 @@
   <title>第70回屋代高校鳩祭公式ウェブサイト</title>
   
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  
   <link rel="stylesheet" href="css/common.css">
-  <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/animejs/dist/bundles/anime.umd.min.js"></script>
-  <script src="js/common.js" defer></script>
 
   <style>
-    /* --- 1. デザイン思想：クリーン＆モダンな基盤 --- */
+    /* ==========================================================================
+       🎨 屋代高校 公式サイトカラー＆デザインシステム（移植・流用可能パーツ①）
+       ========================================================================== */
     :root {
-      --primary-grad: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-      --bg-light: #f8fafc;
-      --text-main: #1e293b;
-      --text-sub: #64748b;
+      /* 学校公式パレットから厳選配置 */
+      --color-primary: #38475D;   /* メイン：ブルーグレー（ヘッダー・フッター・強い強調） */
+      --color-key: #A0B96E;       /* アクセント：キーカラー（オリーブ黄緑。ホバー時の背景など） */
+      --color-base: #323232;      /* テキスト：基本文字色（チャコール） */
+      --color-contrast: #DFDFDF;  /* 境界線：上下の区切り線用グレー */
+      --color-white: #ffffff;
+      --color-bg-light: #fcfdfe;  /* 背景：白っぽく透明感のある地の色 */
+      
+      --font-noto: "Noto Sans JP", "Helvetica Neue", Arial, sans-serif;
     }
 
     * {
@@ -27,29 +31,77 @@
     }
 
     body {
-      font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: var(--bg-light);
-      color: var(--text-main);
-      min-height: 100vh;
-      overflow-x: hidden;
-      letter-spacing: 0.03em;
+      font-family: var(--font-noto);
+      background-color: var(--color-bg-light);
+      color: var(--color-base);
+      overflow-x: hidden; /* はみ出しデザインが画面外でスクロールバーを出すのを防ぐ */
+      letter-spacing: 0.04em;
     }
 
-    /* --- 2. ヘッダー：最新トレンドのすりガラス風(固定型) --- */
+    /* ==========================================================================
+       🔄 スクロール連動フェードイン：JS依存バグを完全解消（流用可能パーツ②）
+       ========================================================================== */
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(30px);
+      /* ライブラリの競合に左右されない、CSS標準の超滑らかなイージングを採用 */
+      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    /* 画面内に入るとJavaScriptによってこのクラスが付与され、確実に表示されます */
+    .reveal-on-scroll.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ==========================================================================
+       🌟 モバイルファースト・ノンフレーム思想（左右の線をナシ、上下線のみ）
+       ========================================================================== */
+    section {
+      margin-bottom: 5rem;
+      padding: 2.5rem 0;
+      background: transparent;
+      box-shadow: none;
+      /* 左右の線をなくし、上下のみに細い線を付けることで、スマホでの窮屈感を排除 */
+      border-top: 1px solid var(--color-contrast);
+      border-bottom: 1px solid var(--color-contrast);
+      border-left: none;
+      border-right: none;
+    }
+
+    /* ==========================================================================
+       ⚡ ホバー時に「白（透明）から色付き背景」へ変わるアニメーション（流用可能パーツ③）
+       ========================================================================== */
+    .btn-hover-fill {
+      background-color: var(--color-white);
+      color: var(--color-primary);
+      border-top: 1px solid var(--color-primary);
+      border-bottom: 1px solid var(--color-primary);
+      border-left: none;
+      border-right: none;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+      cursor: pointer;
+    }
+    .btn-hover-fill:hover, .btn-hover-fill:active {
+      background-color: var(--color-key) !important; /* 屋代高校のキーカラー（黄緑）へ */
+      color: var(--color-white) !important;
+      border-color: var(--color-key);
+    }
+
+    /* ==========================================================================
+       📍 1. ヘッダー（コントラストを最大化し、見づらさを完全解決）
+       ========================================================================== */
     header {
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-      padding: 0.8rem 1.5rem;
+      background-color: var(--color-primary); /* 学校カラーの濃紺グレーで引き締める */
+      padding: 1rem 1.5rem;
       position: sticky;
       top: 0;
       z-index: 1000;
-      transition: all 0.3s;
+      border-bottom: 2px solid var(--color-key); /* アクセント線を下に引く */
     }
-
     .header-content {
       max-width: 1200px;
       margin: 0 auto;
@@ -57,398 +109,335 @@
       justify-content: space-between;
       align-items: center;
     }
-
     .header-title h1 {
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       margin: 0;
-      font-weight: 800;
-      background: var(--primary-grad);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-weight: 700;
+      color: var(--color-white);
     }
-
     .header-title p {
       margin: 0.1rem 0 0 0;
       font-size: 0.75rem;
-      color: var(--text-sub);
-      font-weight: 600;
+      color: rgba(255, 255, 255, 0.8);
     }
-
-    /* ハンバーガーボタン (スマホ用) */
-    .menu-toggle {
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-      z-index: 1100;
-    }
-
-    .menu-toggle span {
-      display: block;
-      width: 26px;
-      height: 2px;
-      background: var(--text-main);
-      transition: all 0.3s ease;
-    }
-
-    /* ボタンがアクティブな時のアニメーション */
-    .menu-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-    .menu-toggle.active span:nth-child(2) { opacity: 0; }
-    .menu-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
-
-    /* モバイルメニューのオーバーレイ */
-    nav {
-      position: fixed;
-      top: 0;
-      right: -100%;
-      width: 80%;
-      max-width: 300px;
-      height: 100vh;
-      background: white;
-      box-shadow: -10px 0 30px rgba(0,0,0,0.05);
-      display: flex;
-      flex-direction: column;
-      padding: 6rem 2rem 2rem 2rem;
-      gap: 1.5rem;
-      transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      z-index: 1050;
-    }
-
-    nav.active {
-      right: 0;
-    }
-
     nav a {
-      font-size: 1.1rem;
-      color: var(--text-main);
+      color: var(--color-white);
+      font-weight: 600;
       text-decoration: none;
-      font-weight: 600;
-      border-bottom: 1px solid #f1f5f9;
-      padding-bottom: 0.75rem;
-      transition: color 0.3s;
     }
 
-    nav a:hover {
-      color: #4f46e5;
-    }
-
-    /* --- 3. メイン要素 ＆ 贅沢な余白設定 --- */
-    main {
-      max-width: 1140px;
-      margin: 0 auto;
-      padding: 2.5rem 1.2rem;
-    }
-
-    /* ヒーローエリア (11月祭のような洗練さ) */
-    .hero {
-      background: white;
-      border-radius: 24px;
-      padding: 5rem 2rem;
-      margin-bottom: 4rem;
-      text-align: center;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+    /* ==========================================================================
+       🖼️ 2. ヒーローエリア（自動変更なしの固定1枚画像 ＋ 斜め切り抜き窓窓 ＋ はみ出し）
+       ========================================================================== */
+    .hero-window {
       position: relative;
-      overflow: hidden;
+      width: 100%;
+      height: 65vh;
+      min-height: 420px;
+      overflow: visible; /* はみ出しデザインを許容するため変更 */
+      background-color: var(--color-primary);
+      margin-bottom: 6rem;
     }
-
-    .hero::before {
-      content: '';
+    
+    /* 1枚の固定画像を背後に綺麗に敷き詰める（スライダーは撤去） */
+    .hero-bg-image {
       position: absolute;
-      top: 0; left: 0; right: 0; height: 6px;
-      background: var(--primary-grad);
+      top: 0; left: 0; width: 100%; height: 100%;
+      /* 🖼️ 【差し替えエリア】お好きなメイン写真を1枚設定してください */
+      background-image: url('https://picsum.photos/id/10/1200/800');
+      background-size: cover;
+      background-position: center;
+      filter: brightness(0.7) contrast(1.05);
+      clip-path: polygon(0 0, 100% 0, 100% 86%, 0 100%);
+      z-index: 1;
     }
 
-    .hero h2 {
-      font-size: 3rem;
+    /* 文字レイヤー */
+    .hero-overlay-content {
+      position: absolute;
+      left: 1.5rem; bottom: -2rem; /* 💥 あえて画像エリアの下側からはみ出させるトレンド配置 */
+      z-index: 2;
+      color: var(--color-base);
+      pointer-events: none;
+    }
+    .hero-title-main {
+      font-size: 2.3rem;
       font-weight: 900;
-      letter-spacing: 0.1em;
+      color: var(--color-primary);
+      text-shadow: 2px 2px 0px var(--color-white), -2px -2px 0px var(--color-white), 2px -2px 0px var(--color-white), -2px 2px 0px var(--color-white);
       margin: 0 0 0.5rem 0;
-      background: var(--primary-grad);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
     }
-
-    .hero .date {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--text-sub);
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
-      margin-bottom: 2rem;
-    }
-
-    .hero .tagline {
-      font-size: 1.25rem;
-      color: var(--text-main);
-      font-weight: 600;
-      margin-bottom: 2rem;
-    }
-
-    .hero .theme-box {
+    .hero-date-box {
+      background: var(--color-white);
+      padding: 0.5rem 1rem;
       display: inline-block;
-      border: 1px solid #e2e8f0;
-      padding: 1rem 2rem;
-      border-radius: 12px;
-      max-width: 500px;
-      font-size: 0.95rem;
-      color: var(--text-sub);
-      line-height: 1.6;
+      box-shadow: 0 8px 20px rgba(56, 71, 93, 0.15);
+      font-size: 0.85rem;
+      font-weight: 700;
+      border-top: 2px solid var(--color-key);
     }
 
-    /* セクション全体の余白を広げて「ぎちぎち感」を解消 */
-    section {
-      margin-bottom: 5.5rem;
-      background: transparent;
-      box-shadow: none;
-      padding: 0;
+    /* ==========================================================================
+       📢 3. 最新3つのお知らせ（横書き縦並び）
+       ========================================================================== */
+    .news-section {
+      max-width: 800px;
+      margin: 0 auto 5rem auto;
+      padding-left: 1rem; padding-right: 1rem;
+      position: relative;
     }
-
-    section h2 {
-      font-size: 1.75rem;
-      font-weight: 800;
-      color: var(--text-main);
-      border: none;
-      padding: 0;
-      margin-bottom: 2rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+    .section-title-light {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      letter-spacing: 0.15em;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
     }
-
-    section h2::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: #e2e8f0;
-    }
-
-    /* --- 4. 画像対応型・次世代カードUI --- */
-    .grid {
-      display: grid;
-      gap: 2rem;
-    }
-
-    .card {
-      background: white;
-      border-radius: 16px;
-      border: none;
-      border-left: none;
-      overflow: hidden;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s;
+    .news-mini-list {
       display: flex;
       flex-direction: column;
     }
-
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 30px rgba(79, 70, 229, 0.08);
+    .news-mini-item {
+      display: flex;
+      flex-direction: column;
+      padding: 1.2rem 0;
+      border-bottom: 1px solid var(--color-contrast);
+      text-decoration: none;
+      transition: padding-left 0.3s ease;
+    }
+    .news-mini-item:hover {
+      padding-left: 0.75rem; /* ホバー時に品よくスライド */
+    }
+    @media (min-width: 600px) {
+      .news-mini-item { flex-direction: row; align-items: baseline; gap: 2rem; }
+    }
+    .news-mini-date {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      min-width: 100px;
+    }
+    .news-mini-title {
+      font-size: 0.95rem;
+      color: var(--color-base);
+      margin: 0;
+      flex: 1;
     }
 
-    /* 後々画像を入れるためのプレースホルダー枠 */
-    .card-image-slot {
+    /* ==========================================================================
+       🎨 4. クイックアクセスゾーン（ピクトグラムSVG化 ＋ あえてはみ出すデザイン）
+       ========================================================================== */
+    .quick-access-section {
+      max-width: 900px;
+      margin: 0 auto 5rem auto;
+      padding-left: 1rem; padding-right: 1rem;
+    }
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    .quick-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1.5rem 0.5rem;
+      text-decoration: none;
+      color: var(--color-primary);
+    }
+    /* ピクトグラム用SVGのサイズとホバーアニメーション */
+    .quick-icon-svg {
+      width: 2.2rem;
+      height: 2.2rem;
+      stroke: var(--color-primary);
+      margin-bottom: 0.75rem;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), stroke 0.4s;
+    }
+    .quick-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+    /* 💥 トレンド：真ん中のアイテムだけあえて上に少し「はみ出す」ようにずらして配置 */
+    .quick-item.skew-layout {
+      transform: translateY(-15px);
+      border-top: 1px solid var(--color-key);
+      border-bottom: 1px solid var(--color-key);
+      background-color: rgba(160, 185, 110, 0.05); /* キーカラーの超極薄背景 */
+    }
+    .quick-item:hover .quick-icon-svg {
+      transform: scale(1.2) rotate(4deg);
+      stroke: var(--color-key);
+    }
+
+    /* ==========================================================================
+       🕊️ 5. テーマと鳩祭とは（地に書くスタイル ＋ 将来の画像拡張スペース）
+       ========================================================================== */
+    .about-summary-section {
+      max-width: 750px;
+      margin: 0 auto 5rem auto;
+      padding-left: 1rem; padding-right: 1rem;
+      position: relative;
+    }
+    
+    /* あえて右端から大胆にはみ出させた幾何学の切り抜き窓風デコレーション */
+    .about-overflow-deco {
+      position: absolute;
+      right: -40px; top: 10%;
+      width: 140px; height: 280px;
+      background: var(--color-key);
+      opacity: 0.12;
+      clip-path: polygon(40% 0%, 100% 0%, 60% 100%, 0% 100%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .about-block {
+      margin-bottom: 3rem;
+      position: relative;
+    }
+    .about-block h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: 0.75rem;
+    }
+    .about-block p {
+      font-size: 0.9rem;
+      line-height: 1.8;
+      margin: 0;
+    }
+    .theme-spark-text {
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: var(--color-primary);
+      letter-spacing: 0.15em;
+      display: block;
+      margin-bottom: 0.5rem;
+      border-left: 3px solid var(--color-key);
+      padding-left: 0.5rem;
+    }
+
+    /* 📸 将来小さなイメージ画像を追加したときにあえてはみ出して重なるコンテナ定義 */
+    .out-of-box-image-wrapper {
+      position: absolute;
+      right: -20px; bottom: -20px;
+      width: 130px;
+      height: auto;
+      z-index: 5;
+      /* ⚡ 初期状態は非表示ですが、中に<img>を入れると斜めにはみ出して浮き出ます */
+    }
+    .out-of-box-image-wrapper img {
+      width: 100%; height: auto;
+      box-shadow: var(--wp--preset--shadow--natural, 6px 6px 9px rgba(0,0,0,0.15));
+      border: 3px solid var(--color-white);
+    }
+
+    /* ==========================================================================
+       📍 6. アクセスとよくある質問へのサブページボタン（大きく横長・縦並び）
+       ========================================================================== */
+    .large-links-section {
+      max-width: 600px;
+      margin: 0 auto 5rem auto;
+      padding-left: 1rem; padding-right: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+    .btn-large-row {
       width: 100%;
-      aspect-ratio: 16 / 9;
-      background: linear-gradient(135deg, #e0e7ff 0%, #ede9fe 100%);
+      padding: 1.3rem 1.5rem;
+      font-size: 0.95rem;
+    }
+    .btn-large-row span:last-child {
+      font-size: 0.8rem;
+      transition: transform 0.3s;
+    }
+    .btn-large-row:hover span:last-child {
+      transform: translateX(5px); /* 矢印が右にピョコッと動くアニメ */
+    }
+
+    /* ==========================================================================
+       🤝 7. 協賛広告（横2 × 縦n ミニマル仕様）
+       ========================================================================== */
+    .sponsor-section {
+      max-width: 600px;
+      margin: 0 auto 5rem auto;
+      padding-left: 1rem; padding-right: 1rem;
+    }
+    .sponsor-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+    }
+    .sponsor-item {
+      background: var(--color-white);
+      border-top: 1px solid var(--color-contrast);
+      border-bottom: 1px solid var(--color-contrast);
+      aspect-ratio: 3 / 1;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #a5b4fc;
-      font-size: 0.9rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      position: relative;
+    }
+    .sponsor-placeholder {
+      font-size: 0.7rem;
+      color: rgba(56, 71, 93, 0.5);
     }
 
-    .card-body {
-      padding: 1.5rem;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
+    /* ==========================================================================
+       🏢 8. サイトマップとフッター（コントラスト最大化・縦並び）
+       ========================================================================== */
+    .unified-footer {
+      background-color: var(--color-primary); /* 完全なコントラスト */
+      color: var(--color-white);
+      padding: 4rem 1.5rem 3rem 1.5rem;
+      border-top: 3px solid var(--color-key);
     }
-
-    .card h3 {
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin: 0 0 0.75rem 0;
-      color: var(--text-main);
-    }
-
-    .card p {
-      font-size: 0.95rem;
-      color: var(--text-sub);
-      line-height: 1.6;
-      margin: 0 0 1.5rem 0;
-      flex: 1;
-    }
-
-    /* ボタンのスマート化 */
-    .card button, section button {
-      background: #f1f5f9;
-      color: #4f46e5;
-      border: none;
-      font-weight: 700;
-      font-size: 0.9rem;
-      padding: 0.6rem 1.2rem;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.3s;
-      width: 100%;
-      margin: 0;
-    }
-
-    .card button:hover, section button:hover {
-      background: #4f46e5;
-      color: white;
-    }
-
-    /* インフォメーション・文字リストの整理 */
-    .info-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .info-list li {
-      padding: 0.75rem 0;
-      border-bottom: 1px solid #f1f5f9;
-      font-size: 0.95rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .info-list li strong {
-      color: var(--text-sub);
-      font-weight: 500;
-    }
-
-    .info-list li span {
-      font-weight: 600;
-      color: var(--text-main);
-    }
-
-    .text-list p {
-      padding: 0.5rem 0;
-      margin: 0;
-      border-bottom: 1px solid #f1f5f9;
-    }
-
-    .contact-box {
-      background: white;
-      padding: 2rem;
-      border-radius: 16px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-    }
-
-    /* --- 5. スクリプト連動アニメーションの準備 --- */
-    .scroll-fade {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .scroll-fade.is-shown {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* --- 6. フッター ＆ サイトマップの洗練 --- */
-    footer {
-      background: #0f172a;
-      color: #94a3b8;
-      padding: 4rem 1.5rem 2rem 1.5rem;
-      font-size: 0.9rem;
-    }
-
     .footer-container {
-      max-width: 1140px;
+      max-width: 800px;
       margin: 0 auto;
     }
-
-    .sitemap {
-      display: grid;
-      gap: 2.5rem;
-      margin-bottom: 3.5rem;
-      border-bottom: 1px solid #334155;
-      padding-bottom: 3rem;
-    }
-
-    .sitemap-item strong {
-      color: white;
-      display: block;
-      margin-bottom: 1rem;
-      font-size: 0.95rem;
-      letter-spacing: 0.05em;
-    }
-
-    .sitemap-item a {
-      display: block;
-      color: #94a3b8;
-      text-decoration: none;
-      margin: 0.5rem 0;
-      font-size: 0.85rem;
-      transition: color 0.3s;
-    }
-
-    .sitemap-item a:hover {
-      color: white;
-      text-decoration: none;
-    }
-
-    .footer-bottom {
+    .sitemap-vertical {
       display: flex;
       flex-direction: column;
-      gap: 1rem;
-      align-items: center;
-      text-align: center;
-      font-size: 0.8rem;
+      gap: 2rem;
+      margin-bottom: 3.5rem;
     }
-
-    .footer-bottom a {
-      color: #cbd5e1;
+    .sitemap-group-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--color-key); /* 濃紺の上に映える黄緑 */
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+    .sitemap-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .sitemap-links a {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.8);
       text-decoration: none;
     }
-
-    /* --- 7. レスポンシブ設計 (PC表示の最適化) --- */
-    @media (min-width: 768px) {
-      .menu-toggle { display: none; }
-      
-      nav {
-        position: static;
-        width: auto;
-        height: auto;
-        background: none;
-        box-shadow: none;
-        flex-direction: row;
-        padding: 0;
-        gap: 2rem;
-      }
-
-      nav a {
-        font-size: 0.9rem;
-        border-bottom: 2px solid transparent;
-        padding-bottom: 0.2rem;
-      }
-
-      nav a:hover {
-        border-bottom-color: #4f46e5;
-      }
-
-      .hero h2 { font-size: 4rem; }
-      
-      .grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
-      .grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
-      .sitemap { grid-template-columns: repeat(4, 1fr); }
-      
-      .footer-bottom {
-        flex-direction: row;
-        justify-content: space-between;
-        text-align: left;
-      }
+    .sitemap-links a:hover {
+      color: var(--color-key);
+    }
+    .footer-info {
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 2rem;
+      font-size: 0.8rem;
+    }
+    .footer-info h5 {
+      font-size: 0.95rem;
+      color: var(--color-white);
+      margin-bottom: 0.5rem;
+    }
+    .footer-copyright {
+      margin-top: 1.5rem !important;
+      color: rgba(255,255,255,0.5);
     }
   </style>
 </head>
@@ -457,242 +446,203 @@
   <header>
     <div class="header-content">
       <div class="header-title">
-        <h1>🕊️ 第70回屋代高校鳩祭</h1>
-        <p>6月27日(土)・28日(日)</p>
+        <h1>第70回屋代高校鳩祭</h1>
+        <p>一般公開：6月27日(土)・28日(日)</p>
       </div>
-      <button class="menu-toggle" id="menuToggle" aria-label="メニューを開く">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <nav id="navMenu">
-        <a href="#exhibitions">企画展示</a>
-        <a href="#visitor">来場者向け</a>
-        <a href="#about">鳩祭について</a>
-        <a href="#contact">お問い合わせ</a>
-        <a href="#sitemap">サイトマップ</a>
+      <nav>
+        <a href="#sitemap" style="font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.4); padding: 0.3rem 0.7rem; border-radius: 4px;">Sitemap</a>
       </nav>
     </div>
   </header>
 
-  <main>
-    <div class="hero">
-      <h2 id="hero-title">SPARK</h2>
-      <div class="date">第70回屋代高校鳩祭</div>
-      <div class="tagline">一人一人の火花が集まって、大きな輝きを</div>
-      <div class="theme-box">
-        <strong>テーマ：「SPARK」</strong><br>
-        小さな火花がたくさん集まって、大きな輝きを持った第70回鳩祭をつくります。
-      </div>
-    </div>
-
-    <section id="exhibitions" class="scroll-fade">
-      <h2>✨ 企画展示概要</h2>
-      <div class="grid cols-3">
-        <div class="card">
-          <div class="card-image-slot">🎭 IMAGE PLACEHOLDER</div>
-          <div class="card-body">
-            <h3>大型企画系</h3>
-            <p>生徒による演劇、音楽、ダンス発表が盛りだくさん。各部の熱い演技をお楽しみください。</p>
-            <button onclick="location.href='events.html'">企画紹介を見る</button>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-image-slot">🎨 IMAGE PLACEHOLDER</div>
-          <div class="card-body">
-            <h3>展示系・飲食出店</h3>
-            <p>文化部・クラス展示、技術作品、アート展示などを公開。創意工夫あふれる作品をご覧ください。</p>
-            <button onclick="location.href='exhibit.html'">展示紹介を見る</button>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-image-slot">🚀 IMAGE PLACEHOLDER</div>
-          <div class="card-body">
-            <h3>その他</h3>
-            <p>有志ステージやゲリラ企画など、鳩祭をさらに盛り上げる特別なイベント情報をお届けします。</p>
-            <button href="#">その他の企画</button>
-          </div>
+  <main style="max-width:100%; padding:0; margin:0;">
+    
+    <section class="hero-window" style="border:none; padding:0; margin-top:0;">
+      <div class="hero-bg-image"></div>
+      <div class="hero-overlay-content">
+        <h2 class="hero-title-main">鳩祭公式ウェブサイト</h2>
+        <div class="hero-date-box">
+          <span>YASHIRO HATOSAI FESTIVAL 2026</span>
         </div>
       </div>
     </section>
 
-    <section id="visitor" class="scroll-fade">
-      <h2>📋 来場者向けのご案内</h2>
-      <div class="grid cols-2">
-        <div class="card">
-          <div class="card-body">
-            <h3>開催情報</h3>
-            <ul class="info-list">
-              <li><strong>日程</strong> <span>2026年6月27日(土)・28日(日)</span></li>
-              <li><strong>場所</strong> <span>屋代高等学校・附属中学校</span></li>
-              <li><strong>入場料</strong> <span>無料（一部予約制あり）</span></li>
-            </ul>
-          </div>
+    <section class="news-section reveal-on-scroll">
+      <div class="section-title-light">Latest News</div>
+      <div class="news-mini-list" id="newsMiniContainer">
         </div>
-        <div class="card">
-          <div class="card-body">
-            <h3>アクセス</h3>
-            <p>しなの鉄道「屋代高校前駅」から徒歩10分。当日は混雑が予想されるため、公共交通機関でのご来場をお願いいたします。</p>
-            <button onclick="location.href='access.html'">アクセス詳細・校内マップ</button>
-          </div>
-        </div>
-      </div>
       
-      <div class="card" style="margin-top: 2rem;">
-        <div class="card-body">
-          <h3>⚠️ ご来場時のお願い</h3>
-          <div class="text-list">
-            <p>• 周辺の商業施設や路上への迷惑駐車は絶対にご遠慮ください。</p>
-            <p>• 校内への一足制導入にともない、上履きのご持参にご協力をお願いします。</p>
-            <p>• 敷地内は全面禁煙、およびゴミの持ち帰りにご協力ください。</p>
-          </div>
-          <button onclick="location.href='faq.html'" style="margin-top: 1.5rem;">よくある質問（FAQ）へ</button>
-        </div>
+      <a href="news.html" class="btn-hover-fill" style="margin-top: 1.5rem; padding: 0.6rem 1.2rem; font-size: 0.85rem;">
+        <span>お知らせ一覧へ</span><span style="margin-left:1rem;">→</span>
+      </a>
+    </section>
+
+    <section class="quick-access-section reveal-on-scroll">
+      <div class="quick-grid">
+        
+        <a href="exhibit.html" class="quick-item">
+          <svg class="quick-icon-svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          <span class="quick-label">企画展示</span>
+        </a>
+
+        <a href="about.html" class="quick-item skew-layout">
+          <svg class="quick-icon-svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L2 10L10 14L14 22L22 2Z"></path></svg>
+          <span class="quick-label">鳩祭について</span>
+        </a>
+
+        <a href="news.html" class="quick-item">
+          <svg class="quick-icon-svg" viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+          <span class="quick-label">お知らせ</span>
+        </a>
+
       </div>
     </section>
 
-    <section id="about" class="scroll-fade">
-      <h2>🎭 鳩祭について</h2>
-      <p style="color: var(--text-sub); font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem;">
-        屋代高校の鳩祭は、生徒が主体となって企画・運営する歴史ある学園祭です。一人一人の個性や思いが「SPARK」となり、それらが集まることで大きな輝きを放つ文化祭を目指しています。
-      </p>
-      
-      <div class="grid cols-3">
-        <div class="card">
-          <div class="card-body">
-            <h3>Passion & Action</h3>
-            <p>一人一人の内なる情熱（Passion）を、実際の行動（Action）へと移し、新しいエネルギーを生み出します。</p>
-          </div>
+    <section class="about-summary-section reveal-on-scroll">
+      <div class="about-overflow-deco"></div>
+
+      <div class="about-block">
+        <h3>鳩祭とは</h3>
+        <p>屋代高校の鳩祭（はとさい）は、歴史と伝統を紡ぐ初夏の祭典です。文化班の発表、各クラスが趣向を凝らしたユニークな展示、賑やかな模擬店が集い、校内全体が一丸となって熱い2日間を創り出します。</p>
+      </div>
+
+      <div class="about-block">
+        <h3>第70回テーマ</h3>
+        <p>
+          <span class="theme-spark-text">「SPARK」</span>
+          一人ひとりが心の中に秘めた小さなアイデアや情熱の火花。それらがこの鳩祭の場所で一堂に集まり、交わることで、校内全体、そして地域をも照らし出す大きな輝きへと進化を遂げます。
+        </p>
+
         </div>
-        <div class="card">
-          <div class="card-body">
-            <h3>Small ideas</h3>
-            <p>どんなに小さなアイデアでも、組み合わせることで誰も見たことのない大きな輝き（Radiance）へと進化します。</p>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-body">
-            <h3>Keep moving</h3>
-            <p>第70回という節目を迎え、私たちは立ち止まることなく、次なる未来へ向かって前へ進み続けます。</p>
-          </div>
-        </div>
+
+      <a href="about.html" class="btn-hover-fill" style="padding: 0.6rem 1.2rem; font-size: 0.85rem;">
+        <span>テーマ概要を詳しく読む</span><span style="margin-left:1rem;">→</span>
+      </a>
+    </section>
+
+    <section class="large-links-section reveal-on-scroll">
+      <a href="about.html#access" class="btn-hover-fill btn-large-row">
+        <span>📍 開催情報・アクセス</span>
+        <span>➔</span>
+      </a>
+      <a href="about.html#faq" class="btn-hover-fill btn-large-row">
+        <span>❓ よくあるご質問（FAQ）</span>
+        <span>➔</span>
+      </a>
+    </section>
+
+    <section class="sponsor-section reveal-on-scroll">
+      <div class="section-title-light" style="text-align: center; margin-bottom: 1rem;">Sponsors</div>
+      <div class="sponsor-grid">
+        <div class="sponsor-item"><span class="sponsor-placeholder">協賛広告バナー枠</span></div>
+        <div class="sponsor-item"><span class="sponsor-placeholder">協賛広告バナー枠</span></div>
+        <div class="sponsor-item"><span class="sponsor-placeholder">協賛広告バナー枠</span></div>
+        <div class="sponsor-item"><span class="sponsor-placeholder">協賛広告バナー枠</span></div>
       </div>
     </section>
 
-    <section id="contact" class="scroll-fade">
-      <h2>📞 お問い合わせ</h2>
-      <div class="contact-box">
-        <h3 style="margin-top: 0;">屋代高校鳩祭実行委員会</h3>
-        <p style="color: var(--text-sub); margin-bottom: 1.5rem;">ご不明な点や取材等のご質問がありましたら、下記までお気軽にお問い合わせください。</p>
-        <ul class="info-list" style="margin-bottom: 1.5rem;">
-          <li><strong>学校名</strong> <span>長野県屋代高等学校・附属中学校</span></li>
-          <li><strong>住所</strong> <span>〒387-8501 長野県千曲市屋代1000</span></li>
-          <li><strong>メール</strong> <span><a href="mailto:yashiro@m.nagano-c.ed.jp">yashiro@m.nagano-c.ed.jp</a></span></li>
-        </ul>
-      </div>
-    </section>
   </main>
 
-  <footer>
+  <footer class="unified-footer" id="sitemap">
     <div class="footer-container">
-      <div class="sitemap" id="sitemap">
-        <div class="sitemap-item">
-          <strong>🎨 企画展示</strong>
-          <a href="#exhibitions">企画展示概要</a>
-          <a href="events.html">大型企画系</a>
-          <a href="exhibit.html">展示系・飲食出店</a>
-        </div>
-        <div class="sitemap-item">
-          <strong>📍 来場者向け</strong>
-          <a href="#visitor">開催情報</a>
-          <a href="access.html">アクセス・マップ</a>
-          <a href="faq.html">よくあるご質問</a>
-        </div>
-        <div class="sitemap-item">
-          <strong>ℹ️ 鳩祭について</strong>
-          <a href="#about">鳩祭とは</a>
-          <a href="#about">テーマ「SPARK」</a>
-        </div>
-        <div class="sitemap-item">
-          <strong>📧 連絡先</strong>
-          <a href="#contact">お問い合わせ</a>
-          <a href="https://www.nagano-c.ed.jp/yashiro/" target="_blank">屋代高校公式サイト</a>
-        </div>
-      </div>
       
-      <div class="footer-bottom">
-        <div>
-          <strong style="color: white; display: block; margin-bottom: 0.25rem;">第70回屋代高校鳩祭 公式ウェブサイト</strong>
-          <span>屋代高等学校鳩祭実行委員会</span>
+      <div class="sitemap-vertical">
+        <div class="sitemap-group">
+          <div class="sitemap-group-title">🎪 企画・展示案内</div>
+          <div class="sitemap-links">
+            <a href="exhibit.html">すべての展示一覧</a>
+            <a href="exhibit.html#class-exhibits">クラス企画</a>
+            <a href="exhibit.html#group-exhibits">文化班・有志発表</a>
+          </div>
         </div>
-        <div style="margin-top: 1rem; cubic-bezier(0.16, 1, 0.3, 1)">
-          <p style="margin: 0; opacity: 0.6;">© 2026 Yashiro High School Hatosai Festival</p>
+
+        <div class="sitemap-group">
+          <div class="sitemap-group-title">ℹ️ 鳩祭を知る</div>
+          <div class="sitemap-links">
+            <a href="about.html">鳩祭とは</a>
+            <a href="about.html#theme">テーマ「SPARK」について</a>
+          </div>
+        </div>
+
+        <div class="sitemap-group">
+          <div class="sitemap-group-title">📢 インフォメーション</div>
+          <div class="sitemap-links">
+            <a href="news.html">最新のお知らせ一覧</a>
+            <a href="about.html#access">アクセス・ご来場案内</a>
+            <a href="about.html#faq">よくあるご質問</a>
+          </div>
         </div>
       </div>
+
+      <div class="footer-info">
+        <h5>第70回屋代高校鳩祭 公式ウェブサイト</h5>
+        <p>長野県千曲市屋代1000 / 長野県屋代高等学校 鳩祭実行委員会</p>
+        <p>Contact: <a href="mailto:yashiro@m.nagano-c.ed.jp" style="color:var(--color-key); font-weight:700;">yashiro@m.nagano-c.ed.jp</a></p>
+        <p class="footer-copyright">© 2026 Yashiro High School Hatosai Festival</p>
+      </div>
+
     </div>
   </footer>
 
   <script>
-    // --- ① モバイルメニューの開閉制御 ---
-    const menuToggle = document.getElementById('menuToggle');
-    const navMenu = document.getElementById('navMenu');
+    document.addEventListener("DOMContentLoaded", () => {
+      
+      // ------------------------------------------------------------------------
+      // 🛠️ 修正ポイント：スクロール連動フェードイン（確実な標準方式への変更）
+      // ------------------------------------------------------------------------
+      const targets = document.querySelectorAll('.reveal-on-scroll');
+      
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px 0px -50px 0px", // 画面下部に入って50px進んだら発火
+        threshold: 0.05
+      };
 
-    menuToggle.addEventListener('click', () => {
-      menuToggle.classList.toggle('active');
-      navMenu.classList.toggle('active');
-    });
-
-    // メニューリンククリック時に閉じる
-    navMenu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        menuToggle.classList.remove('active');
-        navMenu.classList.remove('active');
-      });
-    });
-
-    // --- ② Anime.jsによるヒーローロゴの洗練されたアニメーション ---
-    window.addEventListener('DOMContentLoaded', () => {
-      // タイトル「SPARK」を1文字ずつバラバラにして動かす演出
-      const titleEl = document.getElementById('hero-title');
-      titleEl.innerHTML = titleEl.textContent.replace(/\S/g, "<span class='letter' style='display:inline-block;'>$&</span>");
-
-      anime.timeline({loop: false})
-        .add({
-          targets: '#hero-title .letter',
-          translateY: [40,0],
-          translateZ: 0,
-          opacity: [0,1],
-          easing: "easeOutExpo",
-          duration: 1200,
-          delay: (el, i) => 100 + 60 * i
-        }).add({
-          targets: '.hero .tagline, .hero .date, .hero .theme-box',
-          opacity: [0, 1],
-          translateY: [20, 0],
-          easing: "easeOutExpo",
-          duration: 1000,
-          offset: '-=600'
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            // クラスを付与してCSSアニメーションをトリガー（絶対に消えたままにならない）
+            entry.target.classList.add('is-visible');
+            obs.unobserve(entry.target); 
+          }
         });
-    });
+      }, observerOptions);
 
-    // --- ③ Intersection Observerによるスクロール連動フェードイン ---
-    const observerOptions = {
-      root: null,
-      rootMargin: "0px",
-      threshold: 0.1
-    };
+      targets.forEach(target => observer.observe(target));
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-shown');
-          observer.unobserve(entry.target); // 一度表示されたら監視を解除して軽量化
-        }
-      });
-    }, observerOptions);
+      // ------------------------------------------------------------------------
+      // 📢 ニュースデータ：予備自動描画ロジック
+      // ------------------------------------------------------------------------
+      const newsContainer = document.getElementById("newsMiniContainer");
+      const defaultNews = [
+        { id: "001", date: "2026-06-01", title: "第70回鳩祭の一般公開に関する大切なお知らせ" },
+        { id: "002", date: "2026-06-15", title: "メインステージ（体育館）のタイムスケジュールを公開しました" },
+        { id: "003", date: "2026-06-20", title: "公式パンフレットのデジタル版を配布開始しました" }
+      ];
 
-    document.querySelectorAll('.scroll-fade').forEach(el => {
-      observer.observe(el);
+      fetch('data/news.json')
+        .then(res => res.ok ? res.json() : Promise.reject())
+        .then(data => {
+          renderMiniNews(Array.isArray(data) ? data : (data.news || defaultNews));
+        })
+        .catch(() => {
+          renderMiniNews(defaultNews);
+        });
+
+      function renderMiniNews(dataList) {
+        const top3 = dataList.sort((a,b) => new Date(b.date) - new Date(a.date)).slice(0, 3);
+        newsContainer.innerHTML = "";
+        top3.forEach(item => {
+          const itemEl = document.createElement("a");
+          itemEl.href = `news.html#news-${item.id}`;
+          itemEl.className = "news-mini-item";
+          itemEl.innerHTML = `
+            <span class="news-mini-date">${item.date.replace(/-/g, '.')}</span>
+            <h4 class="news-mini-title">${item.title}</h4>
+          `;
+          newsContainer.appendChild(itemEl);
+        });
+      }
     });
   </script>
 </body>
