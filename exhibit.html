@@ -6,78 +6,150 @@
   <title>企画・展示紹介 - 第70回屋代高校鳩祭公式ウェブサイト</title>
   
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-  
   <link rel="stylesheet" href="css/common.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
 
   <style>
     /* ==========================================================================
-       展示ページ固有のカスタマイズスタイル
+       🎨 カラー＆デザインシステム（グラフィカル・モダンエディションを完全定着）
        ========================================================================== */
-    body {
-      background: #f1f5f9; /* 共通に合わせた背景 */
+    :root {
+      /* メインカラー */
+      --color-primary: #2C3A4E;     /* 深みのあるブルーグレー（タイトル・強調） */
+      --color-primary-dark: #131924;/* フッター用ダークネイビー */
+      --color-key: #8DAE4B;         /* アクセント：新緑のオリーブ黄緑（アクティブ・ホバー） */
+      --color-key-light: #F4F8EC;   /* アクセント薄色：タグ背景用 */
+      --color-base: #222222;        /* テキスト：チャコールブラック */
+      --color-contrast: #E2E8F0;    /* 境界線：ライトグレー */
+      --color-white: #ffffff;
+      --color-bg-light: #F8FAFC;    /* 全体背景：清潔感のあるライトスレート */
+      
+      /* シャドウ＆イージング */
+      --shadow-sm: 0 4px 12px rgba(44, 58, 78, 0.04);
+      --shadow-md: 0 12px 32px rgba(44, 58, 78, 0.08);
+      --shadow-lg: 0 20px 40px rgba(44, 58, 78, 0.12);
+      --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* 検索・フィルターエリアのスタイリング */
-    .filter-section {
-      background: white;
-      border-radius: 20px;
-      padding: 2rem;
-      margin-bottom: 2.5rem;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.02);
+    body {
+      font-family: "Noto Sans JP", "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--color-bg-light);
+      color: var(--color-base);
+      letter-spacing: 0.04em;
+      margin: 0;
+      padding: 0;
     }
-    .search-box {
+
+    /* ① スクロール連動フェードイン（共通アニメーション） */
+    .reveal-on-scroll {
+      opacity: fadeIn 0.6s ease-out forwards;
+      transform: translateY(25px);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(25px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .reveal-on-scroll.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ② セクションタイトルのモダン装飾 */
+    .section-title-modern {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--color-primary);
+      position: relative;
+      padding-left: 1rem;
       margin-bottom: 1.5rem;
     }
-    .search-box input {
-      border-radius: 12px;
-      padding: 0.75rem 1rem;
-      border: 2px solid #e2e8f0;
-      font-size: 1rem;
-      transition: border-color 0.3s;
+    .section-title-modern::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 15%; width: 4px; height: 70%;
+      background: var(--color-key);
+      border-radius: 2px;
     }
-    .search-box input:focus {
-      border-color: #667eea;
-      box-shadow: none;
+
+    /* 🔍 フィルターセクション（検索窓を除去してスッキリ化） */
+    .filter-section {
+      background: var(--color-white);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 2.5rem;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid rgba(44, 58, 78, 0.05);
     }
-    
-    /* フィルターボタン群 */
     .filter-group {
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
-      margin-bottom: 1rem;
+      margin-bottom: 1.25rem;
       align-items: center;
+    }
+    .filter-group:last-child {
+      margin-bottom: 0;
     }
     .filter-label {
       font-weight: 700;
-      font-size: 0.85rem;
-      color: var(--text-sub);
-      min-width: 70px;
+      font-size: 0.8rem;
+      color: var(--color-primary);
+      min-width: 80px;
+      opacity: 0.8;
     }
     .btn-filter {
-      background: #f8fafc;
-      color: var(--text-main);
-      border: 1px solid #e2e8f0;
-      padding: 0.4rem 1rem;
+      background: var(--color-bg-light);
+      color: var(--color-primary);
+      border: 1px solid var(--color-contrast);
+      padding: 0.4rem 1.2rem;
       border-radius: 30px;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: var(--transition-smooth);
       width: auto;
       margin: 0;
+      font-weight: 600;
     }
     .btn-filter:hover, .btn-filter.active {
-      background: var(--primary-grad);
-      color: white;
-      border-color: transparent;
-      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+      background: var(--color-key) !important;
+      color: var(--color-white) !important;
+      border-color: transparent !important;
+      box-shadow: 0 4px 14px rgba(141, 174, 75, 0.25);
     }
 
-    /* 企画カードの拡張 */
+    /* 📦 堅牢な3カラムレスポンシブグリッド（PicoCSSに依存せず美しく並べます） */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    @media (min-width: 576px) {
+      .projects-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 992px) {
+      .projects-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* 企画カード（インタラクティブ・ホバーリフト） */
     .project-card {
+      background: var(--color-white);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid rgba(44, 58, 78, 0.03);
       cursor: pointer;
-      opacity: 0; /* JS（Anime.js）でふわっと出すため初期値は0 */
+      opacity: 1; /* 初期表示。Anime.js実行時のみ上書き */
+      transition: var(--transition-smooth);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      margin: 0;
+    }
+    .project-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+      border-color: rgba(141, 174, 75, 0.2);
     }
     .card-thumbnail {
       width: 100%;
@@ -85,63 +157,81 @@
       background: #e2e8f0;
       position: relative;
       overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #94a3b8;
     }
     .card-thumbnail img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .project-card:hover .card-thumbnail img {
+      transform: scale(1.04);
     }
     .card-location {
       position: absolute;
       bottom: 10px;
       left: 10px;
-      background: rgba(15, 23, 42, 0.75);
-      color: white;
-      padding: 0.2rem 0.6rem;
+      background: rgba(44, 58, 78, 0.85);
+      color: var(--color-white);
+      padding: 0.25rem 0.6rem;
       border-radius: 6px;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       backdrop-filter: blur(4px);
       font-weight: 600;
     }
+    .card-body {
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
     .organizer-badge {
-      font-size: 0.8rem;
-      color: #4f46e5;
+      font-size: 0.75rem;
+      color: var(--color-key);
       font-weight: 700;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.4rem;
+    }
+    .project-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin: 0 0 0.5rem 0;
+    }
+    .project-card p {
+      font-size: 0.85rem;
+      color: #555555;
+      line-height: 1.5;
+      margin: 0 0 1rem 0;
     }
     .tag-container {
       display: flex;
       flex-wrap: wrap;
       gap: 0.35rem;
       margin-top: auto;
-      padding-top: 1rem;
     }
     .tag-badge {
-      background: #dee2ff;
-      color: #4f46e5;
-      font-size: 0.75rem;
+      background: var(--color-key-light);
+      color: var(--color-primary);
+      font-size: 0.7rem;
       padding: 0.15rem 0.5rem;
       border-radius: 4px;
       font-weight: 600;
+      border: 1px solid rgba(141, 174, 75, 0.1);
     }
 
-    /* モーダル（詳細ポップアップ） */
+    /* 🪟 詳細モーダル */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(8px);
+      background: rgba(19, 25, 36, 0.4);
+      backdrop-filter: blur(10px);
       z-index: 2000;
       display: flex;
       align-items: center;
       justify-content: center;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.4s ease;
       padding: 1rem;
     }
     .modal-overlay.active {
@@ -149,19 +239,19 @@
       pointer-events: auto;
     }
     .modal-window {
-      background: white;
+      background: var(--color-white);
       width: 100%;
-      max-width: 640px;
-      border-radius: 24px;
+      max-width: 600px;
+      border-radius: 20px;
       overflow: hidden;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-      transform: translateY(40px) scale(0.95);
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(44, 58, 78, 0.05);
     }
     .modal-header-img {
       width: 100%;
-      height: 240px;
-      background: #e2e8f0;
+      height: 220px;
       position: relative;
+      background: #e2e8f0;
     }
     .modal-header-img img {
       width: 100%; height: 100%; object-fit: cover;
@@ -169,51 +259,52 @@
     .modal-close-btn {
       position: absolute;
       top: 15px; right: 15px;
-      background: rgba(0,0,0,0.5);
-      color: white; border: none;
-      width: 36px; height: 36px;
+      background: rgba(44, 58, 78, 0.7);
+      color: var(--color-white); border: none;
+      width: 32px; height: 32px;
       border-radius: 50%; cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.25rem; font-weight: bold; margin: 0; padding: 0;
+      font-size: 1rem; margin: 0; padding: 0;
+      transition: var(--transition-smooth);
     }
-    .modal-close-btn:hover { background: rgba(0,0,0,0.8); }
+    .modal-close-btn:hover { background: var(--color-primary); }
     .modal-body {
-      padding: 2rem;
+      padding: 1.75rem;
       max-height: 60vh;
       overflow-y: auto;
     }
     .modal-meta-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 1rem;
-      margin: 1rem 0;
-      background: #f8fafc;
+      gap: 0.75rem;
+      margin: 1.25rem 0;
+      background: var(--color-bg-light);
       padding: 1rem;
-      border-radius: 12px;
-      font-size: 0.9rem;
+      border-radius: 10px;
+      font-size: 0.85rem;
     }
     .modal-meta-item strong {
       display: block;
-      color: var(--text-sub);
+      color: var(--color-primary);
       font-size: 0.75rem;
-      margin-bottom: 0.15rem;
+      margin-bottom: 0.2rem;
+      opacity: 0.8;
     }
     .notice-box {
       background: #fff5f5;
       border-left: 4px solid #ef4444;
       color: #b91c1c;
-      padding: 1rem;
-      border-radius: 8px;
-      font-size: 0.85rem;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
       margin-top: 1rem;
       font-weight: 600;
     }
-
-    /* エラー・件数ゼロ通知 */
     .no-results {
       text-align: center;
-      padding: 3rem;
-      color: var(--text-sub);
+      padding: 4rem 2rem;
+      color: var(--color-primary);
+      opacity: 0.6;
       font-weight: 600;
     }
   </style>
@@ -239,17 +330,13 @@
     </nav>
   </header>
 
-  <main>
-    <section style="margin-bottom: 2rem;">
-      <h3 class="section-title">✨ 企画・展示紹介</h3>
-      <p>各クラス、班、委員会が創意工夫を凝らして準備した鳩祭の全企画から、あなたの気になる企画を探してみましょう！</p>
+  <main style="padding-top: 2rem;">
+    <section class="reveal-on-scroll" style="margin-bottom: 2rem;">
+      <h3 class="section-title-modern">✨ 企画・展示紹介</h3>
+      <p>各クラス、班、委員会が創意工夫を凝らして準備した鳩祭の全企画です。気になるカテゴリやタグを選んで、直感的に絞り込んでみましょう！</p>
     </section>
 
-    <div class="filter-section">
-      <div class="search-box">
-        <input type="text" id="keywordSearch" placeholder="🔍 企画名、主催団体、キーワードで検索...">
-      </div>
-      
+    <div class="filter-section reveal-on-scroll">
       <div class="filter-group">
         <span class="filter-label">カテゴリ</span>
         <button class="btn-filter active" data-filter-type="category" data-value="all">すべて</button>
@@ -264,10 +351,11 @@
         </div>
     </div>
 
-    <div class="grid cols-3" id="projectsGrid">
+    <div class="projects-grid" id="projectsGrid">
       </div>
+    
     <div id="noResultsMessage" class="no-results" style="display: none;">
-      該当する企画が見つかりませんでした。別の条件を試してみてください。
+      該当する企画が見つかりませんでした。別の条件を選択してみてください。
     </div>
   </main>
 
@@ -279,10 +367,10 @@
       </div>
       <div class="modal-body">
         <div class="organizer-badge" id="modalOrganizer"></div>
-        <h3 id="modalTitle" style="margin-bottom: 0.5rem;"></h3>
+        <h3 id="modalTitle" style="margin-bottom: 0.5rem; color: var(--color-primary);"></h3>
         <div id="modalTags" style="display:flex; gap:0.35rem; margin-bottom:1rem;"></div>
         
-        <p id="modalDescription" style="font-size: 1rem; color: var(--text-main); margin-bottom: 1.5rem;"></p>
+        <p id="modalDescription" style="font-size: 0.9rem; color: var(--color-base); margin-bottom: 1.5rem;"></p>
         
         <div class="modal-meta-grid">
           <div class="modal-meta-item">
@@ -307,12 +395,8 @@
   </div>
 
   <footer>
-    <div class="footer-container">
-      <div class="footer-bottom">
-        <p><strong>第70回屋代高校鳩祭 公式ウェブサイト</strong><br>屋代高等学校鳩祭実行委員会</p>
-        <p>© 2026 Yashiro High School Hatosai Festival</p>
-      </div>
-    </div>
+    <p><strong>第70回屋代高校鳩祭 公式ウェブサイト</strong><br>屋代高等学校鳩祭実行委員会</p>
+    <p>© 2026 Yashiro High School Hatosai Festival</p>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/animejs/dist/bundles/anime.umd.min.js"></script>
@@ -320,15 +404,18 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
+      
+      // ==========================================================================
+      // 🛠️ メンテナンス・将来の添加用：企画データプール
+      // ==========================================================================
       let allProjects = [];
       let currentCategory = 'all';
       let currentTag = 'all';
-      let currentKeyword = '';
 
       const gridContainer = document.getElementById("projectsGrid");
       const noResults = document.getElementById("noResultsMessage");
 
-      // 1. exhibit.jsonからデータを非同期取得
+      // 1. exhibit.json からデータを取得（失敗時はセーフティ用に直書きプールに切り替え）
       fetch('exhibit.json')
         .then(response => {
           if (!response.ok) throw new Error('Network response was not ok');
@@ -336,21 +423,52 @@
         })
         .then(data => {
           allProjects = data;
-          generateTagFilters(data);
-          renderProjects();
+          initSystem();
         })
         .catch(error => {
-          console.error('データの読み込みに失敗したため、モックデータを使用します:', error);
-          // 万が一JSONのフェッチに失敗した場合のセーフティネット
+          console.warn('exhibit.jsonの取得に失敗したかローカル検証環境のため、下記の定義データを使用します。');
+          
+          /* 💡 今後、JSONを使わずにHTML直書きで管理したくなった場合は、
+               この配列の中にオブジェクトを自由に追加・変更してください！ */
           allProjects = [
-            { "id": "event-001", "title": "戦慄！暗闇の迷宮", "organizer": "2年1組", "category": "attraction", "tags": ["お化け屋敷", "体験型", "スリル"], "location": "南校舎2階 204教室", "description": "今年の2Bは一味違う！過去最高の恐怖をお届けします...", "duration": "1回あたり約10分", "ticket_info": "当日朝9:30より教室前にて整理券を配布", "notice": "教室内は大変暗くなっています。" },
-            { "id": "event-002", "title": "神秘の森", "organizer": "3年A組", "category": "attraction", "tags": ["自然", "体験型", "癒し"], "location": "北校舎1階 101教室", "description": "自然と触れ合う体験型展示。森の奥深くで出会う不思議な存在たち。", "duration": "1回あたり約15分", "ticket_info": "当日朝9:30より教室前にて整理券を配布", "notice": "教室内は暗くなっています。" }
+            { 
+              "id": "event-001", 
+              "title": "戦慄！暗闇の迷宮", 
+              "organizer": "2年1組", 
+              "category": "attraction", 
+              "tags": ["お化け屋敷", "体験型", "スリル"], 
+              "location": "南校舎2階 204教室", 
+              "image": "assets/images/events/2b-obake.webp",
+              "description": "今年の2Bは一味違う！過去最高の恐怖をお届けします...", 
+              "duration": "1回あたり約10分", 
+              "ticket_info": "当日朝9:30より教室前にて整理券を配布（先着100名）", 
+              "notice": "※心臓の弱い方、未就学児をお連れの方はご遠慮ください。教室内は大変暗くなっています。" 
+            },
+            { 
+              "id": "event-002", 
+              "title": "神秘の森", 
+              "organizer": "3年A組", 
+              "category": "attraction", 
+              "tags": ["自然", "体験型", "癒し"], 
+              "location": "北校舎1階 101教室", 
+              "image": "assets/images/events/3a-forest.webp",
+              "description": "自然と触れ合う体験型展示。森の奥深くで出会う不思議な存在たち。", 
+              "duration": "1回あたり約15分", 
+              "ticket_info": "当日朝9:30より教室前にて整理券を配布（先着100名）", 
+              "notice": "※小学生以下のお子様は保護者同伴でご参加ください。教室内は暗くなっています。" 
+            }
           ];
-          generateTagFilters(allProjects);
-          renderProjects();
+          initSystem();
         });
 
-      // 2. データ内のすべての「タグ」を自動で重複なく抽出してフィルターを作る
+      // システムの起動初期化
+      function initSystem() {
+        generateTagFilters(allProjects);
+        renderProjects();
+        initScrollReveal(); // スクロール監視の開始
+      }
+
+      // 2. 全データからタグを一括抽出してフィルターボタンを自動生成
       function generateTagFilters(projects) {
         const tagSet = new Set();
         projects.forEach(p => {
@@ -367,19 +485,18 @@
           container.appendChild(btn);
         });
 
-        // 生成したボタンにイベントを設定
+        // 全ボタンにイベントを割り当て
         document.querySelectorAll('.btn-filter').forEach(btn => {
           btn.addEventListener('click', handleFilterClick);
         });
       }
 
-      // 3. フィルターボタンがクリックされた時の処理
+      // 3. フィルターが押された時の挙動
       function handleFilterClick(e) {
         const btn = e.target;
         const type = btn.dataset.filterType;
         const value = btn.dataset.value;
 
-        // 同じグループのボタンのアクティブ状態を解除
         document.querySelectorAll(`.btn-filter[data-filter-type="${type}"]`).forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
 
@@ -389,42 +506,27 @@
         renderProjects();
       }
 
-      // 4. キーボード入力（リアルタイム検索）の検知
-      document.getElementById("keywordSearch").addEventListener("input", (e) => {
-        currentKeyword = e.target.value.toLowerCase().trim();
-        renderProjects();
-      });
-
-      // 5. 条件に合う企画を絞り込んで画面にレンダリング＆Anime.jsによる演出
+      // 4. 条件抽出と画面への安全な描画（Anime.jsによるStagger制御）
       function renderProjects() {
         gridContainer.innerHTML = "";
         
-        // 条件でフィルタリング
+        // 検索窓をなくし、カテゴリとタグだけで美しく絞り込みます
         const filtered = allProjects.filter(p => {
           const matchCategory = (currentCategory === 'all' || p.category === currentCategory);
           const matchTag = (currentTag === 'all' || (p.tags && p.tags.includes(currentTag)));
-          const matchKeyword = (!currentKeyword || 
-            p.title.toLowerCase().includes(currentKeyword) || 
-            p.organizer.toLowerCase().includes(currentKeyword) || 
-            p.description.toLowerCase().includes(currentKeyword) ||
-            p.location.toLowerCase().includes(currentKeyword)
-          );
-          return matchCategory && matchTag && matchKeyword;
+          return matchCategory && matchTag;
         });
 
-        // 該当がない場合
         if (filtered.length === 0) {
           noResults.style.display = "block";
           return;
         }
         noResults.style.display = "none";
 
-        // カードのHTML組み立て
         filtered.forEach(p => {
           const card = document.createElement("div");
-          card.className = "card project-card";
+          card.className = "project-card";
           
-          // 画像がなかった場合のプレースホルダー処理
           const imgSrc = p.image ? p.image : 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&auto=format&fit=crop&q=60';
           
           let tagsHtml = '';
@@ -445,38 +547,40 @@
             </div>
           `;
 
-          // カードクリックでモーダルを開くイベント
           card.addEventListener("click", () => openModal(p));
           gridContainer.appendChild(card);
         });
 
-        // ✨ Anime.js: 新しく描写されたカードを時間差（Stagger）でフワッと表示
+        document.querySelectorAll('.project-card').forEach(el=>{
+          //el.style.opacity='0';
+          el.style.transform='translateY(25px)';
+        });
+
+        // ✨ Anime.js: 再描写されたカードたちを左上から順番にリズムよくフワッと表示
         anime({
           targets: '.project-card',
           opacity: [0, 1],
-          translateY: [20, 0],
-          delay: anime.stagger(80), // 80ミリ秒ずつズラして表示
-          duration: 600,
-          easing: 'outCubic'
+          translateY: [25, 0],
+          delay: anime.stagger(60),
+          duration: 500,
+          easing: 'easeOutCubic'
         });
       }
 
-      // 6. 🪟 モーダルウィンドウの開閉処理（Anime.jsアニメーション）
+      // 5. 🪟 モーダル詳細ウィンドウの開閉（Anime.jsポップ演出）
       const modal = document.getElementById("projectModal");
       const modalWindow = document.getElementById("modalWindow");
 
       function openModal(project) {
-        // モーダル内テキストの書き換え
         const imgSrc = project.image ? project.image : 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&auto=format&fit=crop&q=60';
         document.getElementById("modalImg").src = imgSrc;
         document.getElementById("modalOrganizer").textContent = project.organizer;
         document.getElementById("modalTitle").textContent = project.title;
         document.getElementById("modalDescription").textContent = project.description;
         document.getElementById("modalLocation").textContent = project.location;
-        document.getElementById("modalDuration").textContent = project.duration || 'なし';
-        document.getElementById("modalTicket").textContent = project.ticket_info || 'なし';
+        document.getElementById("modalDuration").textContent = project.duration || '自由観覧';
+        document.getElementById("modalTicket").textContent = project.ticket_info || 'なし（直接会場にお越しください）';
         
-        // タグの展開
         const tagsContainer = document.getElementById("modalTags");
         tagsContainer.innerHTML = '';
         if(project.tags) {
@@ -485,7 +589,6 @@
           });
         }
 
-        // 注意事項がある場合のみボックスを表示
         const noticeBox = document.getElementById("modalNoticeBox");
         if (project.notice) {
           document.getElementById("modalNotice").textContent = project.notice;
@@ -494,40 +597,54 @@
           noticeBox.style.display = "none";
         }
 
-        // オーバーレイをアクティブに
         modal.classList.add("active");
 
-        // ✨ Anime.js: モーダルが内側からバウンドして広がるような演出
+        // ✨ Anime.js: モーダルが心地よく弾むポップアップエフェクト
         anime({
           targets: '#modalWindow',
-          translateY: [50, 0],
-          scale: [0.92, 1],
+          translateY: [40, 0],
+          scale: [0.95, 1],
           opacity: [0, 1],
-          duration: 450,
-          easing: 'outElastic(1, .8)'
+          duration: 400,
+          easing: 'easeOutQuad'
         });
       }
 
       function closeModal() {
-        // ✨ Anime.js: 閉じるときはスッと下に落ちる演出
         anime({
           targets: '#modalWindow',
-          translateY: [0, 30],
+          translateY: [0, 20],
           opacity: [1, 0],
-          scale: [1, 0.95],
-          duration: 250,
-          easing: 'inCubic',
+          scale: [1, 0.97],
+          duration: 200,
+          easing: 'easeInQuad',
           complete: () => {
             modal.classList.remove("active");
+            modalWindow.style.opacity='';
+            modalWindow.style.transform='';
           }
         });
       }
 
       document.getElementById("modalClose").addEventListener("click", closeModal);
-      // 背景クリックでも閉じられるように
-      modal.addEventListener("click", (e) => {
-        if(e.target === modal) closeModal();
-      });
+      modal.addEventListener("click", (e) => { if(e.target === modal) closeModal(); });
+
+      // ==========================================================================
+      // 🔄 スクロール連動エフェクト用（Intersection Observer）
+      // ==========================================================================
+      function initScrollReveal() {
+        const observerOptions = { root: null, rootMargin: "0px", threshold: 0.05 };
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        }, observerOptions);
+
+        document.querySelectorAll(".reveal-on-scroll").forEach(el => observer.observe(el));
+      }
     });
   </script>
 </body>
