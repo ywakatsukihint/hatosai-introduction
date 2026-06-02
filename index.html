@@ -8,9 +8,27 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
   
+  <!--
   <link rel="stylesheet" href="css/common.css">
+-->
 
   <style>
+    /*
+    CSS全体の構造一覧：位置・対象・内容
+    1. 🎨 カラー＆デザインシステム（グラフィカル・モダンエディション）
+    2. ヘッダー ＆ 右上側・横書きナビゲーションシステム
+    3. 🖼️ マルチレイヤーヒーローエリア
+    4. 📢 Latest News セクション
+    5. ✨ Festival Highlights（Showcase カード）
+    6. 🕊️ About ＆ Theme セクション
+    7. ℹ️ 開催情報 ＆ FAQ 導線（大型コンポーネント）
+    8. 🤝 協賛枠（プレースホルダから本番を見据えたロゴ置き場へ）
+    9. 🌐 フッター ＆ サイトマップ（文字サイズ階層を完全に再整理）
+    10. 共通のインタラクションエフェクト（ホバー・クリック・スクロールアニメーション）
+    11. レスポンシブデザインのためのメディアクエリ
+    12. その他、細かなスタイル調整やユーティリティクラス
+    */
+
     /* ==========================================================================
        🎨 カラー＆デザインシステム（グラフィカル・モダンエディション）
        ========================================================================== */
@@ -23,13 +41,14 @@
       --color-contrast: #D0D5DD;    /* 境界線：明瞭なライトグレー */
       --color-white: #ffffff;
       --color-bg-light: #F8FAFC;    /* 全体背景：透明感と清潔感のあるライトスレート */
+      --color-border: rgba(120, 120, 120, 0.342); /* 汎用的な半透明ボーダーカラー */
       
-      --font-noto: "Noto Sans JP", "Helvetica Neue", Arial, sans-serif;
-      --shadow-sm: 0 4px 12px rgba(44, 58, 78, 0.04);
-      --shadow-md: 0 12px 32px rgba(44, 58, 78, 0.08);
-      --shadow-lg: 0 20px 40px rgba(44, 58, 78, 0.12);
-      --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-      --transition-bounce: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      --font-noto: "Noto Sans JP", "Helvetica Neue", Arial, sans-serif; /* 日本語に最適化されたモダンなサンセリフフォントスタック */
+      --shadow-sm: 0 4px 12px rgba(44, 58, 78, 0.04); /* 軽やかな影：カードやセクションの下に */
+      --shadow-md: 3px 5px 8px 0px rgba(44, 58, 78, 0.08);  /* 中程度の影：ホバーエフェクトや重要な要素に */
+      --shadow-lg: 0 20px 40px rgba(44, 58, 78, 0.12);  /* 強い影：ヒーローエリアやモーダルなどの際立たせたい要素に */
+      --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);  /* 滑らかなトランジション：全体的な動きの統一感を高めるためのカスタムイージング */
+      --transition-bounce: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);  /* バウンスエフェクト：インタラクションに楽しい弾みを加えるためのカスタムイージング */
     }
 
     * {
@@ -65,7 +84,7 @@
       transition: var(--transition-smooth);
     }
     .hover-lift:hover {
-      transform: translateY(-8px);
+      transform: translateY(-5px);
       box-shadow: var(--shadow-md);
     }
     .hover-lift:active {
@@ -91,7 +110,7 @@
     }
 
     .section-title-modern {
-      font-size: 0.85rem;
+      font-size: 1.5rem;
       font-weight: 800;
       color: var(--color-primary);
       letter-spacing: 0.2em;
@@ -386,12 +405,12 @@
       border-radius: 14px;
       text-decoration: none;
       color: inherit;
-      box-shadow: var(--shadow-sm);
-      border: 1px solid rgba(44, 58, 78, 0.04);
+      /*box-shadow: var(--shadow-sm);*/
+      border: 1px solid var(--color-border);
       transition: var(--transition-smooth);
     }
     .news-mini-item:hover {
-      transform: translateX(6px);
+      transform: translateY(-4px) !important;
       border-color: var(--color-key);
       box-shadow: var(--shadow-md);
     }
@@ -441,8 +460,8 @@
       background: var(--color-white);
       border-radius: 20px;
       overflow: hidden;
-      box-shadow: var(--shadow-sm);
-      border: 1px solid rgba(44, 58, 78, 0.03);
+      /*box-shadow: var(--shadow-sm);*/
+      border: 1px solid var(--color-border);
     }
     .showcase-card .img-zoom-wrapper {
       height: 220px;
@@ -812,7 +831,7 @@
 
           <div class="showcase-card hover-lift anime-card">
             <div class="img-zoom-wrapper">
-              <img src="https://picsum.photos/id/105/600/400" alt="ステージパフォーマンス" class="initial-zoom">
+              <img src="https://picsum.photos/id/186/600/400" alt="ステージパフォーマンス" class="initial-zoom">
             </div>
             <div class="showcase-card-body">
               <h3 class="showcase-card-title">圧巻のステージ発表</h3>
@@ -958,6 +977,15 @@
   </footer>
 
   <script>
+    /*
+    JS全体の構成の詳細：
+    1. DOMContentLoadedイベントで全てのアニメーション初期化を行う
+    2. スマホメニューのトグルとアニメーション
+    3. ヒーローセクションのオープニングアニメーション（即時実行）
+    4. スクロール連動アニメーションの統合システム（Intersection Observer + anime.js）
+    */
+
+
     document.addEventListener("DOMContentLoaded", () => {
 
       // ------------------------------------------------------------------------
@@ -1043,6 +1071,7 @@
           threshold: 0.1
         };
 
+        // 監視対象のセクションを一括で指定（優先順位に沿って順番に並べる）
         const scrollObserver = new IntersectionObserver((entries, observer) => {
           entries.forEach(entry => {
             if (!entry.isIntersecting) return;
@@ -1051,15 +1080,23 @@
 
             // 📢 優先順位②：Latest News セクション
             if (target.classList.contains('news-section')) {
+              // タイトル→ニュース項目→各ニュースの内容、の順で段階的にアニメーションをかける
               anime.timeline()
-                .add({
+                .add({  // タイトルを先行してフェードイン
+                  targets: target.querySelector('.section-title-modern'),
+                  opacity: [0, 1],
+                  translateY: [20, 0],
+                  duration: 600,
+                  easing: 'easeOutQuad'
+                })
+                .add({  // ニュース項目全体をまとめてフェードイン＋スライドイン
                   targets: target.querySelectorAll('#news'),
                   opacity: [0, 1],
                   translateX: [-20, 0],
                   duration: 800,
                   easing: 'easeOutQuad'
                 })
-                .add({
+                .add({  // 各ニュース項目の内容を1件ずつスタガーで登場させる
                   targets: target.querySelectorAll('.anime-news-row'),
                   opacity: [0, 1],
                   translateY: [20, 0],
@@ -1072,7 +1109,15 @@
 
             // ✨ 優先順位③：Festival Highlights (Showcase カード)
             if (target.classList.contains('showcase-section')) {
-              // 1. まず全カードの画像だけズームアウト＋フェードインを先行
+              anime({ // タイトルを先行してフェードイン
+                targets: target.querySelector('.section-title-modern'),
+                opacity: [0, 1],
+                translateY: [20, 0],
+                duration: 600,
+                easing: 'easeOutQuad'
+              });
+
+              // 次に、画像を少しズームアウトしながらフェードインさせて高級感を演出。その後、タイトルと本文が追従して立ち上がる
               anime({
                 targets: target.querySelectorAll('.anime-card .img-zoom-wrapper img'),
                 opacity: [0, 1],
@@ -1082,7 +1127,7 @@
                 delay: anime.stagger(150)
               });
 
-              // 2. その後、タイトルと本文が追従して立ち上がる
+              // 最後に、タイトルと本文を少し遅れてフェードイン＋スライドインで登場させることで、リズム感のある演出に
               anime({
                 targets: target.querySelectorAll('.anime-card .showcase-card-body'),
                 opacity: [0, 1],
@@ -1097,7 +1142,14 @@
             if (target.classList.contains('about-summary-section')) {
               // テキスト情報を先行してフェードイン
               anime.timeline()
-                .add({
+                .add({  // タイトルを先行してフェードイン
+                  targets: target.querySelector('.section-title-modern'),
+                  opacity: [0, 1],
+                  translateY: [20, 0],
+                  duration: 600,
+                  easing: 'easeOutQuad'
+                })
+                .add({  // リード文と本文をまとめてフェードイン＋スライドイン
                   targets: [
                     target.querySelector('.about-lead'),
                     target.querySelector('.about-text')
@@ -1134,13 +1186,20 @@
               if (cards.length >= 2) {
                 // 左のカードは左から、右のカードは右から交互に入れる案内導線
                 anime({
+                  targets: target.querySelector('.section-title-modern'),
+                  opacity: [0, 1],
+                  translateY: [20, 0],
+                  duration: 600,
+                  easing: 'easeOutQuad'
+                });
+                anime({ // 左のカードは左から、右のカードは右から交互に入れる案内導線
                   targets: cards[0],
                   opacity: [0, 1],
                   translateX: [-50, 0],
                   duration: 1000,
                   easing: 'easeOutCubic'
                 });
-                anime({
+                anime({ // 右のカードは右から入れる
                   targets: cards[1],
                   opacity: [0, 1],
                   translateX: [50, 0],
@@ -1153,7 +1212,14 @@
 
             // 🤝 協賛パートナー枠（静かにふわっと現れるだけ）
             if (target.classList.contains('sponsor-section')) {
-              anime({
+              anime({ // タイトルを先行してフェードイン
+                targets: target.querySelector('.section-title-modern'),
+                opacity: [0, 1],
+                translateY: [20, 0],
+                duration: 600,
+                easing: 'easeOutQuad'
+              });
+              anime({ // 協賛企業ロゴと名前をまとめてフェードイン＋スライドインで登場させる
                 targets: target.querySelectorAll('.anime-sponsor'),
                 opacity: [0, 1],
                 translateY: [15, 0],
@@ -1165,7 +1231,7 @@
 
             // 🌐 優先順位⑥：フッターサイトマップ
             if (target.tagName.toLowerCase() === 'footer') {
-              anime({
+              anime({ // フッタータイトルを先行してフェードイン
                 targets: [
                   target.querySelectorAll('.sitemap-item'),
                   target.querySelector('.footer-bottom')
