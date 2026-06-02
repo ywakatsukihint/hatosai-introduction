@@ -44,13 +44,6 @@
       letter-spacing: 0.05em;
     }
 
-    /* ==========================================================================
-       ✨ グローバルモーション＆アニメーション用初期スタイル（anime.jsで制御）
-       ========================================================================== */
-    .anime-reveal {
-      opacity: 0;
-    }
-
     /* 画像のスクロール追従ズーム効果 */
     .img-zoom-wrapper {
       overflow: hidden;
@@ -1060,7 +1053,7 @@
             if (target.classList.contains('news-section')) {
               anime.timeline()
                 .add({
-                  targets: target.querySelector('.section-title-modern'),
+                  targets: target.querySelectorAll('#news'),
                   opacity: [0, 1],
                   translateX: [-20, 0],
                   duration: 800,
