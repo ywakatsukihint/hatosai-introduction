@@ -6,717 +6,793 @@
   <title>鳩祭について - 第70回屋代高校鳩祭公式ウェブサイト</title>
   
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-  <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/animejs/dist/bundles/anime.umd.min.js"></script>
+  
+  <link rel="stylesheet" href="css/common.css">
 
   <style>
-    /* --- 1. デザイン思想：メインページと完全同期 --- */
+    /* ==========================================================================
+       🎨 カラー＆デザインシステム（index.htmlから完全移植）
+       ========================================================================== */
     :root {
-      --primary-grad: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-      --bg-light: #f8fafc;
-      --text-main: #1e293b;
-      --text-sub: #64748b;
-    }
-
-    * {
-      box-sizing: border-box;
+      --color-primary: #2C3A4E;     /* メイン：深みのあるブルーグレー */
+      --color-primary-dark: #131924;/* フッター用：超高コントラスト用ダークネイビー */
+      --color-key: #8DAE4B;         /* アクセント：新緑のオリーブ黄緑 */
+      --color-key-light: #F4F8EC;   /* アクセント薄色 */
+      --color-base: #222222;        /* テキスト：極めて視認性の高いチャコールブラック */
+      --color-contrast: #D0D5DD;    /* 境界線：明瞭なライトグレー */
+      --color-white: #ffffff;
+      --color-bg-light: #F8FAFC;    /* 全体背景：透明感と清潔感のあるライトスレート */
+      
+      --font-noto: "Noto Sans JP", "Helvetica Neue", Arial, sans-serif;
+      --shadow-sm: 0 4px 12px rgba(44, 58, 78, 0.04);
+      --shadow-md: 0 12px 32px rgba(44, 58, 78, 0.08);
+      --shadow-lg: 0 20px 40px rgba(44, 58, 78, 0.12);
+      --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-bounce: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     body {
-      font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: var(--bg-light);
-      color: var(--text-main);
-      min-height: 100vh;
+      font-family: var(--font-noto);
+      background-color: var(--color-bg-light);
+      color: var(--color-base);
       overflow-x: hidden;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.05em;
     }
 
-    /* --- 2. ヘッダー：すりガラス風固定ヘッダー（完全共通化） --- */
+    /* セクション共通スタイル */
+    section {
+      margin-bottom: 5rem;
+      padding: 2rem 0 0 0;
+      background: transparent;
+      box-shadow: none;
+      border: none;
+    }
+    .section-title-modern {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--color-primary);
+      letter-spacing: 0.2em;
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .section-title-modern::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, var(--color-contrast), transparent);
+    }
+
+    /* ==========================================================================
+       ヘッダー ＆ 右上側・横書きナビゲーションシステム
+       ========================================================================== */
     header {
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      background-color: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
       padding: 0.8rem 1.5rem;
       position: sticky;
       top: 0;
       z-index: 1000;
-      transition: all 0.3s;
+      border-bottom: 1px solid rgba(44, 58, 78, 0.08);
+      transition: var(--transition-smooth);
     }
-
     .header-content {
-      max-width: 1200px;
+      max-width: 1300px;
       margin: 0 auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-
     .header-title h1 {
-      font-size: 1.25rem;
+      font-size: 1.3rem;
       margin: 0;
-      font-weight: 800;
-      background: var(--primary-grad);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-weight: 900;
+      color: var(--color-primary);
+      letter-spacing: 0.1em;
     }
-
     .header-title p {
-      margin: 0.1rem 0 0 0;
-      font-size: 0.75rem;
-      color: var(--text-sub);
-      font-weight: 600;
+      margin: 0;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--color-key);
+      text-transform: uppercase;
     }
 
-    /* ハンバーガーボタン (スマホ用) */
-    .menu-toggle {
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-      z-index: 1100;
+    .pc-nav { display: none; }
+    .pc-nav-links {
+      display: flex; list-style: none; margin: 0; padding: 0; gap: 2.2rem;
+    }
+    .pc-nav-links a {
+      color: var(--color-primary); text-decoration: none; font-weight: 800;
+      font-size: 0.9rem; position: relative; padding: 0.4rem 0;
+      transition: var(--transition-smooth);
+    }
+    .pc-nav-links a::after {
+      content: ""; position: absolute; bottom: 0; left: 0;
+      width: 0; height: 2px; background-color: var(--color-key);
+      transition: var(--transition-smooth);
+    }
+    .pc-nav-links a:hover { color: var(--color-key); }
+    .pc-nav-links a:hover::after { width: 100%; }
+    
+    .pc-nav-links a.active, .nav-links a.active {
+      color: var(--color-key) !important; font-weight: 900;
+    }
+    .pc-nav-links a.active::after { width: 100%; }
+
+    .menu-trigger {
+      background: none; border: none; width: 44px; height: 44px;
+      position: relative; cursor: pointer; z-index: 1100; padding: 0;
+      display: flex; flex-direction: column; justify-content: center;
+      align-items: center; gap: 6px;
+    }
+    .menu-trigger span {
+      display: block; width: 24px; height: 2px; background-color: var(--color-primary);
+      transition: var(--transition-bounce); transform-origin: center;
+    }
+    .menu-trigger.is-active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .menu-trigger.is-active span:nth-child(2) { opacity: 0; }
+    .menu-trigger.is-active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+    .fullscreen-nav {
+      position: absolute; top: 100%; right: 1.5rem;
+      width: calc(100% - 3rem); max-width: 320px; height: auto;
+      background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(20px);
+      z-index: 1050; border-radius: 16px; padding: 1.25rem;
+      box-shadow: var(--shadow-lg); border: 1px solid rgba(44, 58, 78, 0.08);
+      opacity: 0; pointer-events: none; transform: translateY(-10px) scale(0.95);
+    }
+    .fullscreen-nav.is-open {
+      pointer-events: auto;
+    }
+      /* アニメーションはJavaScriptで制御 */
+    .nav-links {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;
+      list-style: none; padding: 0; margin: 0; text-align: center;
+    }
+    .nav-links a {
+      color: var(--color-primary); font-size: 0.85rem; font-weight: 800;
+      text-decoration: none; padding: 0.8rem 0.5rem; display: block;
+      background: rgba(44, 58, 78, 0.03); border-radius: 10px;
+      transition: var(--transition-smooth);
+    }
+    .nav-links a:hover {
+      color: var(--color-white); background-color: var(--color-key);
     }
 
-    .menu-toggle span {
-      display: block;
-      width: 26px;
-      height: 2px;
-      background: var(--text-main);
-      transition: all 0.3s ease;
+    @media (min-width: 768px) {
+      .pc-nav { display: block; }
+      .menu-trigger { display: none; }
+      .fullscreen-nav { display: none !important; }
     }
 
-    .menu-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-    .menu-toggle.active span:nth-child(2) { opacity: 0; }
-    .menu-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
-
-    nav {
-      position: fixed;
-      top: 0;
-      right: -100%;
-      width: 80%;
-      max-width: 300px;
-      height: 100vh;
-      background: white;
-      box-shadow: -10px 0 30px rgba(0,0,0,0.05);
-      display: flex;
-      flex-direction: column;
-      padding: 6rem 2rem 2rem 2rem;
-      gap: 1.5rem;
-      transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      z-index: 1050;
-    }
-
-    nav.active { right: 0; }
-
-    nav a {
-      font-size: 1.1rem;
-      color: var(--text-main);
-      text-decoration: none;
-      font-weight: 600;
-      border-bottom: 1px solid #f1f5f9;
-      padding-bottom: 0.75rem;
-      transition: color 0.3s;
-    }
-
-    nav a:hover { color: #4f46e5; }
-
-    /* --- 3. メインレイアウト ＆ 贅沢な余白 --- */
-    main {
-      max-width: 1140px;
-      margin: 0 auto;
-      padding: 2.5rem 1.2rem;
-    }
-
-    /* 下層ページ用のスッキリした見出し */
+    /* ==========================================================================
+       コンテンツレイアウト用カスタムスタイル
+       ========================================================================== */
     .page-header {
       text-align: center;
-      padding: 4rem 1rem;
-      margin-bottom: 2rem;
+      padding: 3rem 1rem;
+    }
+    .page-header h2 {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--color-primary);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.1em;
+    }
+    .page-header p {
+      font-size: 0.95rem;
+      color: #64748B;
+      font-weight: 600;
     }
 
-    .page-header h2 {
-      font-size: 2.5rem;
-      font-weight: 900;
-      letter-spacing: 0.05em;
-      margin: 0 0 0.75rem 0;
-      background: var(--primary-grad);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      border: none;
+    /* 目次カード */
+    .toc-card {
+      background: var(--color-white);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--color-contrast);
+      max-width: 600px;
+      margin: 0 auto 4rem auto;
+    }
+    .toc-card h3 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--color-primary);
+      margin-bottom: 1rem;
+      border-bottom: 2px solid var(--color-key);
+      padding-bottom: 0.5rem;
       display: inline-block;
     }
-
-    .page-header p {
-      color: var(--text-sub);
-      font-size: 1rem;
-      font-weight: 500;
-      margin: 0;
-    }
-
-    section {
-      margin-bottom: 5.5rem;
-      background: transparent;
-      box-shadow: none;
-      padding: 0;
-    }
-
-    section h3.section-title {
-      font-size: 1.6rem;
-      font-weight: 800;
-      color: var(--text-main);
-      margin-bottom: 2rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    section h3.section-title::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: #e2e8f0;
-    }
-
-    /* --- 4. 画像対応型・共通カードUI ＆ リスト --- */
-    .grid {
-      display: grid;
-      gap: 2rem;
-    }
-
-    .card {
-      background: white;
-      border-radius: 16px;
-      border: none;
-      overflow: hidden;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-      padding: 2rem;
-    }
-
-    /* 後々画像を入れるためのプレースホルダー枠 */
-    .image-slot {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      background: linear-gradient(135deg, #e0e7ff 0%, #ede9fe 100%);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #a5b4fc;
-      font-size: 0.9rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      margin-bottom: 1.5rem;
-    }
-
-    /* 開催概要用の美しく整理されたリスト */
-    .info-list {
+    .toc-list {
       list-style: none;
       padding: 0;
       margin: 0;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.8rem;
+    }
+    @media (min-width: 600px) {
+      .toc-list { grid-template-columns: 1fr 1fr; }
+    }
+    .toc-list a {
+      display: flex;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      background: var(--color-bg-light);
+      border-radius: 8px;
+      color: var(--color-primary);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.9rem;
+      transition: var(--transition-smooth);
+      border: 1px solid transparent;
+    }
+    .toc-list a:hover {
+      background: var(--color-white);
+      border-color: var(--color-key);
+      color: var(--color-key);
+      transform: translateX(4px);
+      box-shadow: var(--shadow-sm);
     }
 
-    .info-list li {
-      padding: 0.9rem 0;
-      border-bottom: 1px solid #f1f5f9;
-      font-size: 1rem;
+    /* 各セクションの文章スタイル */
+    .content-box {
+      background: var(--color-white);
+      border-radius: 16px;
+      padding: 2.5rem;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--color-contrast);
+      line-height: 1.8;
+      color: #475569;
+    }
+    .content-box h3 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--color-primary);
+      margin-bottom: 1rem;
+    }
+    .content-box p {
+      margin-bottom: 1.5rem;
+    }
+    .content-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* 開催概要の定義リスト */
+    .outline-dl {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin: 0;
+    }
+    @media (min-width: 600px) {
+      .outline-dl {
+        grid-template-columns: 120px 1fr;
+        gap: 1rem 2rem;
+      }
+    }
+    .outline-dl dt {
+      font-weight: 800;
+      color: var(--color-key);
+      border-bottom: 1px solid var(--color-contrast);
+      padding-bottom: 0.25rem;
+    }
+    .outline-dl dd {
+      margin: 0 0 1rem 0;
+      font-weight: 600;
+      color: var(--color-base);
+    }
+    @media (min-width: 600px) {
+      .outline-dl dt { border-bottom: none; }
+      .outline-dl dd { margin-bottom: 0; }
+    }
+
+    /* FAQ（アコーディオン） */
+    .faq-list {
       display: flex;
       flex-direction: column;
-      gap: 0.25rem;
-    }
-
-    .info-list li strong {
-      color: var(--text-sub);
-      font-weight: 600;
-      font-size: 0.85rem;
-      letter-spacing: 0.05em;
-    }
-
-    .info-list li span {
-      font-weight: 600;
-      color: var(--text-main);
-    }
-
-    .note-box {
-      background: #eff6ff;
-      border-left: 4px solid #3b82f6;
-      padding: 1rem 1.25rem;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      color: #1d4ed8;
-      font-weight: 600;
-      margin-top: 1.5rem;
-    }
-
-    /* 鳩長・三役メッセージ用プレミアムデザイン */
-    .message-card {
-      background: white;
-      border-radius: 24px;
-      padding: 2.5rem;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
-      border-top: 4px solid #7c3aed;
-    }
-
-    .message-lead {
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: #4f46e5;
-      line-height: 1.7;
-      margin-bottom: 2rem;
-      border-bottom: 1px dashed #e2e8f0;
-      padding-bottom: 1.5rem;
-    }
-
-    .message-body p {
-      margin-bottom: 1.25rem;
-      color: var(--text-main);
-      font-size: 1rem;
-      line-height: 1.8;
-    }
-
-    .message-signature {
-      text-align: right;
-      font-weight: 700;
-      color: var(--text-main);
-      margin-top: 2.5rem;
-      font-size: 1.1rem;
-    }
-
-    /* テーマ「SPARK」のカードグリッド */
-    .spark-grid {
-      display: grid;
       gap: 1rem;
     }
-    .spark-item {
+    .faq-item {
+      background: var(--color-white);
+      border-radius: 12px;
+      border: 1px solid var(--color-contrast);
+      overflow: hidden;
+      transition: var(--transition-smooth);
+    }
+    .faq-item:hover {
+      border-color: var(--color-key);
+      box-shadow: var(--shadow-sm);
+    }
+    .faq-question {
+      padding: 1.25rem 1.5rem;
+      font-weight: 800;
+      color: var(--color-primary);
+      cursor: pointer;
       display: flex;
-      align-items: flex-start;
-      gap: 1rem;
-      padding: 1.2rem;
-      background: #f8fafc;
-      border-radius: 12px;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
     }
-    .spark-letter {
-      font-size: 2rem;
-      font-weight: 900;
-      color: #4f46e5;
-      line-height: 1;
-      font-family: 'Impact', 'Arial Black', sans-serif;
-    }
-    .spark-desc strong {
-      display: block;
-      color: var(--text-main);
-      font-size: 1rem;
-      margin-bottom: 0.25rem;
-    }
-    .spark-desc span {
-      color: var(--text-sub);
-      font-size: 0.85rem;
-    }
-
-    /* --- 5. 【後々載せる用】歴史・沿革・歴代テーマのUIスロット --- */
-    /* タイムラインUI（沿革・歴史用） */
-    .timeline {
-      position: relative;
-      padding-left: 1.5rem;
-      border-left: 2px solid #e2e8f0;
-      margin-left: 0.5rem;
-    }
-    .timeline-item {
-      position: relative;
-      margin-bottom: 2.5rem;
-    }
-    .timeline-item::before {
-      content: '';
-      position: absolute;
-      left: calc(-1.5rem - 6px);
-      top: 0.35rem;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #7c3aed;
-      border: 2px solid white;
-    }
-    .timeline-year {
-      font-weight: 800;
-      color: #7c3aed;
-      font-size: 1.1rem;
-      margin-bottom: 0.25rem;
-    }
-    .timeline-content {
-      color: var(--text-sub);
-      font-size: 0.95rem;
-    }
-
-    /* 歴代テーマカード用ホバー効果 */
-    .history-card {
-      background: white;
-      border-radius: 12px;
-      padding: 1.5rem;
-      border: 1px solid #e2e8f0;
-      text-align: center;
-    }
-    .history-card .nth {
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--text-sub);
-      margin-bottom: 0.25rem;
-    }
-    .history-card .theme-name {
+    .faq-question::before {
+      content: "Q.";
+      color: var(--color-key);
       font-size: 1.2rem;
+      margin-right: 0.75rem;
+    }
+    .faq-icon {
+      font-size: 1.2rem;
+      color: var(--color-contrast);
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .faq-item.active .faq-icon {
+      transform: rotate(180deg);
+      color: var(--color-key);
+    }
+    .faq-answer-wrapper {
+      height: 0;
+      overflow: hidden;
+    }
+    .faq-answer {
+      padding: 0 1.5rem 1.25rem 3rem;
+      color: #475569;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      position: relative;
+    }
+    .faq-answer::before {
+      content: "A.";
+      color: #cbd5e1;
       font-weight: 800;
-      color: #4f46e5;
+      font-size: 1.2rem;
+      position: absolute;
+      left: 1.5rem;
+      top: 0;
     }
 
-    /* --- 6. アニメーション制御用クラス --- */
-    .scroll-fade {
+    /* お問い合わせフォーム */
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .contact-form label {
+      font-weight: 700;
+      color: var(--color-primary);
+    }
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 1px solid var(--color-contrast);
+      border-radius: 8px;
+      font-family: inherit;
+      background: var(--color-bg-light);
+      transition: var(--transition-smooth);
+    }
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      outline: none;
+      border-color: var(--color-key);
+      box-shadow: 0 0 0 3px rgba(141, 174, 75, 0.15);
+      background: var(--color-white);
+    }
+    .btn-submit {
+      background: var(--color-primary);
+      color: var(--color-white);
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      font-weight: 800;
+      border-radius: 30px;
+      cursor: pointer;
+      align-self: flex-start;
+      transition: var(--transition-bounce);
+    }
+    .btn-submit:hover {
+      background: var(--color-key);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(141, 174, 75, 0.3);
+    }
+
+    /* アニメーション用初期設定 */
+    .reveal-item {
       opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .scroll-fade.is-shown {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* --- 7. フッター（メインページと完全同期） --- */
+    /* ==========================================================================
+       🌐 フッター ＆ サイトマップ
+       ========================================================================== */
     footer {
-      background: #0f172a;
-      color: #94a3b8;
-      padding: 4rem 1.5rem 2rem 1.5rem;
-      font-size: 0.9rem;
+      background-color: var(--color-primary-dark);
+      color: rgba(255, 255, 255, 0.8);
+      padding: 5rem 1.5rem 3rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
     }
-
     .footer-container {
-      max-width: 1140px;
+      max-width: 1300px;
       margin: 0 auto;
     }
-
-    .sitemap {
+    .sitemap-group {
       display: grid;
-      gap: 2.5rem;
-      margin-bottom: 3.5rem;
-      border-bottom: 1px solid #334155;
-      padding-bottom: 3rem;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 3rem;
+      margin-bottom: 4rem;
     }
-
-    .sitemap-item strong {
-      color: white;
-      display: block;
-      margin-bottom: 1rem;
-      font-size: 0.95rem;
+    .sitemap-item h5 {
+      color: var(--color-white);
+      font-size: 1.05rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
       letter-spacing: 0.05em;
     }
-
-    .sitemap-item a {
-      display: block;
-      color: #94a3b8;
-      text-decoration: none;
-      margin: 0.5rem 0;
-      font-size: 0.85rem;
-      transition: color 0.3s;
-    }
-
-    .sitemap-item a:hover { color: white; text-decoration: none; }
-
-    .footer-bottom {
+    .sitemap-links {
       display: flex;
       flex-direction: column;
-      gap: 1rem;
-      align-items: center;
-      text-align: center;
-      font-size: 0.8rem;
+      gap: 0.9rem;
+    }
+    .sitemap-links a {
+      color: rgba(255, 255, 255, 0.65);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: var(--transition-smooth);
+    }
+    .sitemap-links a:hover {
+      color: var(--color-key);
+      transform: translateX(4px);
     }
 
-    .footer-bottom a { color: #cbd5e1; text-decoration: none; }
-
-    /* --- 8. レスポンシブ設計（PC表示の最適化） --- */
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
     @media (min-width: 768px) {
-      .menu-toggle { display: none; }
-      
-      nav {
-        position: static;
-        width: auto;
-        height: auto;
-        background: none;
-        box-shadow: none;
-        flex-direction: row;
-        padding: 0;
-        gap: 2rem;
-      }
-
-      nav a {
-        font-size: 0.9rem;
-        border-bottom: 2px solid transparent;
-        padding-bottom: 0.2rem;
-      }
-
-      nav a:hover { border-bottom-color: #4f46e5; }
-
-      .page-header h2 { font-size: 3.2rem; }
-      
-      .grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
-      .grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
-      .grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
-
-      .info-list li {
+      .footer-bottom {
         flex-direction: row;
         justify-content: space-between;
-        align-items: center;
-        padding: 0.8rem 0;
+        align-items: flex-end;
       }
-      .info-list li strong { font-size: 0.95rem; }
-
-      .spark-grid { grid-template-columns: repeat(5, 1fr); }
-      .spark-item { flex-direction: column; align-items: center; text-align: center; padding: 1.5rem 1rem; }
-
-      .sitemap { grid-template-columns: repeat(4, 1fr); }
-      .footer-bottom { flex-direction: row; justify-content: space-between; text-align: left; }
+    }
+    .footer-info-block p {
+      margin: 0 0 0.4rem 0;
+      font-size: 0.9rem;
+    }
+    .footer-info-block .school-name {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--color-white);
+    }
+    .footer-info-block a {
+      color: var(--color-key);
+      text-decoration: none;
+    }
+    
+    .copyright {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.4);
+      margin: 0;
     }
   </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
 </head>
 <body>
 
   <header>
     <div class="header-content">
       <div class="header-title">
-        <h1>🕊️ 第70回屋代高校鳩祭</h1>
-        <p>6月27日(土)・28日(日)</p>
+        <p>第70回 屋代高校文化祭</p>
+        <h1>鳩祭</h1>
       </div>
-      <button class="menu-toggle" id="menuToggle" aria-label="メニューを開く">
+      
+      <nav class="pc-nav">
+        <ul class="pc-nav-links">
+          <li><a href="index.html">ホーム</a></li>
+          <li><a href="about.html" class="active">鳩祭について</a></li>
+          <li><a href="exhibit.html">展示紹介</a></li>
+          <li><a href="news.html">お知らせ</a></li>
+          <li><a href="access.html">アクセス</a></li>
+        </ul>
+      </nav>
+
+      <button class="menu-trigger" id="menuToggle" aria-label="メニューを開閉する">
         <span></span>
         <span></span>
         <span></span>
       </button>
-      <nav id="navMenu">
-        <a href="index.html#exhibitions">企画展示</a>
-        <a href="index.html#visitor">来場者向け</a>
-        <a href="about.html">鳩祭について</a>
-        <a href="index.html#contact">お問い合わせ</a>
-        <a href="#sitemap">サイトマップ</a>
+
+      <nav class="fullscreen-nav" id="mobileNav">
+        <ul class="nav-links">
+          <li><a href="index.html">ホーム</a></li>
+          <li><a href="about.html" class="active">鳩祭について</a></li>
+          <li><a href="exhibit.html">展示紹介</a></li>
+          <li><a href="news.html">お知らせ</a></li>
+          <li><a href="access.html">アクセス</a></li>
+        </ul>
       </nav>
     </div>
   </header>
 
-  <main>
-    <div class="page-header">
-      <h2 id="page-title-text">ABOUT</h2>
-      <p>鳩祭について</p>
+  <main class="container">
+    
+    <div class="page-header reveal-item">
+      <h2 id="page-title-text">鳩祭について</h2>
+      <p>ABOUT HATOSAI</p>
     </div>
 
-    <section class="scroll-fade">
-      <h3 class="section-title">📅 開催概要</h3>
-      <div class="grid cols-2" style="align-items: start;">
-        <div class="card">
-          <div class="image-slot">📸 開催風景写真スロット</div>
-          <p>第70回鳩祭の一般公開日は6月27日(土)・28日(日)の2日間です。全校のアイデアが詰まった特別な時間をお届けします。</p>
-        </div>
-        <div class="card">
-          <ul class="info-list">
-            <li><strong>開催期間</strong> <span>2026年6月26日(金) 〜 28日(日)</span></li>
-            <li><strong>一般公開日</strong> <span>6月27日(土) ・ 6月28日(日)</span></li>
-            <li><strong>公開時間</strong> <span>9:30 〜 15:30</span></li>
-            <li><strong>会場</strong> <span>長野県屋代高等学校・附属中学校</span></li>
-          </ul>
-          <div class="note-box">⚠️ ご来校の際は公共交通機関をご利用ください。</div>
-        </div>
-      </div>
-    </section>
+    <div class="toc-card reveal-item">
+      <h3>📋 目次 (Index)</h3>
+      <ul class="toc-list">
+        <li><a href="#history">1. 鳩祭とは</a></li>
+        <li><a href="#outline">2. 開催概要</a></li>
+        <li><a href="#theme">3. テーマ「SPARK」</a></li>
+        <li><a href="#message">4. 実行委員長挨拶</a></li>
+      </ul>
+    </div>
 
-    <section class="scroll-fade">
-      <h3 class="section-title">✨ 鳩祭とは ＆ テーマ「SPARK」</h3>
-      <div class="card" style="margin-bottom: 2rem;">
-        <p style="font-size: 1.05rem; line-height: 1.8; color: var(--text-main);">
-          屋代高校の「鳩祭（はとさい）」は、地域や在校生、卒業生が交流し、展示やステージ、模擬店などを通じてつながりを深める歴史ある文化祭です。<br>
-          記念すべき第70回のテーマは<strong>「SPARK」</strong>に決定しました。ここには、小さな火花がたくさん集まって大きな輝きを持った鳩祭をつくりたいという熱い思いが込められています。
+    <section id="history" class="reveal-item">
+      <h2 class="section-title-modern">01. History & Overview</h2>
+      <div class="content-box">
+        <h3>鳩祭とは</h3>
+        <p>
+          「鳩祭（はとさい）」は、長野県屋代高等学校で毎年6月下旬に開催される文化祭です。<br>
+          地域の方々との深い交流と、生徒たちが日頃の学習や部活動、班活動で培った成果を存分に発揮する場として、本校における最も熱気あふれる重要な行事の一つとなっています。
+        </p>
+        <p>
+          各クラスが独自の世界観を作り上げる「クラス展示」、文化班によるハイレベルな「研究発表・パフォーマンス」、そして中庭を彩る「飲食模擬店」など、全校生徒が一丸となって作り上げる2日間は、訪れるすべての人に驚きと感動をお届けします。
         </p>
       </div>
+    </section>
 
-      <div class="spark-grid">
-        <div class="spark-item">
-          <div class="spark-letter">S</div>
-          <div class="spark-desc"><strong>Small ideas</strong><span>小さなアイデア</span></div>
-        </div>
-        <div class="spark-item">
-          <div class="spark-letter">P</div>
-          <div class="spark-desc"><strong>Passion</strong><span>一人一人の情熱</span></div>
-        </div>
-        <div class="spark-item">
-          <div class="spark-letter">A</div>
-          <div class="spark-desc"><strong>Action</strong><span>実践と行動</span></div>
-        </div>
-        <div class="spark-item">
-          <div class="spark-letter">R</div>
-          <div class="spark-desc"><strong>Radiance</strong><span>大きな輝き</span></div>
-        </div>
-        <div class="spark-item">
-          <div class="spark-letter">K</div>
-          <div class="spark-desc"><strong>Keep moving</strong><span>前へ進み続ける</span></div>
-        </div>
+    <section id="outline" class="reveal-item">
+      <h2 class="section-title-modern">02. Event Outline</h2>
+      <div class="content-box">
+        <h3>開催概要</h3>
+        <dl class="outline-dl">
+          <dt>名称</dt>
+          <dd>長野県屋代高等学校 第70回 鳩祭</dd>
+          
+          <dt>開催日</dt>
+          <dd>2026年6月27日(土) 〜 28日(日)<br><span style="font-size: 0.85rem; color: #64748B;">※両日とも一般公開日となります</span></dd>
+          
+          <dt>公開時間</dt>
+          <dd>9:00 〜 15:30（最終入場 15:00）</dd>
+          
+          <dt>会場</dt>
+          <dd>長野県屋代高等学校 校内一帯<br>
+            <a href="access.html" style="font-size: 0.85rem; color: var(--color-key); text-decoration: none; font-weight: 700;">➔ 詳しいアクセス情報はこちら</a>
+          </dd>
+          
+          <dt>入場</dt>
+          <dd>無料・事前予約不要</dd>
+        </dl>
       </div>
     </section>
 
-    <section class="scroll-fade">
-      <h3 class="section-title">🕊️ 鳩長・三役からのメッセージ</h3>
-      <div class="message-card">
-        <div class="message-lead">
-          こんにちは！第70期鳩三役です。<br>
-          今回はみなさんに、第70回鳩祭の進捗状況と日程をお知らせします！
-        </div>
-        <div class="message-body">
-          <p>SPARKというテーマには、「一人一人の鳩祭を楽しむ気持ちやこんなことやってみたい！という思い、そしてそこから生まれる新しいアイデアと実践という、小さな火花がたくさん集まって大きな輝きを持った第70回鳩祭をつくる」という思いが込められています。</p>
-          <p>また鳩祭実行委員会としては、新しいことにたくさんチャレンジして、この先10年の鳩祭に対するきっかけづくりになるような第70回鳩祭を目指しています。</p>
-          <p>そんな第70回鳩祭を実現するため、私たち鳩三役は全校のみんながアイデアを発信できるプラットフォーム「アイデアを形にプロジェクト」を作ったり、様々なアンケートを実施することで、全校の声を受け取っています。</p>
-          <p>一つでも多くのアイデアや意見を鳩祭に反映させたいという強い思いから、全校からの声を、おもしろがりながら、みんなと同じ目線で実践することを大切にしています。実際に現時点で様々なことを実践していますが、まだまだ公開できない情報が数多くありますので、続報を楽しみにしていてくださいね。</p>
-          <p>そして在校生の皆さん！引き続き、アイデアや意見をたくさん聞かせてください！ばっちりご予定を抑えてお越しいただけるのを、心よりお待ちしております。</p>
-        </div>
-        <div class="message-signature">
-          第70期 鳩祭実行委員会 三役一同
-        </div>
+    <section id="theme" class="reveal-item">
+      <h2 class="section-title-modern">03. Festival Theme</h2>
+      <div class="content-box" style="border-left: 6px solid var(--color-key);">
+        <h3>第70回テーマ：「SPARK」</h3>
+        <p>
+          「SPARK（スパーク）」には、「火花」「閃き」「活気」といった意味があります。
+        </p>
+        <p>
+          生徒一人ひとりが心の中に秘めている小さなアイデアや情熱。それらがこの鳩祭という特別な場所で一堂に集まり、ぶつかり合い、交わることで、かつてないほど大きな光となって校内全体を照らし出します。
+        </p>
+        <p>
+          第70回という大きな節目を迎える今年、伝統を大切にしながらも新しいことに挑戦し、来場者の皆様の心にも鮮やかな「SPARK」を残せるような、最高の文化祭を創り上げます。
+        </p>
       </div>
     </section>
 
-    <section class="scroll-fade">
-      <h3 class="section-title">📜 鳩祭の歴史・沿革（将来用）</h3>
-      <div class="card">
-        <div class="image-slot" style="aspect-ratio: 21/9;">📸 歴史的な写真（旧校舎や過去のパンフレットなど）スロット</div>
-        
-        <div class="timeline">
-          <div class="timeline-item">
-            <div class="timeline-year">19XX年</div>
-            <div class="timeline-content">第1回 鳩祭開催。ここから屋代高校の伝統が始まりました。</div>
-          </div>
-          <div class="timeline-item">
-            <div class="timeline-year">2005年</div>
-            <div class="timeline-content">第50回記念鳩祭。地域を巻き込んだ大型ステージ企画が誕生。</div>
-          </div>
-          <div class="timeline-item">
-            <div class="timeline-year">2026年（現在）</div>
-            <div class="timeline-content">第70回鳩祭。テーマ「SPARK」を掲げ、次の10年への新しい挑戦がスタート。</div>
-          </div>
-        </div>
+    <section id="message" class="reveal-item">
+      <h2 class="section-title-modern">04. Message</h2>
+      <div class="content-box">
+        <h3>実行委員長からのご挨拶</h3>
+        <p>
+          本日は、第70回鳩祭の公式ウェブサイトをご覧いただき、誠にありがとうございます。
+        </p>
+        <p>
+          私たち鳩祭実行委員会は、今年のテーマである「SPARK」を体現すべく、生徒全員が主役となり、そして来場してくださる皆様全員が笑顔になれる文化祭を目指して、数ヶ月前から準備を進めてまいりました。
+        </p>
+        <p>
+          各クラスの熱意がこもった展示、文化班の洗練されたパフォーマンス、中庭の活気ある模擬店など、どの企画も自信を持ってお届けできるものばかりです。ぜひ、屋代高校が誇る熱い2日間を、直接肌で感じて楽しんでいただければ幸いです。
+        </p>
+        <p style="text-align: right; font-weight: 800; margin-top: 2rem;">
+          第70回 鳩祭実行委員長
+        </p>
       </div>
     </section>
 
-    <section class="scroll-fade">
-      <h3 class="section-title">👑 歴代テーマ紹介（将来用）</h3>
-      <div class="grid cols-4">
-        <div class="history-card">
-          <div class="nth">第67回 (2023)</div>
-          <div class="theme-name">過去のテーマA</div>
-        </div>
-        <div class="history-card">
-          <div class="nth">第68回 (2024)</div>
-          <div class="theme-name">過去のテーマB</div>
-        </div>
-        <div class="history-card">
-          <div class="nth">第69回 (2025)</div>
-          <div class="theme-name">過去のテーマC</div>
-        </div>
-        <div class="history-card" style="border-color: #7c3aed; background: #f5f3ff;">
-          <div class="nth" style="color: #7c3aed;">第70回 (2026)</div>
-          <div class="theme-name" style="color: #7c3aed;">SPARK</div>
-        </div>
-      </div>
-    </section>
   </main>
 
   <footer>
     <div class="footer-container">
-      <div class="sitemap" id="sitemap">
+      <div class="sitemap-group">
         <div class="sitemap-item">
-          <strong>🎨 企画展示</strong>
-          <a href="index.html#exhibitions">企画展示概要</a>
-          <a href="events.html">大型企画系</a>
-          <a href="exhibit.html">展示系・飲食出店</a>
+          <h5>🎈 催し物・案内</h5>
+          <div class="sitemap-links">
+            <a href="exhibit.html#classes">クラス展示系</a>
+            <a href="exhibit.html#clubs">部活動・有志発表</a>
+            <a href="exhibit.html#stages">メインステージ系</a>
+            <a href="exhibit.html#stalls">飲食・模擬店案内</a>
+          </div>
         </div>
         <div class="sitemap-item">
-          <strong>📍 来場者向け</strong>
-          <a href="index.html#visitor">開催情報</a>
-          <a href="access.html">アクセス・マップ</a>
-          <a href="faq.html">よくあるご質問</a>
+          <h5>📍 来場者向け情報</h5>
+          <div class="sitemap-links">
+            <a href="about.html#outline">開催概要</a>
+            <a href="access.html">アクセス・地図</a>
+            <a href="about.html#faq">よくあるご質問 (FAQ)</a>
+          </div>
         </div>
         <div class="sitemap-item">
-          <strong>ℹ️ 鳩祭について</strong>
-          <a href="about.html">鳩祭とは</a>
-          <a href="about.html">テーマ「SPARK」</a>
+          <h5>ℹ️ 鳩祭について</h5>
+          <div class="sitemap-links">
+            <a href="about.html#history">鳩祭の歴史</a>
+            <a href="about.html#theme">テーマ「SPARK」の由来</a>
+            <a href="about.html#message">実行委員長あいさつ</a>
+          </div>
         </div>
         <div class="sitemap-item">
-          <strong>📧 連絡先</strong>
-          <a href="index.html#contact">お問い合わせ</a>
-          <a href="https://www.nagano-c.ed.jp/yashiro/" target="_blank">屋代高校公式サイト</a>
+          <h5>📧 その他リンク</h5>
+          <div class="sitemap-links">
+            <a href="#contact">お問い合わせ窓口</a>
+            <a href="https://www.nagano-c.ed.jp/yashiro/" target="_blank" rel="noopener">長野県屋代高等学校 公式HP</a>
+          </div>
         </div>
       </div>
-      
+
       <div class="footer-bottom">
-        <div>
-          <strong style="color: white; display: block; margin-bottom: 0.25rem;">第70回屋代高校鳩祭 公式ウェブサイト</strong>
-          <span>屋代高等学校鳩祭実行委員会</span>
+        <div class="footer-info-block">
+          <p class="school-name">第70回屋代高校鳩祭実行委員会</p>
+          <p>〒387-8501 長野県千曲市屋代1000</p>
+          <p>Mail: <a href="mailto:yashiro@m.nagano-c.ed.jp">yashiro@m.nagano-c.ed.jp</a></p>
         </div>
-        <div style="margin-top: 1rem;">
-          <p style="margin: 0; opacity: 0.6;">© 2026 Yashiro High School Hatosai Festival</p>
+        <div class="footer-copyright-block">
+          <p class="copyright">© 2026 Yashiro High School Hatosai Festival. All Rights Reserved.</p>
         </div>
       </div>
     </div>
   </footer>
 
   <script>
-    // --- ① モバイルメニューの開閉制御 ---
-    const menuToggle = document.getElementById('menuToggle');
-    const navMenu = document.getElementById('navMenu');
+    document.addEventListener("DOMContentLoaded", () => {
+      
+      // ------------------------------------------------------------------------
+      // 📱 スマホメニューのトグル ＆ バウンス弾むインタラクション
+      // ------------------------------------------------------------------------
+      const menuToggle = document.getElementById('menuToggle');
+      const mobileNav = document.getElementById('mobileNav');
+      let isMenuOpen = false;
 
-    menuToggle.addEventListener('click', () => {
-      menuToggle.classList.toggle('active');
-      navMenu.classList.toggle('active');
-    });
+      menuToggle.addEventListener('click', () => {
+        isMenuOpen = !isMenuOpen;
+        menuToggle.classList.toggle('is-active', isMenuOpen);
+        mobileNav.classList.toggle('is-open', isMenuOpen);
 
-    // --- ② Anime.jsによるタイトルロゴの文字バラアニ効果 ---
-    window.addEventListener('DOMContentLoaded', () => {
+        if (isMenuOpen) {
+          anime({
+            targets: mobileNav,
+            opacity: [0, 1],
+            translateY: [-10, 0],
+            scale: [0.95, 1],
+            duration: 500,
+            easing: 'easeOutElastic(1, .75)'
+          });
+        } else {
+          anime({
+            targets: mobileNav,
+            opacity: [1, 0],
+            translateY: [0, -10],
+            scale: [1, 0.95],
+            duration: 250,
+            easing: 'easeInQuad'
+          });
+        }
+      });
+
+      // ------------------------------------------------------------------------
+      // 🗂️ FAQ アコーディオンの滑らかな開閉（Anime.js）
+      // ------------------------------------------------------------------------
+      const faqItems = document.querySelectorAll('.faq-item');
+
+      faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        const wrapper = item.querySelector('.faq-answer-wrapper');
+        const answer = item.querySelector('.faq-answer');
+
+        question.addEventListener('click', () => {
+          const isActive = item.classList.contains('active');
+
+          // 他の開いているFAQを閉じる
+          faqItems.forEach(otherItem => {
+            if (otherItem !== item && otherItem.classList.contains('active')) {
+              otherItem.classList.remove('active');
+              anime({
+                targets: otherItem.querySelector('.faq-answer-wrapper'),
+                height: 0,
+                duration: 300,
+                easing: 'easeOutQuad'
+              });
+            }
+          });
+
+          // クリックされたFAQの開閉
+          if (isActive) {
+            item.classList.remove('active');
+            anime({
+              targets: wrapper,
+              height: 0,
+              duration: 300,
+              easing: 'easeOutQuad'
+            });
+          } else {
+            item.classList.add('active');
+            anime({
+              targets: wrapper,
+              height: answer.offsetHeight,
+              duration: 400,
+              easing: 'easeOutQuart'
+            });
+          }
+        });
+      });
+
+      // ------------------------------------------------------------------------
+      // ✨ ページロード時 ＆ スクロール連動のアニメーション
+      // ------------------------------------------------------------------------
+      // ページヘッダーの文字パラパラ表示演出
       const titleEl = document.getElementById('page-title-text');
       titleEl.innerHTML = titleEl.textContent.replace(/\S/g, "<span class='letter' style='display:inline-block;'>$&</span>");
 
-      anime.timeline({loop: false})
+      anime.timeline()
         .add({
           targets: '#page-title-text .letter',
-          translateY: [30,0],
-          opacity: [0,1],
-          easing: "easeOutExpo",
-          duration: 1000,
-          delay: (el, i) => 100 + 50 * i
-        }).add({
+          translateY: [20, 0],
+          opacity: [0, 1],
+          duration: 800,
+          delay: anime.stagger(50),
+          easing: 'easeOutExpo'
+        })
+        .add({
           targets: '.page-header p',
           opacity: [0, 1],
-          translateY: [15, 0],
-          easing: "easeOutExpo",
-          duration: 800,
-          offset: '-=700'
+          translateY: [10, 0],
+          duration: 600,
+          easing: 'easeOutQuad',
+          offset: '-=400'
         });
-    });
 
-    // --- ③ Intersection Observerによるスクロール連動フェードイン ---
-    const observerOptions = {
-      root: null,
-      rootMargin: "0px",
-      threshold: 0.05
-    };
+      // スクロールフェードイン
+      const observerOptions = { root: null, rootMargin: "0px 0px -50px 0px", threshold: 0.1 };
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            anime({
+              targets: entry.target,
+              opacity: [0, 1],
+              translateY: [30, 0],
+              duration: 800,
+              easing: 'easeOutCubic'
+            });
+            obs.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-shown');
-          observer.unobserve(entry.target); // パフォーマンス向上のため監視解除
-        }
-      });
-    }, observerOptions);
+      document.querySelectorAll('.reveal-item').forEach(el => observer.observe(el));
 
-    document.querySelectorAll('.scroll-fade').forEach(el => {
-      observer.observe(el);
     });
   </script>
 </body>

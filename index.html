@@ -40,6 +40,7 @@
       --color-base: #222222;        /* テキスト：極めて視認性の高いチャコールブラック */
       --color-contrast: #D0D5DD;    /* 境界線：明瞭なライトグレー */
       --color-white: #ffffff;
+      --color-bg-clear: rgba(255, 255, 255, 0.75); /* 透明背景：ガラスのような質感を演出 */
       --color-bg-light: #F8FAFC;    /* 全体背景：透明感と清潔感のあるライトスレート */
       --color-border: rgba(120, 120, 120, 0.342); /* 汎用的な半透明ボーダーカラー */
       
@@ -262,7 +263,9 @@
       pointer-events: none;
       transform: translateY(-10px) scale(0.95);
     }
-    
+    .fullscreen-nav.is-open {
+      pointer-events: auto;
+    }
     .nav-links {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -305,6 +308,7 @@
       background-color: var(--color-primary-dark);
       margin-bottom: 8rem;
       overflow: hidden;
+      box-shadow: 0px 0px 4px 2px #000000b6;
     }
     
     /* 🟢 【改善】タイポグラフィの可読性を劇的に向上させる多層グラデーションオーバーレイ */
@@ -400,7 +404,7 @@
     .news-mini-item {
       display: flex;
       flex-direction: column;
-      background: var(--color-white);
+      background: var(--color-bg-light);
       padding: 1.4rem 1.8rem;
       border-radius: 14px;
       text-decoration: none;
@@ -408,11 +412,13 @@
       /*box-shadow: var(--shadow-sm);*/
       border: 1px solid var(--color-border);
       transition: var(--transition-smooth);
+      box-shadow: inset -1px -1px 1px 1px rgba(0, 0, 0, 0.111);
     }
     .news-mini-item:hover {
       transform: translateY(-4px) !important;
       border-color: var(--color-key);
       box-shadow: var(--shadow-md);
+      background-color: var(--color-bg-clear);
     }
     .news-meta {
       display: flex;
@@ -426,7 +432,7 @@
       color: #64748B;
     }
     .news-label {
-      background-color: var(--color-key-light);
+      background-color: var(--color-bg-light);
       color: var(--color-key);
       font-size: 0.75rem;
       font-weight: 800;
@@ -457,7 +463,7 @@
       gap: 2.5rem;
     }
     .showcase-card {
-      background: var(--color-white);
+      background: var(--color-bg-light);
       border-radius: 20px;
       overflow: hidden;
       /*box-shadow: var(--shadow-sm);*/
@@ -516,7 +522,7 @@
     
     /* 🟢 【改善】大事なキーワード「SPARK」の存在感・格を高めたコールアウト枠 */
     .theme-accent-callout {
-      background: linear-gradient(135deg, var(--color-key-light) 0%, #EDF4E1 100%);
+      background: linear-gradient(135deg, var(--color-bg-light) 0%, #EDF4E1 100%);
       border-left: 5px solid var(--color-key);
       padding: 2.5rem 2rem; /* 上下左右の余白を贅沢に増強 */
       border-radius: 0 16px 16px 0;
@@ -549,7 +555,7 @@
     }
     
     .btn-huge-card {
-      background: var(--color-white);
+      background: var(--color-bg-clear);
       border-radius: 24px;
       padding: 3rem 2.5rem;
       text-decoration: none;
@@ -612,7 +618,7 @@
     
     /* 🟢 【改善】実運用（ロゴ・企業名・リンク）を想定した、洗練されたホワイトカード */
     .sponsor-item {
-      background-color: var(--color-white);
+      background-color: var(--color-bg-clear);
       border: 1px solid rgba(44, 58, 78, 0.06);
       border-radius: 12px;
       padding: 1.5rem 1rem;
@@ -781,8 +787,8 @@
         </div>
       </div>
       <div class="hero-typography">
-        <h2 class="hero-title-huge">第70回 屋代高校 鳩祭</h2>
-        <span class="hero-tag-badge">2026.6.26 Fri - 6.28 Sun 一般公開 27-28日</span>
+        <h2 class="hero-title-huge"><span style="font:message-box;">第70回 屋代高校</span> 鳩祭</h2>
+        <span class="hero-tag-badge">2026.6.26 Fri - 6.28 Sun<br>一般公開 27-28日</span>
       </div>
     </section>
 
@@ -858,12 +864,12 @@
           <div class="about-text-block">
             <p class="about-lead">歴史と伝統を紡ぐ、屋代高校最大の祭典。</p>
             <p class="about-text">
-              長野県千曲市に位置する屋代高等学校の文化祭「鳩祭」は、地域の方々や在校生、卒業生が深く交流し、熱いエネルギーを分かち合う場所です。第70回という大きな節目を迎える今回、私たちはこれまでの伝統をリスペクトしながら、全く新しい輝きを放ちます。
+              屋代高校は数少ない公立中高一貫校で、鳩祭でも6学年の個性が感じられます。中でも学級展は、屋代生の発想力を存分に活かした創造性のある内容で、毎年同じものが無くわくわくするものばかりです。<br>今年度は70周年ですので、委員会、生徒、教員ともにより多くの方々と楽しめる鳩祭をつくります！一緒に楽しみましょう！
             </p>
             
             <div class="theme-accent-callout">
               <h4>第70回テーマ：「SPARK」</h4>
-              <p>一人ひとりの「楽しみたい！」「こんなことに挑戦したい！」という熱い思い。そこから生まれる小さな火花（SPARK）たちが無数に集まることで、どこよりも大きな輝きを持った、最高峰の鳩祭を作り上げるという願いが込められています。</p>
+              <p>SPARKというテーマには、「一人一人の鳩祭を楽しむ気持ちやこんなことやってみたい！という思い、そしてそこから生まれる新しいアイデアと実践という、小さな火花がたくさん集まって大きな輝きを持った第70回鳩祭をつくる」という思いが込められています。<br>また鳩祭実行委員会としては、新しいことにたくさんチャレンジして、この先10年の鳩祭に対するきっかけづくりになるような第70回鳩祭を目指しています。</p>
             </div>
           </div>
           <div class="about-image-block">
@@ -1086,21 +1092,21 @@
                   targets: target.querySelector('.section-title-modern'),
                   opacity: [0, 1],
                   translateY: [20, 0],
-                  duration: 600,
+                  duration: 300,
                   easing: 'easeOutQuad'
                 })
                 .add({  // ニュース項目全体をまとめてフェードイン＋スライドイン
                   targets: target.querySelectorAll('#news'),
                   opacity: [0, 1],
                   translateX: [-20, 0],
-                  duration: 800,
+                  duration: 600,
                   easing: 'easeOutQuad'
                 })
                 .add({  // 各ニュース項目の内容を1件ずつスタガーで登場させる
                   targets: target.querySelectorAll('.anime-news-row'),
                   opacity: [0, 1],
                   translateY: [20, 0],
-                  duration: 800,
+                  duration: 600,
                   easing: 'easeOutCubic',
                   delay: anime.stagger(120), // 💡 1件ずつ時間差で登場
                   offset: '-=500'
@@ -1156,7 +1162,7 @@
                   ],
                   opacity: [0, 1],
                   translateY: [20, 0],
-                  duration: 1000,
+                  duration: 800,
                   easing: 'easeOutCubic',
                   delay: anime.stagger(200)
                 })
@@ -1165,7 +1171,7 @@
                   targets: target.querySelector('.theme-accent-callout'),
                   opacity: [0, 1],
                   scale: [0.95, 1],
-                  duration: 800,
+                  duration: 600,
                   easing: 'easeOutBack', // ポップアップ感の演出
                   offset: '-=400'
                 })
@@ -1174,7 +1180,7 @@
                   targets: target.querySelector('.about-image-block img'),
                   opacity: [0, 1],
                   scale: [1.15, 1],
-                  duration: 1200,
+                  duration: 1000,
                   easing: 'easeOutQuart',
                   offset: '-=800'
                 });

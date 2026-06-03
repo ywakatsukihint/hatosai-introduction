@@ -4,67 +4,718 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>アクセス - 第70回屋代高校鳩祭公式ウェブサイト</title>
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
-  >
-  <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css"
-  >
-  <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  
+  <link rel="stylesheet" href="css/common.css">
+
   <style>
-    body { font-family: Yu Gothic, sans-serif; line-height: 1.6; margin: 0; padding: 20px; background: #f8f8f8; color: #333; }
-    .container { max-width: 900px; margin: 0 auto; background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-    h1, h2 { color: #1a3d7c; }
-    section { margin-bottom: 24px; }
-    dl dt { font-weight: bold; margin-top: 12px; }
-    dl dd { margin: 4px 0 12px 0; }
-    .note { font-size: 0.95rem; color: #555; }
+    /* ==========================================================================
+       🎨 カラー＆デザインシステム（index.html / news.html から完全移植）
+       ========================================================================== */
+    :root {
+      --color-primary: #2C3A4E;     /* メイン：深みのあるブルーグレー */
+      --color-primary-dark: #131924;/* フッター用：超高コントラスト用ダークネイビー */
+      --color-key: #8DAE4B;         /* アクセント：新緑のオリーブ黄緑 */
+      --color-key-light: #F4F8EC;   /* アクセント薄色 */
+      --color-base: #222222;        /* テキスト：極めて視認性の高いチャコールブラック */
+      --color-contrast: #D0D5DD;    /* 境界線：明瞭なライトグレー */
+      --color-white: #ffffff;
+      --color-bg-light: #F8FAFC;    /* 全体背景：透明感と清潔感のあるライトスレート */
+      
+      --font-noto: "Noto Sans JP", "Helvetica Neue", Arial, sans-serif;
+      --shadow-sm: 0 4px 12px rgba(44, 58, 78, 0.04);
+      --shadow-md: 0 12px 32px rgba(44, 58, 78, 0.08);
+      --shadow-lg: 0 20px 40px rgba(44, 58, 78, 0.12);
+      --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-bounce: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    body {
+      font-family: var(--font-noto);
+      background-color: var(--color-bg-light);
+      color: var(--color-base);
+      overflow-x: hidden;
+      letter-spacing: 0.05em;
+    }
+
+    /* セクションのモダンタイトル */
+    section {
+      margin-bottom: 2.5rem;
+      padding: 2rem 0 0 0;
+      background: transparent;
+      box-shadow: none;
+      border: none;
+    }
+    .section-title-modern {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--color-primary);
+      letter-spacing: 0.2em;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .section-title-modern::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, var(--color-contrast), transparent);
+    }
+
+    /* ==========================================================================
+       ヘッダー ＆ 右上側・横書きナビゲーションシステム
+       ========================================================================== */
+    header {
+      background-color: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      padding: 0.8rem 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(44, 58, 78, 0.08);
+      transition: var(--transition-smooth);
+    }
+    .header-content {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header-title h1 {
+      font-size: 1.3rem;
+      margin: 0;
+      font-weight: 900;
+      color: var(--color-primary);
+      letter-spacing: 0.1em;
+    }
+    .header-title p {
+      margin: 0;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--color-key);
+      text-transform: uppercase;
+    }
+
+    .pc-nav { display: none; }
+    .pc-nav-links {
+      display: flex; list-style: none; margin: 0; padding: 0; gap: 2.2rem;
+    }
+    .pc-nav-links a {
+      color: var(--color-primary); text-decoration: none; font-weight: 800;
+      font-size: 0.9rem; position: relative; padding: 0.4rem 0;
+      transition: var(--transition-smooth);
+    }
+    .pc-nav-links a::after {
+      content: ""; position: absolute; bottom: 0; left: 0;
+      width: 0; height: 2px; background-color: var(--color-key);
+      transition: var(--transition-smooth);
+    }
+    .pc-nav-links a:hover { color: var(--color-key); }
+    .pc-nav-links a:hover::after { width: 100%; }
+    
+    .pc-nav-links a.active, .nav-links a.active {
+      color: var(--color-key) !important; font-weight: 900;
+    }
+    .pc-nav-links a.active::after { width: 100%; }
+
+    .menu-trigger {
+      background: none; border: none; width: 44px; height: 44px;
+      position: relative; cursor: pointer; z-index: 1100; padding: 0;
+      display: flex; flex-direction: column; justify-content: center;
+      align-items: center; gap: 6px;
+    }
+    .menu-trigger span {
+      display: block; width: 24px; height: 2px; background-color: var(--color-primary);
+      transition: var(--transition-bounce); transform-origin: center;
+    }
+    .menu-trigger.is-active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .menu-trigger.is-active span:nth-child(2) { opacity: 0; }
+    .menu-trigger.is-active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+    .fullscreen-nav {
+      position: absolute; top: 100%; right: 1.5rem;
+      width: calc(100% - 3rem); max-width: 320px; height: auto;
+      background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(20px);
+      z-index: 1050; border-radius: 16px; padding: 1.25rem;
+      box-shadow: var(--shadow-lg); border: 1px solid rgba(44, 58, 78, 0.08);
+      opacity: 0; pointer-events: none; transform: translateY(-10px) scale(0.95);
+    }
+    .fullscreen-nav.is-open {
+      pointer-events: auto;
+    }
+    .nav-links {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;
+      list-style: none; padding: 0; margin: 0; text-align: center;
+    }
+    .nav-links a {
+      color: var(--color-primary); font-size: 0.85rem; font-weight: 800;
+      text-decoration: none; padding: 0.8rem 0.5rem; display: block;
+      background: rgba(44, 58, 78, 0.03); border-radius: 10px;
+      transition: var(--transition-smooth);
+    }
+    .nav-links a:hover {
+      color: var(--color-white); background-color: var(--color-key);
+    }
+
+    @media (min-width: 768px) {
+      .pc-nav { display: block; }
+      .menu-trigger { display: none; }
+      .fullscreen-nav { display: none !important; }
+    }
+
+    /* ==========================================================================
+       🌤️ フリーAPI：リアルタイムお天気ウィジェット
+       ========================================================================== */
+    .weather-card {
+      background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 100%);
+      border: 1px solid rgba(141, 174, 75, 0.2);
+      border-radius: 16px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+    }
+    .weather-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .weather-icon {
+      font-size: 2rem;
+      line-height: 1;
+    }
+    .weather-text {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin: 0;
+    }
+    .weather-text span {
+      color: #0284c7;
+    }
+    .weather-hint {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #64748B;
+      text-align: right;
+    }
+
+    /* ==========================================================================
+       レイアウト ＆ コンポーネント
+       ========================================================================== */
+    .access-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+    @media (min-width: 992px) {
+      .access-grid {
+        grid-template-columns: 5fr 7fr;
+      }
+    }
+
+    .info-card {
+      background: var(--color-white);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid rgba(44, 58, 78, 0.05);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .info-card h3 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--color-primary);
+      margin-top: 0;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* 定義リストの美化 */
+    .styled-dl {
+      margin: 0 0 1.5rem 0;
+    }
+    .styled-dl dt {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--color-key);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 1rem;
+      margin-bottom: 0.2rem;
+    }
+    .styled-dl dd {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--color-base);
+      margin-left: 0;
+      margin-bottom: 1rem;
+      border-bottom: 1px dashed var(--color-contrast);
+      padding-bottom: 0.5rem;
+    }
+    .styled-dl dd:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    /* 交通手段のタイムライン・リスト */
+    .route-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .route-item {
+      position: relative;
+      padding-left: 1.8rem;
+      margin-bottom: 1.5rem;
+    }
+    .route-item::before {
+      content: "";
+      position: absolute;
+      left: 6px;
+      top: 6px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--color-key);
+      z-index: 2;
+    }
+    .route-item::after {
+      content: "";
+      position: absolute;
+      left: 9px;
+      top: 14px;
+      width: 2px;
+      height: calc(100% + 0.5rem);
+      background: var(--color-contrast);
+      z-index: 1;
+    }
+    .route-item:last-child::after {
+      display: none;
+    }
+    .route-title {
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: var(--color-primary);
+      margin-bottom: 0.25rem;
+    }
+    .route-desc {
+      font-size: 0.85rem;
+      color: #64748B;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    /* ユーザー第一：ナビ起動モダンボタン */
+    .btn-action-modern {
+      background: var(--color-key);
+      color: var(--color-white);
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: 800;
+      text-align: center;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 14px rgba(141, 174, 75, 0.4);
+      transition: var(--transition-bounce);
+      width: 100%;
+      margin-top: 1rem;
+    }
+    .btn-action-modern:hover {
+      background: var(--color-primary);
+      box-shadow: 0 6px 20px rgba(44, 58, 78, 0.2);
+      transform: translateY(-2px);
+      color: var(--color-white);
+    }
+
+    /* マップコンテナ */
+    .map-container {
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      border: 1px solid rgba(44, 58, 78, 0.08);
+      height: 450px;
+      min-height: 100%;
+      transition: var(--transition-smooth);
+    }
+    .map-container:hover {
+      box-shadow: var(--shadow-lg);
+    }
+    .map-container iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+    }
+
+    /* 注意事項ボックス */
+    .notice-box {
+      background: #FFF5F5;
+      border-left: 4px solid #C0504D;
+      padding: 1.25rem 1.5rem;
+      border-radius: 0 12px 12px 0;
+      margin-top: 1.5rem;
+    }
+    .notice-box p {
+      margin: 0;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #9B2C2C;
+      line-height: 1.6;
+    }
+
+    /* アニメーション用初期設定 */
+    .reveal-item {
+      opacity: 0;
+    }
+
+    /* ==========================================================================
+       🌐 フッター ＆ サイトマップ
+       ========================================================================== */
+    footer {
+      background-color: var(--color-primary-dark);
+      color: rgba(255, 255, 255, 0.8);
+      padding: 5rem 1.5rem 3rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .footer-container {
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+    .sitemap-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 3rem;
+      margin-bottom: 4rem;
+    }
+    .sitemap-item h5 {
+      color: var(--color-white);
+      font-size: 1.05rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.05em;
+    }
+    .sitemap-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+    .sitemap-links a {
+      color: rgba(255, 255, 255, 0.65);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: var(--transition-smooth);
+    }
+    .sitemap-links a:hover {
+      color: var(--color-key);
+      transform: translateX(4px);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    @media (min-width: 768px) {
+      .footer-bottom {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-end;
+      }
+    }
+    .footer-info-block p {
+      margin: 0 0 0.4rem 0;
+      font-size: 0.9rem;
+    }
+    .footer-info-block .school-name {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--color-white);
+    }
+    .footer-info-block a {
+      color: var(--color-key);
+      text-decoration: none;
+    }
+    
+    .copyright {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.4);
+      margin: 0;
+    }
   </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
 </head>
 <body>
-  <div class="container">
-    <h1>長野県屋代高等学校へのアクセス</h1>
-    <p>屋代高等学校へのアクセス方法を案内します。最寄り駅やバス、車での来校に便利な情報をまとめています。</p>
 
-    <section>
-      <h2>学校所在地</h2>
-      <dl>
-        <dt>学校名</dt>
-        <dd>長野県屋代高等学校</dd>
-        <dt>住所</dt>
-        <dd>〒389-1234 長野県千曲市屋代1234</dd>
-        <dt>電話</dt>
-        <dd>026-123-4567</dd>
-      </dl>
+  <header>
+    <div class="header-content">
+      <div class="header-title">
+        <p>第70回 屋代高校文化祭</p>
+        <h1>鳩祭</h1>
+      </div>
+      
+      <nav class="pc-nav">
+        <ul class="pc-nav-links">
+          <li><a href="index.html">ホーム</a></li>
+          <li><a href="about.html">鳩祭について</a></li>
+          <li><a href="exhibit.html">展示紹介</a></li>
+          <li><a href="news.html">お知らせ</a></li>
+          <li><a href="access.html" class="active">アクセス</a></li>
+        </ul>
+      </nav>
+
+      <button class="menu-trigger" id="menuToggle" aria-label="メニューを開閉する">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="fullscreen-nav" id="mobileNav">
+        <ul class="nav-links">
+          <li><a href="index.html">ホーム</a></li>
+          <li><a href="about.html">鳩祭について</a></li>
+          <li><a href="exhibit.html">展示紹介</a></li>
+          <li><a href="news.html">お知らせ</a></li>
+          <li><a href="access.html" class="active">アクセス</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section style="padding-top: 1rem; margin-bottom: 1rem;">
+      <h2 class="section-title-modern">Access & Map</h2>
+      <p style="color: #64748B; font-weight: 600; font-size: 0.95rem; margin-bottom: 0;">長野県屋代高等学校へのアクセス方法をご案内します。</p>
     </section>
 
-    <section>
-      <h2>公共交通機関でのアクセス</h2>
-      <h3>電車・徒歩</h3>
-      <p>しなの鉄道・屋代駅から徒歩約15分です。屋代駅は長野市から直通列車も運行しており、交通の便が良いです。</p>
-      <h3>バス</h3>
-      <p>屋代駅から千曲市循環バス「屋代線」に乗り、「屋代高校前」または「屋代駅南口」停留所で下車してください。時刻表は千曲市役所の公式サイトで最新情報を確認してください。</p>
-    </section>
+    <div class="weather-card reveal-item">
+      <div class="weather-info">
+        <div class="weather-icon" id="weatherIcon">🔄</div>
+        <div>
+          <p class="weather-text" id="weatherStatus">屋代高校周辺の今日の天気：<span>データを読み込み中...</span></p>
+        </div>
+      </div>
+      <div class="weather-hint">
+        千曲市リアルタイム気象データ
+      </div>
+    </div>
 
-    <section>
-      <h2>車でのアクセス</h2>
-      <p>上信越自動車道の坂城ICから約10分、長野自動車道の更埴ICから約15分です。校内に来客用駐車スペースが限られている場合がありますので、事前に学校へ連絡してください。</p>
-      <dl>
-        <dt>坂城ICから</dt>
-        <dd>国道18号線を西へ進み、屋代方面へ向かいます。</dd>
-        <dt>更埴ICから</dt>
-        <dd>国道18号線を東へ進み、屋代中学校交差点を目印に進んでください。</dd>
-      </dl>
-    </section>
+    <div class="access-grid">
+      
+      <div class="reveal-item">
+        <div class="info-card">
+          <div>
+            <h3>📍 学校所在地</h3>
+            <dl class="styled-dl">
+              <dt>学校名</dt>
+              <dd>長野県屋代高等学校</dd>
+              <dt>住所</dt>
+              <dd>〒387-8501 長野県千曲市屋代1000</dd>
+              <dt>電話番号</dt>
+              <dd>026-272-0069</dd>
+            </dl>
 
-    <section>
-      <h2>周辺情報</h2>
-      <p>屋代高等学校は千曲川沿いの穏やかな環境にあり、屋代駅周辺には飲食店やコンビニエンスストアがあります。イベントや公開授業に参加される際は、公共交通機関の利用をおすすめします。</p>
-    </section>
+            <h3 style="margin-top: 2rem;">🪧 公共交通機関でのアクセス</h3>
+            <ul class="route-list">
+              <li class="route-item">
+                <div class="route-title">しなの鉄道「屋代高校前駅」から</div>
+                <div class="route-desc">徒歩 約5分（最も近くて便利です）</div>
+              </li>
+              <li class="route-item">
+                <div class="route-title">しなの鉄道「屋代駅」から</div>
+                <div class="route-desc">徒歩 約20分 / 自転車 約7分</div>
+              </li>
+            </ul>
 
-    <p class="note">※ 本ページの情報は変更される可能性があります。正確なアクセス方法や駐車場案内は、学校に直接お問い合わせください。</p>
-  </div>
+            <div class="notice-box">
+              <p>⚠️ 【ご来校の皆様へ注意制限】<br>鳩祭期間中、一般来場者用の駐車場および駐車スペースは一切ございません。近隣の商業施設等への無断駐車は大変なご迷惑となりますので、必ず公共交通機関（電車・徒歩）でのご来校をお願い申し上げます。</p>
+            </div>
+          </div>
+
+          <a href="https://www.google.com/maps/dir/?api=1&destination=長野県屋代高等学校" target="_blank" rel="noopener" class="btn-action-modern">
+            🚀 現在地からのナビ・ルート案内を開始
+          </a>
+        </div>
+      </div>
+
+      <div class="reveal-item">
+        <div class="map-container">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m13!1d3205.828551352467!2d138.1293393!3d36.5344342!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x601d836da16bf94b%3A0x6b1db94c9f1bd505!2z6ZW36YeO55yM5bGL5sub6auY562J5a2m5qCh!5e0!3m2!2sja!2sjp!4v1717400000000!5m2!2sja!2sjp" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="sitemap-group">
+        <div class="sitemap-item">
+          <h5>🎈 催し物・案内</h5>
+          <div class="sitemap-links">
+            <a href="exhibit.html#classes">クラス展示系</a>
+            <a href="exhibit.html#clubs">部活動・有志発表</a>
+            <a href="exhibit.html#stages">メインステージ系</a>
+            <a href="exhibit.html#stalls">飲食・模擬店案内</a>
+          </div>
+        </div>
+        <div class="sitemap-item">
+          <h5>📍 来場者向け情報</h5>
+          <div class="sitemap-links">
+            <a href="about.html#outline">開催概要</a>
+            <a href="access.html">アクセス・地図</a>
+            <a href="about.html#faq">よくあるご質問 (FAQ)</a>
+          </div>
+        </div>
+        <div class="sitemap-item">
+          <h5>ℹ️ 鳩祭について</h5>
+          <div class="sitemap-links">
+            <a href="about.html#history">鳩祭の歴史</a>
+            <a href="about.html#theme">テーマ「SPARK」の由来</a>
+            <a href="about.html#message">実行委員長あいさつ</a>
+          </div>
+        </div>
+        <div class="sitemap-item">
+          <h5>📧 その他リンク</h5>
+          <div class="sitemap-links">
+            <a href="about.html#contact">お問い合わせ窓口</a>
+            <a href="https://www.nagano-c.ed.jp/yashiro/" target="_blank" rel="noopener">長野県屋代高等学校 公式HP</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-info-block">
+          <p class="school-name">第70回屋代高校鳩祭実行委員会</p>
+          <p>〒387-8501 長野県千曲市屋代1000</p>
+          <p>Mail: <a href="mailto:yashiro@m.nagano-c.ed.jp">yashiro@m.nagano-c.ed.jp</a></p>
+        </div>
+        <div class="footer-copyright-block">
+          <p class="copyright">© 2026 Yashiro High School Hatosai Festival. All Rights Reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      
+      // ------------------------------------------------------------------------
+      // 📱 スマホメニューのトグル ＆ バウンス弾むインタラクション（完全移植）
+      // ------------------------------------------------------------------------
+      const menuToggle = document.getElementById('menuToggle');
+      const mobileNav = document.getElementById('mobileNav');
+      let isMenuOpen = false;
+
+      menuToggle.addEventListener('click', () => {
+        isMenuOpen = !isMenuOpen;
+        menuToggle.classList.toggle('is-active', isMenuOpen);
+        mobileNav.classList.toggle('is-open', isMenuOpen);
+
+        if (isMenuOpen) {
+          anime({
+            targets: mobileNav,
+            opacity: [0, 1],
+            translateY: [-10, 0],
+            scale: [0.95, 1],
+            duration: 500,
+            easing: 'easeOutElastic(1, .75)'
+          });
+        } else {
+          anime({
+            targets: mobileNav,
+            opacity: [1, 0],
+            translateY: [0, -10],
+            scale: [1, 0.95],
+            duration: 250,
+            easing: 'easeInQuad'
+          });
+        }
+      });
+
+      // ------------------------------------------------------------------------
+      // 🌤️ フリーAPI：Open-Meteoから千曲市（屋代高校周辺）のリアルタイム気象情報を取得
+      // ------------------------------------------------------------------------
+      const weatherIcon = document.getElementById("weatherIcon");
+      const weatherStatus = document.getElementById("weatherStatus");
+
+      // WMO気象コードから分かりやすい日本語と絵文字へ変換するマッピングマトリクス
+      function interpretWeather(code) {
+        if (code === 0) return { text: "快晴 ☀️", icon: "☀️" };
+        if ([1, 2, 3].includes(code)) return { text: "晴れ時々曇り ⛅", icon: "⛅" };
+        if ([45, 48].includes(code)) return { text: "霧 🌫️", icon: "🌫️" };
+        if ([51, 53, 55, 61, 63, 65, 80, 81, 82].includes(code)) return { text: "雨模様 ☔（雨具をご用意ください）", icon: "☔" };
+        if ([71, 73, 75, 85, 86].includes(code)) return { text: "雪 ❄️", icon: "❄️" };
+        if ([95, 96, 99].includes(code)) return { text: "雷雨 ⚡", icon: "⚡" };
+        return { text: "晴れ または曇り 🌈", icon: "🌈" };
+      }
+
+      // 屋代高校の正確な座標 (緯度: 36.5344, 経度: 138.1293)
+      const lat = 36.5344;
+      const lon = 138.1293;
+      const apiURL = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&timezone=Asia%2FTokyo`;
+
+      fetch(apiURL)
+        .then(response => {
+          if (!response.ok) throw new Error();
+          return response.json();
+        })
+        .then(data => {
+          const currentData = data.current;
+          const temp = Math.round(currentData.temperature_2m);
+          const weather = interpretWeather(currentData.weather_code);
+
+          weatherIcon.textContent = weather.icon;
+          weatherStatus.innerHTML = `屋代高校周辺の現在の天気：<strong>${weather.text}</strong> ／ 気温：<strong><span>${temp}℃</span></strong>`;
+        })
+        .catch(() => {
+          // 万が一APIサーバーがダウンしている場合のセーフティネット（ユーザーファースト対応）
+          weatherIcon.textContent = "🏫";
+          weatherStatus.innerHTML = `長野県千曲市：<strong>本日も元気に鳩祭開催中！</strong>`;
+        });
+
+      // ------------------------------------------------------------------------
+      // ✨ Anime.jsによる美しい読み込みフェードインスタガー
+      // ------------------------------------------------------------------------
+      anime({
+        targets: '.reveal-item',
+        opacity: [0, 1],
+        translateY: [25, 0],
+        delay: anime.stagger(120),
+        duration: 800,
+        easing: 'easeOutCubic'
+      });
+
+    });
+  </script>
 </body>
 </html>

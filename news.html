@@ -12,21 +12,174 @@
 
   <style>
     /* ==========================================================================
-       お知らせページ固有：おしとやかで上品なカスタマイズスタイル
+       🎨 カラー＆デザインシステム（index.htmlから完全移植）
        ========================================================================== */
-    body {
-      background: #f4f6f9; /* 少し青み・グレーみを入れた落ち着いた背景 */
-      color: #334155;
+    :root {
+      --color-primary: #2C3A4E;     /* メイン：深みのあるブルーグレー */
+      --color-primary-dark: #131924;/* フッター用：超高コントラスト用ダークネイビー */
+      --color-key: #8DAE4B;         /* アクセント：新緑のオリーブ黄緑 */
+      --color-key-light: #F4F8EC;   /* アクセント薄色 */
+      --color-base: #222222;        /* テキスト：極めて視認性の高いチャコールブラック */
+      --color-contrast: #D0D5DD;    /* 境界線：明瞭なライトグレー */
+      --color-white: #ffffff;
+      --color-bg-light: #F8FAFC;    /* 全体背景：透明感と清潔感のあるライトスレート */
+      
+      --font-noto: "Noto Sans JP", "Helvetica Neue", Arial, sans-serif;
+      --shadow-sm: 0 4px 12px rgba(44, 58, 78, 0.04);
+      --shadow-md: 0 12px 32px rgba(44, 58, 78, 0.08);
+      --shadow-lg: 0 20px 40px rgba(44, 58, 78, 0.12);
+      --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-bounce: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
+    body {
+      font-family: var(--font-noto);
+      background-color: var(--color-bg-light);
+      color: var(--color-base);
+      overflow-x: hidden;
+      letter-spacing: 0.05em;
+    }
+
+    /* セクションの抜け感 */
+    section {
+      margin-bottom: 2rem;
+      padding: 3rem 0 0 0;
+      background: transparent;
+      box-shadow: none;
+      border: none;
+    }
+    .section-title-modern {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--color-primary);
+      letter-spacing: 0.2em;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .section-title-modern::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, var(--color-contrast), transparent);
+    }
+
+    /* ==========================================================================
+       ヘッダー ＆ 右上側・横書きナビゲーションシステム
+       ========================================================================== */
+    header {
+      background-color: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      padding: 0.8rem 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(44, 58, 78, 0.08);
+      transition: var(--transition-smooth);
+    }
+    .header-content {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header-title h1 {
+      font-size: 1.3rem;
+      margin: 0;
+      font-weight: 900;
+      color: var(--color-primary);
+      letter-spacing: 0.1em;
+    }
+    .header-title p {
+      margin: 0;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--color-key);
+      text-transform: uppercase;
+    }
+
+    .pc-nav { display: none; }
+    .pc-nav-links {
+      display: flex; list-style: none; margin: 0; padding: 0; gap: 2.2rem;
+    }
+    .pc-nav-links a {
+      color: var(--color-primary); text-decoration: none; font-weight: 800;
+      font-size: 0.9rem; position: relative; padding: 0.4rem 0;
+      transition: var(--transition-smooth);
+    }
+    .pc-nav-links a::after {
+      content: ""; position: absolute; bottom: 0; left: 0;
+      width: 0; height: 2px; background-color: var(--color-key);
+      transition: var(--transition-smooth);
+    }
+    .pc-nav-links a:hover { color: var(--color-key); }
+    .pc-nav-links a:hover::after { width: 100%; }
+    
+    .pc-nav-links a.active, .nav-links a.active {
+      color: var(--color-key) !important; font-weight: 900;
+    }
+    .pc-nav-links a.active::after { width: 100%; }
+
+    .menu-trigger {
+      background: none; border: none; width: 44px; height: 44px;
+      position: relative; cursor: pointer; z-index: 1100; padding: 0;
+      display: flex; flex-direction: column; justify-content: center;
+      align-items: center; gap: 6px;
+    }
+    .menu-trigger span {
+      display: block; width: 24px; height: 2px; background-color: var(--color-primary);
+      transition: var(--transition-bounce); transform-origin: center;
+    }
+    .menu-trigger.is-active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .menu-trigger.is-active span:nth-child(2) { opacity: 0; }
+    .menu-trigger.is-active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+    .fullscreen-nav {
+      position: absolute; top: 100%; right: 1.5rem;
+      width: calc(100% - 3rem); max-width: 320px; height: auto;
+      background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(20px);
+      z-index: 1050; border-radius: 16px; padding: 1.25rem;
+      box-shadow: var(--shadow-lg); border: 1px solid rgba(44, 58, 78, 0.08);
+      opacity: 0; pointer-events: none; transform: translateY(-10px) scale(0.95);
+    }
+    .fullscreen-nav.is-open {
+      pointer-events: auto;
+    }
+    .nav-links {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;
+      list-style: none; padding: 0; margin: 0; text-align: center;
+    }
+    .nav-links a {
+      color: var(--color-primary); font-size: 0.85rem; font-weight: 800;
+      text-decoration: none; padding: 0.8rem 0.5rem; display: block;
+      background: rgba(44, 58, 78, 0.03); border-radius: 10px;
+      transition: var(--transition-smooth);
+    }
+    .nav-links a:hover {
+      color: var(--color-white); background-color: var(--color-key);
+    }
+
+    @media (min-width: 768px) {
+      .pc-nav { display: block; }
+      .menu-trigger { display: none; }
+      .fullscreen-nav { display: none !important; }
+    }
+
+    /* ==========================================================================
+       お知らせページ固有のスタイル（モダンデザイン対応）
+       ========================================================================== */
     /* フィルター＆検索コントロールパネル */
     .news-controls {
-      background: white;
-      border-radius: 12px; /* 少し角丸を控えめにして大人っぽく */
-      padding: 1.25rem 1.5rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03); /* 影を極めて薄く */
-      border: 1px solid #e2e8f0;
+      background: var(--color-white);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 3rem;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid rgba(44, 58, 78, 0.05);
       display: flex;
       flex-direction: column;
       gap: 1rem;
@@ -46,88 +199,84 @@
       margin: 0;
     }
 
-    /* タブボタン：おしとやかな藤色・菫色ベース */
     .btn-tab {
-      background: #f8fafc;
-      color: #64748b;
-      border: 1px solid #e2e8f0;
+      background: var(--color-bg-light);
+      color: var(--color-primary);
+      border: 1px solid var(--color-contrast);
       padding: 0.4rem 1.2rem;
-      border-radius: 6px; /* スッキリした角丸 */
+      border-radius: 30px;
       font-size: 0.85rem;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
-      transition: all 0.25s ease;
+      transition: var(--transition-smooth);
       width: auto;
       margin: 0;
     }
     .btn-tab:hover {
-      background: #f1f5f9;
-      color: #475569;
-      border-color: #cbd5e1;
+      border-color: var(--color-key);
     }
     .btn-tab.active {
-      background: #764ba2; /* index.htmlのメインカラーと統一 */
-      color: white;
-      border-color: #764ba2;
-      box-shadow: 0 4px 10px rgba(118, 75, 162, 0.15);
+      background: var(--color-key);
+      color: var(--color-white);
+      border-color: var(--color-key);
+      box-shadow: 0 4px 10px rgba(141, 174, 75, 0.3);
+      transform: translateY(-1px);
     }
 
-    /* 検索ボックス */
     .news-search {
-      max-width: 280px;
+      max-width: 320px;
       width: 100%;
     }
     .news-search input {
-      border-radius: 6px;
-      padding: 0.4rem 1rem;
+      border-radius: 30px;
+      padding: 0.5rem 1.2rem;
       font-size: 0.85rem;
-      border: 1px solid #cbd5e1;
-      background-color: #fff;
+      border: 1px solid var(--color-contrast);
+      background-color: var(--color-white);
       margin: 0;
-      transition: all 0.3s;
+      transition: var(--transition-smooth);
+      color: var(--color-base);
     }
     .news-search input:focus {
-      border-color: #764ba2;
-      box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.1);
+      border-color: var(--color-key);
+      box-shadow: 0 0 0 3px rgba(141, 174, 75, 0.15);
     }
 
     /* ニュースリスト */
     .news-list {
       display: flex;
       flex-direction: column;
-      gap: 0.85rem;
-      margin-bottom: 4rem;
+      gap: 1rem;
+      margin-bottom: 6rem;
     }
 
     /* 各ニュースアイテム */
     .news-item {
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.015);
+      background: var(--color-white);
+      border-radius: 12px;
+      box-shadow: var(--shadow-sm);
       overflow: hidden;
-      border: 1px solid #e2e8f0;
-      transition: transform 0.25s, box-shadow 0.25s;
-      /* 🛠️ 安全対策：万が一のJSエラー時も文字が読めるよう、ここからの opacity: 0; は削除しました */
+      border: 1px solid rgba(44, 58, 78, 0.05);
+      transition: var(--transition-smooth);
+      opacity: 0; /* anime.js でフェードインするため初期値0 */
       scroll-margin-top: 100px;
     }
     .news-item:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
-      border-color: #cbd5e1;
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      border-color: rgba(141, 174, 75, 0.3);
     }
     
-    /* 重要マーク：おしとやかな深みのある臙脂色（えんじ） */
+    /* 重要マーク：落ち着いた臙脂色（えんじ）に近い赤 */
     .news-item.important-pinned {
-      border-left: 4px solid #991b1b;
-      background: #fffbfa;
+      border-left: 4px solid #C0504D;
     }
 
-    /* クリックエリア */
     .news-header {
-      padding: 1.1rem 1.4rem;
+      padding: 1.25rem 1.5rem;
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.75rem;
       cursor: pointer;
       position: relative;
       user-select: none;
@@ -143,40 +292,44 @@
     .news-meta {
       display: flex;
       align-items: center;
-      gap: 0.65rem;
-      font-size: 0.8rem;
-      color: #64748b;
-      font-weight: 600;
+      gap: 0.75rem;
+      font-size: 0.85rem;
+      color: #64748B;
+      font-weight: 700;
       white-space: nowrap;
     }
     
-    /* バッジ：落ち着いたニュアンスカラー */
+    /* バッジ */
     .badge-cat {
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 800;
+    }
+    .badge-cat.info { background: #E2E8F0; color: #334155; }
+    .badge-cat.important { background: #FDE8E8; color: #C0504D; }
+    .badge-cat.event { background: #F3E8FF; color: #6B21A8; }
+
+    .badge-target {
+      border: 1px solid var(--color-contrast);
       padding: 0.15rem 0.5rem;
       border-radius: 4px;
       font-size: 0.75rem;
-      font-weight: 700;
-    }
-    .badge-cat.info { background: #f0f4f8; color: #334e68; }         /* 藍ねずみ色調 */
-    .badge-cat.important { background: #fde8e8; color: #991b1b; }    /* 深みのある赤 */
-    .badge-cat.event { background: #f5f3ff; color: #5b21b6; }        /* 上品な藤色 */
-
-    .badge-target {
-      border: 1px solid #e2e8f0;
-      padding: 0.1rem 0.4rem;
-      border-radius: 4px;
-      font-size: 0.7rem;
-      color: #64748b;
-      background: #f8fafc;
+      color: #64748B;
+      background: var(--color-bg-light);
     }
 
     .news-title {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: #1e293b;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--color-primary);
       margin: 0;
       flex: 1;
-      line-height: 1.6;
+      line-height: 1.5;
+      transition: color 0.3s ease;
+    }
+    .news-item:hover .news-title {
+      color: var(--color-key);
     }
 
     .news-arrow {
@@ -185,30 +338,27 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #94a3b8;
-      font-size: 0.75rem;
-      transition: transform 0.3s ease;
+      color: var(--color-contrast);
+      font-size: 0.8rem;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     .news-item.active .news-arrow {
       transform: rotate(180deg);
-      color: #764ba2;
+      color: var(--color-key);
     }
 
-    /* 詳細部分 */
+    /* 詳細部分（初期は高さ0） */
     .news-content-wrapper {
       height: 0;
       overflow: hidden;
-      background: #fafafa;
-    }
-    .news-item.important-pinned .news-content-wrapper {
-      background: #fffdfd;
+      background: var(--color-bg-light);
     }
     
     .news-content {
-      padding: 1.25rem 1.5rem;
-      border-top: 1px solid #f1f5f9;
-      font-size: 0.9rem;
-      line-height: 1.75;
+      padding: 1.5rem 1.8rem;
+      border-top: 1px solid rgba(44, 58, 78, 0.05);
+      font-size: 0.95rem;
+      line-height: 1.8;
       color: #475569;
     }
     .news-content p { margin-bottom: 0; }
@@ -216,37 +366,130 @@
     .no-news {
       text-align: center;
       padding: 4rem 2rem;
-      color: #64748b;
-      font-weight: 600;
+      color: #94A3B8;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    /* ==========================================================================
+       🌐 フッター ＆ サイトマップ（文字サイズ階層を完全に再整理）
+       ========================================================================== */
+    footer {
+      background-color: var(--color-primary-dark);
+      color: rgba(255, 255, 255, 0.8);
+      padding: 5rem 1.5rem 3rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .footer-container {
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+    .sitemap-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 3rem;
+      margin-bottom: 4rem;
+    }
+    .sitemap-item h5 {
+      color: var(--color-white);
+      font-size: 1.05rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.05em;
+    }
+    .sitemap-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+    .sitemap-links a {
+      color: rgba(255, 255, 255, 0.65);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: var(--transition-smooth);
+    }
+    .sitemap-links a:hover {
+      color: var(--color-key);
+      transform: translateX(4px);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    @media (min-width: 768px) {
+      .footer-bottom {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-end;
+      }
+    }
+    .footer-info-block p {
+      margin: 0 0 0.4rem 0;
       font-size: 0.9rem;
     }
+    .footer-info-block .school-name {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--color-white);
+    }
+    .footer-info-block a {
+      color: var(--color-key);
+      text-decoration: none;
+    }
+    
+    .copyright {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.4);
+      margin: 0;
+    }
   </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
 </head>
 <body>
 
   <header>
     <div class="header-content">
       <div class="header-title">
-        <h1>🕊️ 第70回屋代高校鳩祭</h1>
-        <p>6月27日(土)・28日(日)</p>
+        <p>第70回 屋代高校文化祭</p>
+        <h1>鳩祭</h1>
       </div>
-      <button class="menu-toggle" id="menuToggle">
-        <span></span><span></span><span></span>
+      
+      <nav class="pc-nav">
+        <ul class="pc-nav-links">
+          <li><a href="index.html">ホーム</a></li>
+          <li><a href="about.html">鳩祭について</a></li>
+          <li><a href="exhibit.html">展示紹介</a></li>
+          <li><a href="news.html" class="active">お知らせ</a></li>
+        </ul>
+      </nav>
+
+      <button class="menu-trigger" id="menuToggle" aria-label="メニューを開閉する">
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
+
+      <nav class="fullscreen-nav" id="mobileNav">
+        <ul class="nav-links">
+          <li><a href="index.html">ホーム</a></li>
+          <li><a href="about.html">鳩祭について</a></li>
+          <li><a href="exhibit.html">展示紹介</a></li>
+          <li><a href="news.html" class="active">お知らせ</a></li>
+        </ul>
+      </nav>
     </div>
-    <nav id="navMenu">
-      <a href="exhibit.html">企画展示</a>
-      <a href="index.html#visitor">来場者向け</a>
-      <a href="about.html">鳩祭について</a>
-      <a href="news.html" style="border-bottom-color: white; font-weight:700;">お知らせ</a>
-      <a href="index.html#sitemap">サイトマップ</a>
-    </nav>
   </header>
 
-  <main>
-    <section style="background:transparent; box-shadow:none; padding:0; margin-bottom: 1.5rem;">
-      <h2 style="color:#764ba2; border-bottom-color:#667eea;">📢 お知らせ・ニュース</h2>
-      <p style="color:#64748b;">鳩祭に関する最新情報や、スケジュール変更などのアナウンスをお届けします。</p>
+  <main class="container">
+    <section style="padding-top: 1rem; margin-bottom: 0;">
+      <h2 class="section-title-modern">News & Announcements</h2>
+      <p style="color: #64748B; font-weight: 600; font-size: 0.95rem;">鳩祭に関する最新情報や、スケジュール変更などのアナウンスをお届けします。</p>
     </section>
 
     <div class="news-controls">
@@ -270,20 +513,94 @@
   </main>
 
   <footer>
-    <p><strong>第70回屋代高校鳩祭 公式ウェブサイト</strong></p>
-    <p>屋代高等学校鳩祭実行委員会 / 長野県千曲市屋代1000</p>
-    <p style="margin-top: 1.5rem; font-size: 0.8rem; opacity: 0.8;">© 2026 Yashiro High School Hatosai Festival</p>
-  </footer>
+    <div class="footer-container">
+      <div class="sitemap-group">
+        <div class="sitemap-item">
+          <h5>🎈 催し物・案内</h5>
+          <div class="sitemap-links">
+            <a href="exhibit.html#classes">クラス展示系</a>
+            <a href="exhibit.html#clubs">部活動・有志発表</a>
+            <a href="exhibit.html#stages">メインステージ系</a>
+            <a href="exhibit.html#stalls">飲食・模擬店案内</a>
+          </div>
+        </div>
+        <div class="sitemap-item">
+          <h5>📍 来場者向け情報</h5>
+          <div class="sitemap-links">
+            <a href="about.html#outline">開催概要</a>
+            <a href="about.html#access">アクセス・地図</a>
+            <a href="about.html#faq">よくあるご質問 (FAQ)</a>
+          </div>
+        </div>
+        <div class="sitemap-item">
+          <h5>ℹ️ 鳩祭について</h5>
+          <div class="sitemap-links">
+            <a href="about.html#history">鳩祭の歴史</a>
+            <a href="about.html#theme">テーマ「SPARK」の由来</a>
+            <a href="about.html#message">実行委員長あいさつ</a>
+          </div>
+        </div>
+        <div class="sitemap-item">
+          <h5>📧 その他リンク</h5>
+          <div class="sitemap-links">
+            <a href="about.html#contact">お問い合わせ窓口</a>
+            <a href="https://www.nagano-c.ed.jp/yashiro/" target="_blank" rel="noopener">長野県屋代高等学校 公式HP</a>
+          </div>
+        </div>
+      </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/animejs/dist/bundles/anime.umd.min.js"></script>
-  <script src="js/common.js"></script>
+      <div class="footer-bottom">
+        <div class="footer-info-block">
+          <p class="school-name">第70回屋代高校鳩祭実行委員会</p>
+          <p>〒387-8501 長野県千曲市屋代1000</p>
+          <p>Mail: <a href="mailto:yashiro@m.nagano-c.ed.jp">yashiro@m.nagano-c.ed.jp</a></p>
+        </div>
+        <div class="footer-copyright-block">
+          <p class="copyright">© 2026 Yashiro High School Hatosai Festival. All Rights Reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      // 💡 修正：index.htmlのルールに合わせ、Anime.js(v4)の適切な呼び出し関数を定義
-      const animate = anime.animate || anime;
-      const stagger = anime.stagger;
+      
+      // ------------------------------------------------------------------------
+      // 📱 スマホメニューのトグル ＆ バウンス弾むインタラクション
+      // ------------------------------------------------------------------------
+      const menuToggle = document.getElementById('menuToggle');
+      const mobileNav = document.getElementById('mobileNav');
+      let isMenuOpen = false;
 
+      menuToggle.addEventListener('click', () => {
+        isMenuOpen = !isMenuOpen;
+        menuToggle.classList.toggle('is-active', isMenuOpen);
+        mobileNav.classList.toggle('is-open', isMenuOpen);
+
+        if (isMenuOpen) {
+          anime({
+            targets: mobileNav,
+            opacity: [0, 1],
+            translateY: [-10, 0],
+            scale: [0.95, 1],
+            duration: 500,
+            easing: 'easeOutElastic(1, .75)'
+          });
+        } else {
+          anime({
+            targets: mobileNav,
+            opacity: [1, 0],
+            translateY: [0, -10],
+            scale: [1, 0.95],
+            duration: 250,
+            easing: 'easeInQuad'
+          });
+        }
+      });
+
+      // ------------------------------------------------------------------------
+      // 📢 ニュースデータ取得と描画（機能は完全に維持）
+      // ------------------------------------------------------------------------
       let allNews = [];
       let activeCategory = 'all';
       let searchKeyword = '';
@@ -291,69 +608,46 @@
       const container = document.getElementById("newsListContainer");
       const noNewsMsg = document.getElementById("noNewsMessage");
 
-      // 💡 フォールバックデータ（予備データ）
       const defaultNewsData = [
         {
-          id: "001",
-          date: "2026-06-01",
-          category: "important",
-          category_label: "重要",
-          is_important: true,
-          title: "第70回鳩祭の一般公開に関する大切なお知らせ",
-          content: "今年の一般公開は6月27日(土)・28日(日)の2日間となります。皆様に安全にお楽しみいただくため、スリッパ等の上履きと、外履きを入れる袋をご持参いただきますようお願い申し上げます。校内は大変混雑が予想されますので、お足元に気をつけてお越しください。",
+          id: "001", date: "2026-06-01", category: "important", category_label: "重要",
+          is_important: true, title: "第70回鳩祭の一般公開に関する大切なお知らせ",
+          content: "今年の一般公開は6月27日(土)・28日(日)の2日間となります。皆様に安全にお楽しみいただくため、スリッパ等の上履きと、外履きを入れる袋をご持参いただきますようお願い申し上げます。",
           target: "来場者の皆様へ"
         },
         {
-          id: "002",
-          date: "2026-06-15",
-          category: "event",
-          category_label: "イベント",
-          is_important: false,
-          title: "メインステージ（体育館）のタイムスケジュールを公開しました",
-          content: "音楽班、軽音楽班、演劇部などによる各団体の発表時間が決定いたしました。詳細なタイムテーブルは、当ホームページの「企画展示」または当日のパンフレットをご確認ください。皆様の温かい拍手をお待ちしております。",
+          id: "002", date: "2026-06-15", category: "event", category_label: "イベント",
+          is_important: false, title: "メインステージ（体育館）のタイムスケジュールを公開しました",
+          content: "音楽班、軽音楽班、演劇部などによる各団体の発表時間が決定いたしました。詳細なタイムテーブルは、当ホームページの「企画展示」をご確認ください。",
           target: "全生徒・来場者"
         },
         {
-          id: "003",
-          date: "2026-06-20",
-          category: "info",
-          category_label: "お知らせ",
-          is_important: false,
-          title: "公式パンフレットのデジタル版を配布開始しました",
-          content: "校内で配られるパンフレットと同じ内容を、スマートフォンやタブレットからいつでもご覧いただけます。事前に見たい展示やクラス企画をチェックして、当日の巡回計画にお役立てください。",
+          id: "003", date: "2026-06-20", category: "info", category_label: "お知らせ",
+          is_important: false, title: "公式パンフレットのデジタル版を配布開始しました",
+          content: "校内で配られるパンフレットと同じ内容を、スマートフォンやタブレットからいつでもご覧いただけます。",
           target: "どなたでも"
         }
       ];
 
-      // 1. news.json からデータを取得を試みる
       fetch('data/news.json')
         .then(response => {
-          if (!response.ok) throw new Error('データ取得失敗（ファイル未配置など）');
+          if (!response.ok) throw new Error('データ取得失敗');
           return response.json();
         })
         .then(data => {
-          const newsData = Array.isArray(data)
-            ? data
-            : data.news && Array.isArray(data.news)
-              ? data.news
-              : data.items && Array.isArray(data.items)
-                ? data.items
-                : Object.values(data).find(value => Array.isArray(value)) || [];
-
-          if (!newsData.length) throw new Error('有効な配列データがありませんでした');
-
+          const newsData = Array.isArray(data) ? data : (data.news || data.items || Object.values(data).find(v => Array.isArray(v)) || []);
+          if (!newsData.length) throw new Error('有効な配列データがありません');
           allNews = newsData.sort((a, b) => new Date(b.date || b.published_at) - new Date(a.date || a.published_at));
           renderNews();
           checkDirectLink();
         })
         .catch(error => {
-          console.warn("データ取得にスキップが発生したため、内蔵データを使用します:", error.message);
           allNews = defaultNewsData.sort((a, b) => new Date(b.date) - new Date(a.date));
           renderNews();
           checkDirectLink();
         });
 
-      // 2. タブフィルター切り替え
+      // タブ切り替え機能
       document.querySelectorAll('.btn-tab').forEach(btn => {
         btn.addEventListener('click', (e) => {
           document.querySelectorAll('.btn-tab').forEach(b => b.classList.remove('active'));
@@ -363,13 +657,13 @@
         });
       });
 
-      // 3. リアルタイムキーワード検索
+      // 検索機能
       document.getElementById("newsSearchInput").addEventListener("input", (e) => {
         searchKeyword = e.target.value.toLowerCase().trim();
         renderNews();
       });
 
-      // 4. お知らせを画面に描写
+      // 描画処理
       function renderNews() {
         container.innerHTML = "";
 
@@ -419,20 +713,20 @@
           container.appendChild(newsEl);
         });
 
-        // 💡 修正：最新の anime.animate 形式に修正し、初期透明度 [0, 1] を明示
-        if (typeof animate === 'function') {
-          animate({
-            targets: '.news-item',
-            opacity: [0, 1],
-            translateY: [10, 0],
-            delay: stagger ? stagger(40) : 0,
-            duration: 350,
-            easing: 'outCubic'
-          });
-        }
+        // 描画時のスタガーアニメーション
+        anime({
+          targets: '.news-item',
+          opacity: [0, 1],
+          translateY: [20, 0],
+          delay: anime.stagger(60),
+          duration: 600,
+          easing: 'easeOutCubic'
+        });
       }
 
-      // 5. アコーディオン開閉アニメーション
+      // ------------------------------------------------------------------------
+      // 🔄 アコーディオン開閉アニメーション（機能維持）
+      // ------------------------------------------------------------------------
       function toggleAccordion(itemEl, shouldAnimateOther = true) {
         const wrapper = itemEl.querySelector('.news-content-wrapper');
         const content = itemEl.querySelector('.news-content');
@@ -443,14 +737,9 @@
             if (activeItem !== itemEl) {
               const activeWrapper = activeItem.querySelector('.news-content-wrapper');
               activeItem.classList.remove('active');
-              
-              if (typeof animate === 'function') {
-                animate({
-                  targets: activeWrapper, height: 0, duration: 200, easing: 'easeInOutQuad'
-                });
-              } else {
-                activeWrapper.style.height = '0px';
-              }
+              anime({
+                targets: activeWrapper, height: 0, duration: 250, easing: 'easeOutQuad'
+              });
             }
           });
         }
@@ -458,29 +747,24 @@
         itemEl.classList.toggle('active');
         const targetHeight = isActive ? 0 : content.offsetHeight;
 
-        // 💡 修正：最新の animate.animate 形式に修正
-        if (typeof animate === 'function') {
-          animate({
-            targets: wrapper,
-            height: targetHeight,
-            duration: 300,
-            easing: 'cubicBezier(0.25, 1, 0.5, 1)'
-          });
-        } else {
-          wrapper.style.height = targetHeight + 'px';
-        }
+        anime({
+          targets: wrapper,
+          height: targetHeight,
+          duration: 400,
+          easing: 'easeOutQuart'
+        });
       }
 
-      // 6. 外部リンク・SNS用自動展開機能
+      // 外部リンク・SNS用自動展開機能
       function checkDirectLink() {
         const hash = window.location.hash; 
         if (hash) {
           const targetItem = document.querySelector(hash);
           if (targetItem) {
             setTimeout(() => {
-              targetItem.scrollIntoView({ behavior: 'smooth' });
+              targetItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
               toggleAccordion(targetItem, false);
-            }, 400);
+            }, 600); // 描画アニメーションが終わるのを待ってから展開
           }
         }
       }
