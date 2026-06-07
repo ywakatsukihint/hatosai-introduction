@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>企画・展示・出店紹介 - 第70回屋代高校鳩祭公式ウェブサイト</title>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  
+  <link rel="stylesheet" href="css/common.css">
+
+  <style>
+    /* ==========================================================================
+       🎨 カラー＆デザインシステム（他ページから完全移植）
+       ========================================================================== */
+    :root {
+      --color-primary: #2C3A4E;     /* メイン：深みのあるブルーグレー */
+      --color-primary-dark: #131924;/* フッター用：ダークネイビー */
+      --color-key: #8DAE4B;         /* アクセント：新緑のオリーブ黄緑 */
+      --color-key-light: #F4F8EC;   /* アクセント薄色 */
+      --color-base: #222222;        /* テキスト：チャコールブラック */
+      --color-contrast: #D0D5DD;    /* 境界線：ライトグレー */
+      --color-white: #ffffff;
+      --color-bg-light: #F8FAFC;    /* 全体背景 */
+      
+      --font-noto: "Noto Sans JP", "Helvetica Neue", Arial, sans-serif;
+      --shadow-sm: 0 4px 12px rgba(44, 58, 78, 0.04);
+      --shadow-md: 0 12px 32px rgba(44, 58, 78, 0.08);
+      --shadow-lg: 0 20px 40px rgba(44, 58, 78, 0.12);
+      --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-bounce: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    body {
+      font-family: var(--font-noto);
+      background-color: var(--color-bg-light);
+      color: var(--color-base);
+      overflow-x: hidden;
+      letter-spacing: 0.05em;
+    }
+
+    /* セクション共通 */
+    section {
+      margin-bottom: 5rem;
+      padding: 0;
+      background: transparent;
+      box-shadow: none;
+      border: none;
+    }
+
+    /* ==========================================================================
+       ヘッダー ＆ 右上側・横書きナビゲーションシステム（バグ修正済）
+       ========================================================================== */
+    header {
+      background-color: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      padding: 0.8rem 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(44, 58, 78, 0.08);
+    }
+    .header-content {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header-title h1 {
+      font-size: 1.3rem; margin: 0; font-weight: 900; color: var(--color-primary); letter-spacing: 0.1em;
+    }
+    .header-title p {
+      margin: 0; font-size: 0.7rem; font-weight: 700; color: var(--color-key); text-transform: uppercase;
+    }
+
+    .pc-nav { display: none; }
+    .pc-nav-links { display: flex; list-style: none; margin: 0; padding: 0; gap: 2.2rem; }
+    .pc-nav-links a {
+      color: var(--color-primary); text-decoration: none; font-weight: 800; font-size: 0.9rem;
+      position: relative; padding: 0.4rem 0; transition: var(--transition-smooth);
+    }
+    .pc-nav-links a::after {
+      content: ""; position: absolute; bottom: 0; left: 0; width: 0; height: 2px;
+      background-color: var(--color-key); transition: var(--transition-smooth);
+    }
+    .pc-nav-links a:hover { color: var(--color-key); }
+    .pc-nav-links a:hover::after { width: 100%; }
+    .pc-nav-links a.active, .nav-links a.active { color: var(--color-key) !important; font-weight: 900; }
+    .pc-nav-links a.active::after { width: 100%; }
+
+    .menu-trigger {
+      background: none; border: none; width: 44px; height: 44px; position: relative; cursor: pointer;
+      z-index: 1100; padding: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px;
+    }
+    .menu-trigger span { display: block; width: 24px; height: 2px; background-color: var(--color-primary); transition: var(--transition-bounce); }
+    .menu-trigger.is-active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .menu-trigger.is-active span:nth-child(2) { opacity: 0; }
+    .menu-trigger.is-active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+    .fullscreen-nav {
+      position: absolute; top: 100%; right: 1.5rem; width: calc(100% - 3rem); max-width: 320px;
+      background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(20px); z-index: 1050; border-radius: 16px;
+      padding: 1.25rem; box-shadow: var(--shadow-lg); border: 1px solid rgba(44, 58, 78, 0.08);
+      opacity: 0; pointer-events: none; transform: translateY(-10px) scale(0.95);
+    }
+    .fullscreen-nav.is-open { pointer-events: auto; }
+    .nav-links { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; list-style: none; padding: 0; margin: 0; text-align: center; }
+    .nav-links a {
+      color: var(--color-primary); font-size: 0.85rem; font-weight: 800; text-decoration: none;
+      padding: 0.8rem 0.5rem; display: block; background: rgba(44, 58, 78, 0.03); border-radius: 10px; transition: var(--transition-smooth);
+    }
+    .nav-links a:hover { color: var(--color-white); background-color: var(--color-key); }
+
+    @media (min-width: 768px) { .pc-nav { display: block; } .menu-trigger { display: none; } .fullscreen-nav { display: none !important; } }
+
+    /* ==========================================================================
+       🔍 インタラクティブ・コントロールパネル（検索＆独自デザインタブ）
+       ========================================================================== */
+    .page-header { text-align: center; padding: 3rem 1rem 1.5rem 1rem; }
+    .page-header h2 { font-size: 2.2rem; font-weight: 900; color: var(--color-primary); margin-bottom: 0.5rem; letter-spacing: 0.1em; }
+    .page-header p { font-size: 0.95rem; color: #64748B; font-weight: 600; }
+
+    .control-panel {
+      background: var(--color-white); border-radius: 20px; padding: 2rem;
+      box-shadow: var(--shadow-sm); border: 1px solid var(--color-contrast);
+      max-width: 900px; margin: 0 auto 3rem auto;
+    }
+    .search-box { margin-bottom: 1.5rem; position: relative; }
+    .search-box input {
+      width: 100%; padding: 1rem 1.5rem; border: 2px solid var(--color-contrast);
+      border-radius: 12px; font-size: 1rem; font-weight: 600; background: var(--color-bg-light);
+      transition: var(--transition-smooth); margin-bottom: 0;
+    }
+    .search-box input:focus {
+      border-color: var(--color-key); background: var(--color-white);
+      box-shadow: 0 0 0 4px rgba(141, 174, 75, 0.15); outline: none;
+    }
+    
+    .filter-tabs { display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center; }
+    .filter-tab {
+      background: var(--color-bg-light); border: 1px solid var(--color-contrast);
+      color: var(--color-primary); padding: 0.6rem 1.2rem; font-size: 0.85rem; font-weight: 800;
+      border-radius: 30px; cursor: pointer; transition: var(--transition-bounce);
+    }
+    .filter-tab:hover { border-color: var(--color-key); color: var(--color-key); background: var(--color-white); }
+    .filter-tab.active { background: var(--color-key); color: var(--color-white); border-color: var(--color-key); box-shadow: 0 4px 12px rgba(141, 174, 75, 0.3); }
+
+    /* ==========================================================================
+       🗂️ リスト＆モダンアコーディオンシステム
+       ========================================================================== */
+    .exhibit-list { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; min-height: 200px; }
+    
+    .exhibit-item {
+      background: var(--color-white); border-radius: 16px; border: 1px solid var(--color-contrast);
+      box-shadow: var(--shadow-sm); overflow: hidden; transition: var(--transition-smooth);
+    }
+    .exhibit-item:hover { border-color: var(--color-key); box-shadow: var(--shadow-md); }
+    
+    /* アコーディオンのトリガー（親要素） */
+    .exhibit-trigger {
+      padding: 1.5rem 2rem; cursor: pointer; display: flex; justify-content: space-between;
+      align-items: center; user-select: none; gap: 1rem;
+    }
+    .exhibit-summary { display: flex; flex-direction: column; gap: 0.4rem; flex: 1; }
+    .exhibit-club-name { font-size: 0.85rem; font-weight: 800; color: var(--color-key); text-transform: uppercase; letter-spacing: 0.05em; }
+    .exhibit-title { font-size: 1.3rem; font-weight: 900; color: var(--color-primary); margin: 0; line-height: 1.3; }
+    
+    /* バッジ類 */
+    .exhibit-meta-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-top: 0.2rem; }
+    .badge { font-size: 0.75rem; font-weight: 800; padding: 0.25rem 0.75rem; border-radius: 6px; }
+    .badge-cat { background: var(--color-primary); color: var(--color-white); }
+    .badge-loc { background: #E2E8F0; color: #475569; }
+    .badge-price { background: var(--color-key-light); color: var(--color-key); border: 1px solid rgba(141, 174, 75, 0.3); }
+    .badge-price.is-paid { background: #FFF5F5; color: #E53E3E; border: 1px solid rgba(229, 62, 62, 0.2); }
+
+    .arrow-icon { font-size: 1.1rem; color: var(--color-contrast); transition: var(--transition-bounce); }
+    .exhibit-item.active .arrow-icon { transform: rotate(180deg); color: var(--color-key); }
+
+    /* アコーディオンの中身（開閉領域） */
+    .exhibit-content-wrapper { height: 0; overflow: hidden; }
+    .exhibit-details { padding: 0 2rem 2rem 2rem; border-top: 1px dashed var(--color-contrast); pt: 1.5rem; margin-top: 0; }
+    
+    /* 詳細内部のグリッド */
+    .details-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-top: 1.5rem; }
+    @media(min-width: 768px) { .details-grid { grid-template-columns: 2fr 1fr; } }
+    
+    .details-main h4 { font-size: 1.05rem; font-weight: 800; color: var(--color-primary); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+    .details-main p { color: #475569; font-size: 0.95rem; line-height: 1.7; margin: 0; }
+    
+    .details-side { background: var(--color-bg-light); padding: 1.25rem; border-radius: 12px; border: 1px solid var(--color-contrast); display: flex; flex-direction: column; gap: 0.8rem; }
+    .side-info-item { font-size: 0.85rem; font-weight: 600; color: #475569; }
+    .side-info-item strong { color: var(--color-primary); font-weight: 800; display: block; margin-bottom: 0.1rem; font-size: 0.9rem; }
+    
+    /* 注意事項ボックス */
+    .notice-box { background: #FFFDF5; border-left: 4px solid #D97706; padding: 1rem; border-radius: 4px 8px 8px 4px; margin-top: 1rem; }
+    .notice-box strong { color: #B45309; font-size: 0.85rem; font-weight: 800; display: block; margin-bottom: 0.25rem; }
+    .notice-box p { font-size: 0.85rem; color: #78350F; margin: 0; line-height: 1.6; }
+
+    /* ヒット件数なし表示 */
+    .no-results { text-align: center; padding: 4rem 1rem; color: #64748B; font-weight: 700; font-size: 1.1rem; display: none; }
+
+    /* ==========================================================================
+       🌐 フッター ＆ サイトマップ
+       ========================================================================== */
+    footer { background-color: var(--color-primary-dark); color: rgba(255, 255, 255, 0.8); padding: 5rem 1.5rem 3rem; border-top: 1px solid rgba(255, 255, 255, 0.06); }
+    .footer-container { max-width: 1300px; margin: 0 auto; }
+    .sitemap-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 3rem; margin-bottom: 4rem; }
+    .sitemap-item h5 { color: var(--color-white); font-size: 1.05rem; font-weight: 800; margin-bottom: 1.5rem; letter-spacing: 0.05em; }
+    .sitemap-links { display: flex; flex-direction: column; gap: 0.9rem; }
+    .sitemap-links a { color: rgba(255, 255, 255, 0.65); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: var(--transition-smooth); }
+    .sitemap-links a:hover { color: var(--color-key); transform: translateX(4px); }
+    .footer-bottom { border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 2.5rem; display: flex; flex-direction: column; gap: 1.5rem; }
+    @media (min-width: 768px) { .footer-bottom { flex-direction: row; justify-content: space-between; align-items: flex-end; } }
+    .footer-info-block p { margin: 0 0 0.4rem 0; font-size: 0.9rem; }
+    .footer-info-block .school-name { font-size: 1.1rem; font-weight: 800; color: var(--color-white); }
+    .footer-info-block a { color: var(--color-key); text-decoration: none; }
+    .copyright { font-size: 0.75rem; color: rgba(255, 255, 255, 0.4); margin: 0; }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+</head>
+<body>
+
+  <header>
+    <div class="header-content">
+      <div class="header-title">
+        <p>第70回 屋代高校文化祭</p>
+        <h1>鳩祭</h1>
+      </div>
+      
+      <nav class="pc-nav">
+        <ul class="pc-nav-links">
+          <li><a href="index.html">ホーム</a></li>
+          <li><a href="about.html">鳩祭について</a></li>
+          <li><a href="exhibit.html" class="active">展示紹介</a></li>
+          <li><a href="news.html">お知らせ</a></li>
+          <li><a href="access.html">アクセス</a></li>
+        </ul>
+      </nav>
+
+      <button class="menu-trigger" id="menuToggle" aria-label="メニューを開閉する">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="fullscreen-nav" id="mobileNav">
+        <ul class="nav-links">
+          <li><a href="index.html">ホーム</a></li>
+          <li><a href="about.html">鳩祭について</a></li>
+          <li><a href="exhibit.html" class="active">展示紹介</a></li>
+          <li><a href="news.html">お知らせ</a></li>
+          <li><a href="access.html">アクセス</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    
+    <div class="page-header animate__animated animate__fadeIn">
+      <h2>企画・展示紹介</h2>
+      <p>EXHIBITS & CLUBS</p>
+    </div>
+
+    <div class="control-panel animate__animated animate__fadeInUp">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="班活名、催し物名、場所などでキーワード検索...">
+      </div>
+      <div class="filter-tabs">
+        <button class="filter-tab active" data-category="all">すべて</button>
+        <button class="filter-tab" data-category="exhibit">🎨 展示・学術</button>
+        <button class="filter-tab" data-category="performance">🎺 公演・ステージ</button>
+        <button class="filter-tab" data-category="food">🥞 食品・物販・体験</button>
+      </div>
+    </div>
+
+    <section>
+      <div class="exhibit-list" id="exhibitContainer">
+        </div>
+      <div class="no-results" id="noResultsBlock">
+        🔍 条件に一致する企画が見つかりませんでした。別のキーワードをお試しください。
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="sitemap-group">
+        <div class="sitemap-item">
+          <h5>🎈 催し物・案内</h5>
+          <div class="sitemap-links">
+            <a href="exhibit.html">クラス展示・班活一覧</a>
+            <a href="index.html#highlights">ハイライト企画</a>
+          </div>
+        </div>
+        <div class="sitemap-item">
+          <h5>📍 来場者向け情報</h5>
+          <div class="sitemap-links">
+            <a href="about.html#outline">開催概要</a>
+            <a href="access.html">アクセス・地図</a>
+            <a href="about.html#faq">よくあるご質問 (FAQ)</a>
+          </div>
+        </div>
+        <div class="sitemap-item">
+          <h5>ℹ️ 鳩祭について</h5>
+          <div class="sitemap-links">
+            <a href="about.html#history">鳩祭の歴史</a>
+            <a href="about.html#theme">テーマ「SPARK」の由来</a>
+            <a href="about.html#message">実行委員長あいさつ</a>
+          </div>
+        </div>
+        <div class="sitemap-item">
+          <h5>📧 その他リンク</h5>
+          <div class="sitemap-links">
+            <a href="about.html#contact">お問い合わせ窓口</a>
+            <a href="https://www.nagano-c.ed.jp/yashiro/" target="_blank" rel="noopener">長野県屋代高等学校 公式HP</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-info-block">
+          <p class="school-name">第70回屋代高校鳩祭実行委員会</p>
+          <p>〒387-8501 長野県千曲市屋代1000</p>
+          <p>Mail: <a href="mailto:yashiro@m.nagano-c.ed.jp">yashiro@m.nagano-c.ed.jp</a></p>
+        </div>
+        <div class="footer-copyright-block">
+          <p class="copyright">© 2026 Yashiro High School Hatosai Festival. All Rights Reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // 🗂️ 1. バックアップ用デモデータ（JSONが読み込めない場合でも正常に動作します）
+    const demoData = [
+      {
+        "id": "ex-001",
+        "clubName": "吹奏楽班",
+        "title": "SPARKLE CONCERT 2026",
+        "category": "performance",
+        "price": "無料",
+        "location": "第一体育館",
+        "time": "27日 11:00〜 / 28日 13:00〜",
+        "description": "クラシックの本格名曲から最新ヒットメドレーまで、全員の心を一つに熱いサウンドをお届けします！誰もが楽しめるステージをぜひご覧ください。",
+        "notice": "開場は開演の15分前です。満席となった場合は安全のため入場制限を行う場合がございますので、お早めにお越しください。"
+      },
+      {
+        "id": "ex-002",
+        "clubName": "茶道班",
+        "title": "鳩庵（はとあん）お茶会",
+        "category": "food",
+        "price": "300円 (お菓子付き)",
+        "location": "管理棟2階 作法室",
+        "time": "両日 9:30〜15:00",
+        "description": "日頃の稽古の成果を美味しいお抹茶とお菓子に込めておもてなしいたします。お作法を知らない方、初めての方も大歓迎ですのでお気軽に足を運んでみてください。",
+        "notice": "お菓子には小麦・卵が含まれる場合があります。用意している数がなくなり次第、終了とさせていただきます。"
+      },
+      {
+        "id": "ex-003",
+        "clubName": "美術班",
+        "title": "屋代アトリエ展 2026",
+        "category": "exhibit",
+        "price": "無料",
+        "location": "特別棟3階 美術室",
+        "time": "両日 終日開催",
+        "description": "油絵、水彩画、立体造形からデジタルイラストまで、班員たちが数ヶ月かけて情熱を注いだ個性が光る作品を展示しています。大型の共同制作壁画は必見です！",
+        "notice": "展示作品にはお手を触れないようお願いいたします。室内での飲食はご遠慮ください。"
+      },
+      {
+        "id": "ex-004",
+        "clubName": "化学班",
+        "title": "ミラクルサイエンス実験ショー",
+        "category": "exhibit",
+        "price": "無料",
+        "location": "特別棟2階 化学講義室",
+        "time": "各日 10:00 / 14:00 (1日2回公演)",
+        "description": "激しい色の変化や、不思議な結晶の出現、ドキドキの炎色反応など、子供から大人までワクワクできる科学実験ショーを行います。体験コーナーもあります！",
+        "notice": "安全のため、スタッフの指示には必ず従ってください。実験中は前列のお子様は保護者同伴での着席をお願いします。"
+      }
+    ];
+
+    let allExhibits = [];
+    let currentCategory = 'all';
+    let currentKeyword = '';
+
+    document.addEventListener("DOMContentLoaded", () => {
+      
+      // 📱 スマホメニュー開閉
+      const menuToggle = document.getElementById('menuToggle');
+      const mobileNav = document.getElementById('mobileNav');
+      let isMenuOpen = false;
+
+      menuToggle.addEventListener('click', () => {
+        isMenuOpen = !isMenuOpen;
+        menuToggle.classList.toggle('is-active', isMenuOpen);
+        mobileNav.classList.toggle('is-open', isMenuOpen);
+        if (isMenuOpen) {
+          anime({ targets: mobileNav, opacity: [0, 1], translateY: [-10, 0], scale: [0.95, 1], duration: 400, easing: 'easeOutElastic(1, .8)' });
+        } else {
+          anime({ targets: mobileNav, opacity: [1, 0], translateY: [0, -10], scale: [1, 0.95], duration: 200, easing: 'easeInQuad' });
+        }
+      });
+
+      // 🌐 2. JSONデータのフェッチ
+      // 本番環境では 'data/exhibits.json' 等のパスに差し替えてご使用ください。
+      fetch('data/exhibits.json')
+        .then(res => res.ok ? res.json() : Promise.reject())
+        .then(data => {
+          allExhibits = data;
+          initPage();
+        })
+        .catch(() => {
+          console.warn("JSONの読み込みに失敗したかファイルがないため、デモデータを適用します。");
+          allExhibits = demoData;
+          initPage();
+        });
+    });
+
+    // 🌐 3. 初期設定
+    function initPage() {
+      renderList();
+
+      // キーワード検索のイベントリスナー
+      document.getElementById('searchInput').addEventListener('input', (e) => {
+        currentKeyword = e.target.value.toLowerCase().trim();
+        renderList();
+      });
+
+      // カテゴリタブのイベントリスナー
+      document.querySelectorAll('.filter-tab').forEach(tab => {
+        tab.addEventListener('click', (e) => {
+          document.querySelector('.filter-tab.active').classList.remove('active');
+          e.target.classList.add('active');
+          currentCategory = e.target.getAttribute('data-category');
+          renderList();
+        });
+      });
+    }
+
+    // 🌐 4. リストの動的描画
+    function renderList() {
+      const container = document.getElementById('exhibitContainer');
+      const noResults = document.getElementById('noResultsBlock');
+      container.innerHTML = '';
+
+      // フィルタリング処理
+      const filtered = allExhibits.filter(item => {
+        const matchesCategory = (currentCategory === 'all' || item.category === currentCategory);
+        const matchesKeyword = (
+          item.clubName.toLowerCase().includes(currentKeyword) ||
+          item.title.toLowerCase().includes(currentKeyword) ||
+          item.location.toLowerCase().includes(currentKeyword) ||
+          item.description.toLowerCase().includes(currentKeyword)
+        );
+        return matchesCategory && matchesKeyword;
+      });
+
+      if (filtered.length === 0) {
+        noResults.style.display = 'block';
+        return;
+      } else {
+        noResults.style.display = 'none';
+      }
+
+      // 要素の組み立て
+      filtered.forEach(item => {
+        const isPaid = item.price !== '無料' && !item.price.includes('0円');
+        const catLabels = { exhibit: '展示・学術', performance: '公演・ステージ', food: '食品・物販・体験' };
+        
+        const itemHtml = `
+          <div class="exhibit-item" id="${item.id}">
+            <div class="exhibit-trigger">
+              <div class="exhibit-summary">
+                <span class="exhibit-club-name">${item.clubName}</span>
+                <h3 class="exhibit-title">${item.title}</h3>
+                <div class="exhibit-meta-tags">
+                  <span class="badge badge-cat">${catLabels[item.category] || 'その他'}</span>
+                  <span class="badge badge-loc">📍 ${item.location}</span>
+                  <span class="badge badge-price ${isPaid ? 'is-paid' : ''}">${item.price}</span>
+                </div>
+              </div>
+              <div class="arrow-icon">▼</div>
+            </div>
+            <div class="exhibit-content-wrapper">
+              <div class="exhibit-details">
+                <div class="details-grid">
+                  <div class="details-main">
+                    <h4>💡 企画の紹介</h4>
+                    <p>${item.description}</p>
+                    ${item.notice ? `
+                      <div class="notice-box">
+                        <strong>⚠️ 注意事項・おねがい</strong>
+                        <p>${item.notice}</p>
+                      </div>
+                    ` : ''}
+                  </div>
+                  <div class="details-side">
+                    <div class="side-info-item">
+                      <strong>📍 開催場所</strong>
+                      <span>${item.location}</span>
+                    </div>
+                    <div class="side-info-item">
+                      <strong>🕒 開催時間スケジュール</strong>
+                      <span>${item.time || '両日終日開催'}</span>
+                    </div>
+                    <div class="side-info-item">
+                      <strong>💰 金額・料金</strong>
+                      <span>${item.price}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        container.insertAdjacentHTML('beforeend', itemHtml);
+      });
+
+      // アコーディオンの開閉イベントをセット
+      setupAccordion();
+    }
+
+    // 🌐 5. アコーディオンのアニメーション制御 (Anime.js)
+    function setupAccordion() {
+      const items = document.querySelectorAll('.exhibit-item');
+
+      items.forEach(item => {
+        const trigger = item.querySelector('.exhibit-trigger');
+        const wrapper = item.querySelector('.exhibit-content-wrapper');
+        const details = item.querySelector('.exhibit-details');
+
+        trigger.addEventListener('click', () => {
+          const isActive = item.classList.contains('active');
+
+          // 他の開いているアコーディオンを自動で閉じる処理（見やすさ向上）
+          items.forEach(otherItem => {
+            if (otherItem !== item && otherItem.classList.contains('active')) {
+              otherItem.classList.remove('active');
+              anime({
+                targets: otherItem.querySelector('.exhibit-content-wrapper'),
+                height: 0,
+                duration: 300,
+                easing: 'easeOutQuad'
+              });
+            }
+          });
+
+          // 自身のトグル
+          if (isActive) {
+            item.classList.remove('active');
+            anime({
+              targets: wrapper,
+              height: 0,
+              duration: 300,
+              easing: 'easeOutQuad'
+            });
+          } else {
+            item.classList.add('active');
+            anime({
+              targets: wrapper,
+              height: details.offsetHeight,
+              duration: 450,
+              easing: 'cubicBezier(0.16, 1, 0.3, 1)' // 滑らかなモダンイージング
+            });
+          }
+        });
+      });
+    }
+  </script>
+</body>
+</html>
