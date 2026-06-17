@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>第70回屋代高校鳩祭公式ウェブサイト</title>
   
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
   
   <!--
@@ -29,20 +28,27 @@
     12. その他、細かなスタイル調整やユーティリティクラス
     */
 
+
     /* ==========================================================================
        🎨 カラー＆デザインシステム（グラフィカル・モダンエディション）
        ========================================================================== */
     :root {
-      --color-primary: #2C3A4E;     /* メメイン：深みのあるブルーグレー */
+      --color-primary: #2C3A4E;     /* メイン：深みのあるブルーグレー */
       --color-primary-dark: #131924;/* フッター用：超高コントラスト用ダークネイビー */
       --color-key: #8DAE4B;         /* アクセント：新緑のオリーブ黄緑（彩度調整版） */
-      --color-key-light: #F4F8EC;   /* アクセント薄色：背景用 */
-      --color-base: #222222;        /* テキスト：極めて視認性の高いチャコールブラック */
-      --color-contrast: #D0D5DD;    /* 境界線：明瞭なライトグレー */
-      --color-white: #ffffff;
+      --color-key-light: #F4F8EC;   /* アクセント薄色：背景・タグ用 */
+      --color-base: #222222;        /* テキスト：基本文字色（チャコールブラック） */
+      --color-contrast: #E2E8F0;    /* 境界線：洗練された薄いグレー */
+      --color-white: #ffffff;       /* 純白：クリーンでモダンな印象を与えるための純白 */
       --color-bg-clear: rgba(255, 255, 255, 0.75); /* 透明背景：ガラスのような質感を演出 */
       --color-bg-light: #F8FAFC;    /* 全体背景：透明感と清潔感のあるライトスレート */
       --color-border: rgba(120, 120, 120, 0.342); /* 汎用的な半透明ボーダーカラー */
+      
+      /* Pico.cssのデフォルトカラーをデザインシステムに完全強制同期（色の競合を解消） */
+      --pico-primary: var(--color-primary);
+      --pico-background-color: var(--color-white);
+      --pico-color: var(--color-base);
+      --pico-typography-spacing: 1.6;
       
       --font-noto: "Noto Sans JP", "Helvetica Neue", Arial, sans-serif; /* 日本語に最適化されたモダンなサンセリフフォントスタック */
       --shadow-sm: 0 4px 12px rgba(44, 58, 78, 0.04); /* 軽やかな影：カードやセクションの下に */
@@ -50,6 +56,7 @@
       --shadow-lg: 0 20px 40px rgba(44, 58, 78, 0.12);  /* 強い影：ヒーローエリアやモーダルなどの際立たせたい要素に */
       --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);  /* 滑らかなトランジション：全体的な動きの統一感を高めるためのカスタムイージング */
       --transition-bounce: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);  /* バウンスエフェクト：インタラクションに楽しい弾みを加えるためのカスタムイージング */
+      
     }
 
     * {
@@ -95,11 +102,12 @@
 
     /* セクション共通（美しい余白システム） */
     section {
+      padding: 5rem 2rem !important;
       margin-bottom: 8rem;
-      padding: 4rem 0;
-      background: transparent;
-      box-shadow: none;
-      border: none;
+      border: none !important;
+      width: 95% !important;
+      max-width: 1200px !important;
+      background: transparent; /* デフォルト背景を透過してカスタム背景を見せる */
     }
     
     /* 📱 【改善】モバイル環境での情報密度向上のための余白調整 */
@@ -111,12 +119,13 @@
     }
 
     .section-title-modern {
-      font-size: 1.5rem;
+      font-size: 2.2rem;
       font-weight: 800;
       color: var(--color-primary);
-      letter-spacing: 0.2em;
-      margin-bottom: 2.5rem;
-      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 3.5rem;
+      letter-spacing: 0.1em;
+      position: relative;
       display: flex;
       align-items: center;
       gap: 1rem;
@@ -124,8 +133,12 @@
     .section-title-modern::after {
       content: "";
       flex: 1;
-      height: 1px;
+      height: 3px;
       background: linear-gradient(to right, var(--color-contrast), transparent);
+      display: block;
+      width: 40px;
+      margin: 1rem auto 0;
+      border-radius: 2px;
     }
 
     /* ==========================================================================
@@ -457,6 +470,12 @@
     /* ==========================================================================
        ✨ Festival Highlights（Showcase カード）
        ========================================================================== */
+    .showcase-section {
+      position: relative;
+      background-color: #ffffff;
+      /* 中心から外側に向かって、極薄のオリーブ黄緑がフワッと消えていくグラデーション */
+      background-image: radial-gradient(circle at 80% 20%, rgba(141, 174, 75, 0.08) 0%, transparent 50%);
+    }
     .showcase-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -498,6 +517,14 @@
     /* ==========================================================================
        🕊️ About ＆ Theme セクション
        ========================================================================== */
+    .about-summary-section {
+      position: relative;
+      background-size: cover;
+      background-position: center;
+      clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
+      margin-bottom: 0;
+      padding-bottom: 8em;
+    }
     .about-layout {
       display: grid;
       grid-template-columns: 1fr;
@@ -539,7 +566,7 @@
       font-size: 0.95rem;
       line-height: 1.7;
       margin: 0;
-      color: #334155;
+      color: var(--color-contrast);
     }
 
     /* ==========================================================================
@@ -716,6 +743,7 @@
     .footer-info-block p {
       margin: 0 0 0.4rem 0;
       font-size: 0.9rem;
+      color: var(--color-white);
     }
     .footer-info-block .school-name {
       font-size: 1.1rem;
@@ -729,8 +757,254 @@
     
     .copyright {
       font-size: 0.75rem; /* コピーライトは最も小さく静かに配置 */
-      color: rgba(255, 255, 255, 0.4);
+      color: rgba(255, 255, 255, 0.645);
       margin: 0;
+    }
+
+
+
+    /* ==========================================================================
+       🌐 2. ヘッダー ＆ ナビゲーション
+       ========================================================================== */
+    .main-header-modern {
+      background: rgba(255, 255, 255, 0.85) !important;
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(44, 58, 78, 0.08);
+      position: fixed;
+      top: 0; width: 100%; z-index: 1000;
+      padding: 0.75rem 2rem;
+    }
+    .nav-link-modern {
+      color: var(--color-primary) !important;
+      font-weight: 600;
+      transition: color 0.25s ease;
+    }
+    .nav-link-modern:hover {
+      color: var(--color-key) !important;
+      background: transparent !important;
+    }
+
+    /* ==========================================================================
+       🖼️ 3. マルチレイヤーヒーローエリア
+       ========================================================================== */
+    .hero-container {
+      padding-top: 120px !important;
+      padding-bottom: 8rem !important;
+      background: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%);
+      position: relative;
+    }
+
+    /* ==========================================================================
+       📢 4. Latest News セクション（テック系ミニマル・グリッド）
+       ========================================================================== */
+    .bg-grid-mesh {
+      background-color: var(--color-white) !important;
+      background-image: 
+        linear-gradient(rgba(44, 58, 78, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(44, 58, 78, 0.02) 1px, transparent 1px) !important;
+      background-size: 45px 45px !important;
+    }
+    /* ニュース行の競合解消と美化 */
+    .anime-news-row {
+      background: var(--color-white) !important;
+      border: 1px solid var(--color-contrast) !important;
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      transition: all 0.3s ease;
+      text-decoration: none !important;
+    }
+    .anime-news-row:hover {
+      border-color: var(--color-key) !important;
+      box-shadow: 0 10px 20px rgba(44, 58, 78, 0.05);
+      transform: translateY(-2px);
+    }
+    .news-date-badge {
+      background: var(--color-key-light);
+      color: var(--color-primary);
+      font-weight: 700;
+      padding: 0.25rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+    .news-title-text {
+      color: var(--color-base) !important;
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       ✨ 5. Festival Highlights（幻想的ダブルグロウ ＆ グラスモルフィズム）
+       ========================================================================== */
+    .bg-glow-cluster {
+      background-color: var(--color-white) !important;
+      background-image: 
+        radial-gradient(circle at 85% 15%, rgba(141, 174, 75, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 15% 85%, rgba(44, 58, 78, 0.05) 0%, transparent 60%) !important;
+    }
+    /* Pico.cssのデフォルトarticleカードのスタイルを完全上書き一新 */
+    .bg-glow-cluster .anime-card {
+      background: rgba(255, 255, 255, 0.75) !important;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(44, 58, 78, 0.08) !important;
+      border-radius: 16px !important;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(44, 58, 78, 0.02) !important;
+      margin-bottom: 0 !important; /* グリッド崩れ防止 */
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+    .bg-glow-cluster .anime-card:hover {
+      transform: translateY(-8px) scale(1.02) !important;
+      box-shadow: 0 25px 50px rgba(44, 58, 78, 0.12) !important;
+      border-color: rgba(141, 174, 75, 0.4) !important;
+    }
+    .img-zoom-wrapper {
+      overflow: hidden;
+      aspect-ratio: 16 / 10;
+      width: 100%;
+    }
+    .img-zoom-wrapper img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .bg-glow-cluster .anime-card:hover .img-zoom-wrapper img {
+      transform: scale(1.08);
+    }
+    .showcase-card-body {
+      padding: 1.5rem !important;
+    }
+    .showcase-card-body h3 {
+      font-size: 1.3rem;
+      color: var(--color-primary);
+      margin-bottom: 0.75rem;
+    }
+
+    /* ==========================================================================
+       🕊️ 6. About ＆ Theme（非日常的な斜めカット・ダークセクション）
+       ========================================================================== */
+    .bg-dark-slanted {
+      background-color: var(--color-primary) !important;
+      color: var(--color-white) !important;
+      clip-path: polygon(0 4vw, 100% 0, 100% calc(100% - 4vw), 0 100%);
+      padding: calc(6rem + 4vw) 2rem !important;
+      margin-top: -4vw !important;
+      margin-bottom: -4vw !important;
+      position: relative;
+      z-index: 2;
+    }
+    /* ダークセクション内の色の衝突を完全解決 */
+    .bg-dark-slanted .section-title-modern {
+      color: var(--color-key) !important;
+    }
+    .bg-dark-slanted .section-title-modern::after {
+      background: var(--color-key) !important;
+    }
+    .bg-dark-slanted .about-lead {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--color-white) !important;
+      line-height: 1.5;
+    }
+    .bg-dark-slanted .about-text {
+      color: rgba(255, 255, 255, 0.85) !important;
+    }
+    /* コールアウト要素の美化 */
+    .bg-dark-slanted .theme-accent-callout {
+      background: rgba(255, 255, 255, 0.05) !important;
+      border-left: 4px solid var(--color-key) !important;
+      border-top: none !important; border-right: none !important; border-bottom: none !important;
+      border-radius: 0 12px 12px 0;
+      padding: 1.5rem !important;
+      color: var(--color-white) !important;
+    }
+    .bg-dark-slanted .theme-accent-callout h4 {
+      color: var(--color-key) !important;
+      margin-bottom: 0.5rem;
+    }
+    .about-image-block img {
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    /* ==========================================================================
+       ℹ️ 7. 開催情報 ＆ FAQ（落ち着いたニュートラルグレー ＆ 巨大カード）
+       ========================================================================== */
+    .bg-info-neutral {
+      background-color: #F8FAFC !important;
+      padding-top: calc(5rem + 4vw) !important; /* 斜めセクションのめり込み防止 */
+      position: relative;
+      z-index: 1;
+    }
+    /* 巨大インフォカードの上書き一新 */
+    .anime-huge-card {
+      background: var(--color-white) !important;
+      border: 1px solid var(--color-contrast) !important;
+      border-radius: 20px !important;
+      padding: 3rem !important;
+      box-shadow: 0 15px 35px rgba(44, 58, 78, 0.04) !important;
+    }
+    .anime-huge-card h3 {
+      color: var(--color-primary);
+      border-bottom: 2px solid var(--color-key);
+      padding-bottom: 0.5rem;
+      margin-bottom: 2rem;
+    }
+    /* Pico.cssのdetails(アコーディオン)を美しく洗練 */
+    .anime-huge-card details {
+      border-bottom: 1px solid var(--color-contrast) !important;
+      padding: 0.5rem 0;
+    }
+    .anime-huge-card details summary {
+      font-weight: 600;
+      color: var(--color-primary);
+      transition: color 0.2s ease;
+    }
+    .anime-huge-card details summary:hover {
+      color: var(--color-key);
+    }
+
+    /* ==========================================================================
+       🤝 8. 協賛枠
+       ========================================================================== */
+    .bg-info-neutral .anime-sponsor {
+      background: rgba(255, 255, 255, 0.6) !important;
+      border: 1px dashed var(--color-contrast) !important;
+      border-radius: 12px;
+      color: var(--color-primary);
+      font-weight: 500;
+    }
+
+    /* ==========================================================================
+       🌐 9. フッター ＆ サイトマップ
+       ========================================================================== */
+    .footer-modern {
+      background-color: var(--color-primary-dark) !important;
+      color: rgba(255, 255, 255, 0.7) !important;
+      padding: 5rem 2rem 2rem !important;
+      border: none !important;
+    }
+    .footer-modern h4 {
+      color: var(--color-key) !important;
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.05em;
+    }
+    .sitemap-item a {
+      color: rgba(255, 255, 255, 0.8) !important;
+      text-decoration: none;
+      transition: color 0.2s ease;
+      font-size: 0.95rem;
+    }
+    .sitemap-item a:hover {
+      color: var(--color-key) !important;
+    }
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+      padding-top: 2rem;
+      margin-top: 3rem;
+      font-size: 0.85rem;
     }
   </style>
 
@@ -794,7 +1068,7 @@
 
     <div class="container">
 
-      <section class="news-section anime-reveal" id="news">
+      <section class="news-section anime-reveal bg-grid-mesh" id="news">
         <h2 class="section-title-modern">Latest News</h2>
         <div class="news-grid-mini" id="newsMiniContainer">
           <a href="news.html" class="news-mini-item anime-news-row">
@@ -858,7 +1132,7 @@
         </div>
       </section>
 
-      <section class="about-summary-section" id="about">
+      <section class="about-summary-section bg-dark-slanted" id="about">
         <h2 class="section-title-modern">About Hatosai & Theme</h2>
         <div class="about-layout">
           <div class="about-text-block">
@@ -873,14 +1147,14 @@
             </div>
           </div>
           <div class="about-image-block">
-            <div class="img-zoom-wrapper" style="box-shadow: var(--shadow-lg); height: 400px;">
-              <img src="https://picsum.photos/id/107/800/1000" alt="テーマSPARKイメージ" class="initial-zoom">
+            <div class="img-zoom-wrapper" style="box-shadow: var(--shadow-lg);">
+              <img src="https://picsum.photos/id/107/600/400" alt="テーマSPARKイメージ" class="initial-zoom">
             </div>
           </div>
         </div>
       </section>
 
-      <section class="info-links-section" id="visitor">
+      <section class="info-links-section bg-info-neutral" id="visitor">
         <h2 class="section-title-modern">Visitor Information</h2>
         <div class="huge-cards-grid">
           
@@ -936,7 +1210,7 @@
     <div class="footer-container">
       <div class="sitemap-group">
         <div class="sitemap-item">
-          <h5>🎈 催し物・案内</h5>
+          <h5>催し物・案内</h5>
           <div class="sitemap-links">
             <a href="exhibit.html#classes">クラス展示系</a>
             <a href="exhibit.html#clubs">部活動・有志発表</a>
@@ -945,7 +1219,7 @@
           </div>
         </div>
         <div class="sitemap-item">
-          <h5>📍 来場者向け情報</h5>
+          <h5>来場者向け情報</h5>
           <div class="sitemap-links">
             <a href="about.html#outline">開催概要</a>
             <a href="about.html#access">アクセス・地図</a>
@@ -953,7 +1227,7 @@
           </div>
         </div>
         <div class="sitemap-item">
-          <h5>ℹ️ 鳩祭について</h5>
+          <h5>鳩祭について</h5>
           <div class="sitemap-links">
             <a href="about.html#history">鳩祭の歴史</a>
             <a href="about.html#theme">テーマ「SPARK」の由来</a>
@@ -961,7 +1235,7 @@
           </div>
         </div>
         <div class="sitemap-item">
-          <h5>📧 その他リンク</h5>
+          <h5>その他リンク</h5>
           <div class="sitemap-links">
             <a href="about.html#contact">お問い合わせ窓口</a>
             <a href="https://www.nagano-c.ed.jp/yashiro/" target="_blank" rel="noopener">長野県屋代高等学校 公式HP</a>

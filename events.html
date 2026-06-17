@@ -1,75 +1,568 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>企画紹介 - 第70回屋代高校鳩祭公式ウェブサイト</title>
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
-    >
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css"
-    >
-    <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
-    <style>
-        body { font-family: "Yu Gothic", sans-serif; margin: 0; padding: 0; background: #f7f7f7; color: #333; }
-        header { background: #154c79; color: #fff; padding: 30px 20px; text-align: center; }
-        main { max-width: 960px; margin: 30px auto; padding: 0 20px; }
-        h1, h2 { margin-bottom: 12px; }
-        section { background: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 24px; padding: 24px; }
-        .event-list { list-style: none; padding: 0; margin: 0; }
-        .event-item { margin-bottom: 18px; }
-        .event-item h3 { margin: 0 0 8px; }
-        .event-item p { margin: 0; line-height: 1.7; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>本部・実行委員会企画 - 第70回屋代高校鳩祭公式ウェブサイト</title>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link rel="stylesheet" href="css/common.css">
+
+  <style>
+    /* ==========================================================================
+       🎨 カラー＆デザインシステム（index.htmlから完全移植・洗練）
+       ========================================================================== */
+    :root {
+      --color-primary: #2C3A4E;     /* メイン：深みのあるブルーグレー */
+      --color-primary-dark: #131924;/* フッター用：超高コントラスト用ダークネイビー */
+      --color-key: #8DAE4B;         /* アクセント：新緑のオリーブ黄緑 */
+      --color-key-light: #F4F8EC;   /* アクセント薄色：自然の爽やかさ */
+      --color-base: #222222;        /* テキスト：チャコールブラック */
+      --color-contrast: #E2E8F0;    /* 境界線：ライトグレー */
+      --color-white: #ffffff;
+      --color-bg-light: #F8FAFC;    /* ベース背景：淡いグレーホワイト */
+
+      --font-noto: "Noto Sans JP", "Helvetica Neue", Arial, sans-serif; /* 日本語に最適化されたモダンなサンセリフフォントスタック */
+    }
+
+    body {
+      background-color: var(--color-bg-light);
+      color: var(--color-base);
+      font-family: var(--font-noto);
+      overflow-x: hidden;
+    }
+
+    /* 🌿 自然で淡やかなオーガニックグラフィック装飾 */
+    .nature-bg-decoration {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100%;
+      height: 700px;
+      background: radial-gradient(circle at 85% -10%, var(--color-key-light) 0%, transparent 60%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* ==========================================================================
+       🧱 共通ヘッダーシステム（index.htmlと完全同期仕様）
+       ========================================================================== */
+    .main-header {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(44, 58, 78, 0.06);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 0.75rem 0;
+      transition: all 0.3s ease;
+    }
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header-logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    .logo-text {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: var(--color-primary);
+      letter-spacing: 0.05em;
+    }
+    .nav-menu {
+      display: flex;
+    }
+    .nav-menu ul {
+      display: flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      gap: 1.75rem;
+    }
+    .nav-menu a {
+      color: var(--color-primary);
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: color 0.2s ease;
+      position: relative;
+      padding: 0.25rem 0;
+    }
+    .nav-menu a:hover, .nav-menu a.active {
+      color: var(--color-key);
+    }
+    .nav-menu a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--color-key);
+      transition: width 0.3s ease;
+    }
+    .nav-menu a:hover::after, .nav-menu a.active::after {
+      width: 100%;
+    }
+
+    /* ハンバーガーメニュー（モバイル用） */
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 30px;
+      height: 21px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      z-index: 1100;
+    }
+    .menu-toggle span {
+      width: 100%;
+      height: 3px;
+      background-color: var(--color-primary);
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+
+    @media (max-width: 992px) {
+      .menu-toggle { display: flex; }
+      .nav-menu {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%;
+        max-width: 320px;
+        height: 100vh;
+        background: var(--color-white);
+        box-shadow: -10px 0 30px rgba(0,0,0,0.05);
+        padding: 6rem 2rem 2rem 2rem;
+        transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .nav-menu.active { right: 0; }
+      .nav-menu ul { flex-direction: column; gap: 2rem; }
+      .nav-menu a { font-size: 1.1rem; }
+      .menu-toggle.active span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+      .menu-toggle.active span:nth-child(2) { opacity: 0; }
+      .menu-toggle.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+    }
+
+    /* ==========================================================================
+       🍃 ヒーローセクション（洗練された自然の曲線表現）
+       ========================================================================== */
+    .events-hero {
+      padding: 5rem 1.5rem 3.5rem 1.5rem;
+      text-align: center;
+      position: relative;
+    }
+    .hero-title-area {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .hero-subtitle {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--color-key);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 0.5rem;
+      display: inline-block;
+    }
+    .hero-main-title {
+      font-size: 2.75rem;
+      font-weight: 900;
+      color: var(--color-primary);
+      line-height: 1.3;
+      margin: 0 0 1.25rem 0;
+      letter-spacing: -0.02em;
+    }
+    .hero-lead-text {
+      font-size: 1.05rem;
+      color: #4A5568;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* 滑らかな波の曲線デコレーション（インラインSVG） */
+    .curve-divider {
+      width: 100%;
+      height: auto;
+      margin-top: -2px;
+      pointer-events: none;
+    }
+
+    /* ==========================================================================
+       📋 東大五月祭参考：洗練されたイベントショーケース（画像有無対応）
+       ========================================================================== */
+    .events-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 1.5rem 5rem 1.5rem;
+    }
+
+    .event-card {
+      display: flex;
+      flex-direction: column;
+      background: var(--color-white);
+      border-radius: 32px; /* 優しく滑らかな大きな角丸 */
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(44, 58, 78, 0.03);
+      border: 1px solid rgba(44, 58, 78, 0.04);
+      margin-bottom: 3rem;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .event-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 50px rgba(44, 58, 78, 0.06);
+    }
+
+    /* 💡 画像エリア：画像がない場合はHTMLからこのタグ丸ごと削除するだけで自動全幅化 */
+    .event-image-block {
+      width: 100%;
+      height: 250px;
+      overflow: hidden;
+      position: relative;
+      background-color: #E2E8F0;
+    }
+    .event-image-block img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .event-card:hover .event-image-block img {
+      transform: scale(1.03);
+    }
+
+    /* コンテンツテキストエリア */
+    .event-content-block {
+      padding: 2.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex: 1;
+    }
+
+    /* タグ・メタ情報 */
+    .event-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 0.85rem;
+      align-items: center;
+    }
+    .event-tag {
+      font-size: 0.8rem;
+      font-weight: 800;
+      padding: 0.3rem 0.85rem;
+      border-radius: 50px;
+      letter-spacing: 0.02em;
+    }
+    .tag-committee {
+      background-color: var(--color-key-light);
+      color: var(--color-key);
+      border: 1px solid rgba(141, 174, 75, 0.25);
+    }
+    .tag-location {
+      background-color: #F1F5F9;
+      color: #475569;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .tag-location svg {
+      width: 13px;
+      height: 13px;
+      fill: currentColor;
+    }
+
+    .event-card-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--color-primary);
+      margin: 0 0 1rem 0;
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+    }
+    .event-card-text {
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: #4A5568;
+      margin: 0;
+    }
+
+    /* 🔄 PCレイアウト時の横並び制御（画像有無に完全フレキシブル） */
+    @media (min-width: 768px) {
+      .event-card {
+        flex-direction: row;
+        min-height: 300px;
+      }
+      .event-image-block {
+        width: 38%;
+        height: auto;
+        min-height: 300px;
+        flex-shrink: 0;
+      }
+      .event-content-block {
+        padding: 3rem;
+      }
+    }
+
+    /* ==========================================================================
+       🌐 共通フッターシステム（index.htmlと完全同期・文字階層整理版）
+       ========================================================================== */
+    .main-footer {
+      background-color: var(--color-primary-dark);
+      color: rgba(255, 255, 255, 0.7);
+      padding: 4.5rem 1.5rem 2rem 1.5rem;
+      font-size: 0.9rem;
+    }
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.5fr repeat(2, 1fr);
+      gap: 3rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 3.5rem;
+    }
+    .footer-brand h3 {
+      color: var(--color-white);
+      font-size: 1.35rem;
+      font-weight: 900;
+      margin: 0 0 0.5rem 0;
+      letter-spacing: 0.05em;
+    }
+    .footer-brand p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.4);
+    }
+    .footer-sitemap h4 {
+      color: var(--color-white);
+      font-size: 0.95rem;
+      font-weight: 800;
+      margin: 0 0 1.25rem 0;
+      letter-spacing: 0.05em;
+    }
+    .footer-sitemap ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .footer-sitemap a {
+      color: rgba(255, 255, 255, 0.6);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .footer-sitemap a:hover {
+      color: var(--color-key);
+    }
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.35);
+    }
+    .footer-bottom p { margin: 0; }
+
+    @media (max-width: 768px) {
+      .footer-container {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+        padding-bottom: 2.5rem;
+      }
+      .main-footer { padding: 3.5rem 1.25rem 2rem 1.25rem; }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>企画紹介</h1>
-        <p>全体で主催する、鳩祭の目玉企画を紹介します。</p>
-    </header>
-    <main>
-        <section>
-            <h2>ステージイベント</h2>
-            <ul class="event-list">
-                <li class="event-item">
-                    <h3>オープニングセレモニー</h3>
-                    <p>鳩祭の始まりを飾る全校参加のセレモニー。吹奏楽部やダンス部などが一堂に会し、迫力のある演出で会場を盛り上げます。</p>
-                </li>
-                <li class="event-item">
-                    <h3>スペシャルライブ</h3>
-                    <p>学校外部のゲストや人気の生徒バンドによるスペシャルライブ。来場者全員が楽しめる大規模なステージ企画です。</p>
-                </li>
-            </ul>
-        </section>
-        <section>
-            <h2>交流企画</h2>
-            <ul class="event-list">
-                <li class="event-item">
-                    <h3>全校フォトスポット</h3>
-                    <p>鳩祭を彩るフォトスポットを校内各所に設置。参加者は自由に記念写真を撮影でき、SNS映えする演出が満載です。</p>
-                </li>
-                <li class="event-item">
-                    <h3>パフォーマンスフェスティバル</h3>
-                    <p>全クラブ・委員会から選ばれた代表がパフォーマンスを披露する大型企画。観客投票で賞が決まります。</p>
-                </li>
-            </ul>
-        </section>
-        <section>
-            <h2>特別展示</h2>
-            <ul class="event-list">
-                <li class="event-item">
-                    <h3>学校紹介コーナー</h3>
-                    <p>校内の特色や授業、部活動を紹介する大型展示。来場者に学校の魅力を伝えるための重要な企画です。</p>
-                </li>
-                <li class="event-item">
-                    <h3>未来プロジェクト展示</h3>
-                    <p>生徒たちが取り組んだ研究や制作物を展示するコーナー。全校で協力して完成させる大型の展示企画です。</p>
-                </li>
-            </ul>
-        </section>
-    </main>
+
+  <div class="nature-bg-decoration"></div>
+
+  <header class="main-header">
+    <div class="header-container">
+      <a href="index.html" class="header-logo">
+        <span class="logo-text">第70回 鳩祭</span>
+      </a>
+      <button class="menu-toggle" id="menuToggle" aria-label="メニューを開閉する">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav-menu" id="navMenu">
+        <ul>
+          <li><a href="index.html">ホーム</a></li>
+          <li><a href="about.html">鳩祭について</a></li>
+          <li><a href="news.html">お知らせ</a></li>
+          <li><a href="club_activity.html">文化部・班展示</a></li>
+          <li><a href="events.html" class="active">本部・委員会企画</a></li>
+          <li><a href="access.html">アクセス</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="events-hero animate__animated animate__fadeIn">
+      <div class="hero-title-area">
+        <span class="hero-subtitle">Committee Events</span>
+        <h1 class="hero-main-title">本部・実行委員会企画</h1>
+        <p class="hero-lead-text">
+          クラスや班の枠組みを越え、鳩祭実行委員会が総力を結集してプロデュースする、第70回記念大会のコア・イベント。全校の一体感と洗練された感動をお届けします。
+        </p>
+      </div>
+    </section>
+
+    <svg class="curve-divider" viewBox="0 0 1440 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,32 C240,75 480,75 720,45 C960,15 1200,-15 1440,15 L1440,70 L0,70 Z" fill="#ffffff" opacity="0.4"/>
+      <path d="M0,45 C280,85 560,15 840,35 C1120,55 1280,75 1440,50 L1440,70 L0,70 Z" fill="#F8FAFC"/>
+    </svg>
+
+    <section class="events-container">
+
+      <div class="event-card animate__animated animate__fadeInUp" style="animation-delay: 0.1s;">
+        <div class="event-image-block">
+          <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=800&q=80" alt="全校制作 巨大モザイクアート">
+        </div>
+        <div class="event-content-block">
+          <div class="event-meta-row">
+            <span class="event-tag tag-committee">鳩祭実行委員会</span>
+            <span class="event-tag tag-location">
+              <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+              第一体育館 壁面
+            </span>
+          </div>
+          <h2 class="event-card-title">全校制作「巨大モザイクアート」</h2>
+          <p class="event-card-text">
+            全校生徒一人ひとりの想いと創造力を、数万枚の小さなカラーピースに託して結集させた鳩祭のシンボル展示。緻密な計算と情熱によって浮かび上がる圧倒的スケールの絵画は、今年の鳩祭テーマを最も鮮烈に表現しています。ぜひ間近でその迫力をご体感ください。
+          </p>
+        </div>
+      </div>
+
+      <div class="event-card animate__animated animate__fadeInUp" style="animation-delay: 0.2s;">
+        <div class="event-image-block">
+          <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80" alt="中庭ステージ企画">
+        </div>
+        <div class="event-content-block">
+          <div class="event-meta-row">
+            <span class="event-tag tag-committee">ステージ局</span>
+            <span class="event-tag tag-location">
+              <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+              校舎中庭 特設ステージ
+            </span>
+          </div>
+          <h2 class="event-card-title">中庭ステージ・ライブパフォーマンス</h2>
+          <p class="event-card-text">
+            鳩祭で最も熱い活気があふれる、実行委員会全面プロデュースの特設屋外ステージ。有志バンドによる白熱のライブやキレのあるダンスパフォーマンス、大注目のミス・ミスターコンテストまで多彩なプログラムをノンストップで上演。青空の下、最高の熱狂を共有しましょう。（※雨天時は第二体育館に会場を変更します）
+          </p>
+        </div>
+      </div>
+
+      <div class="event-card animate__animated animate__fadeInUp" style="animation-delay: 0.3s;">
+        <div class="event-content-block">
+          <div class="event-meta-row">
+            <span class="event-tag tag-committee">企画展示局</span>
+            <span class="event-tag tag-location">
+              <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+              管理棟2階 特設教室
+            </span>
+          </div>
+          <h2 class="event-card-title">第70回記念「鳩祭 歴史ミュージアム」</h2>
+          <p class="event-card-text">
+            第70回という大きな節目を迎えた鳩祭。その記念企画として、第1回から現在に至るまでの貴重な写真、歴代のパンフレット、当時の世相を映し出す記念グッズなどを一挙に公開する特別歴史展示室です。屋代高校が紡いできた青春の軌跡と伝統の重みを、シックで落ち着いたギャラリー空間でゆったりとご覧いただけます。
+          </p>
+        </div>
+      </div>
+
+      <div class="event-card animate__animated animate__fadeInUp" style="animation-delay: 0.4s;">
+        <div class="event-image-block">
+          <img src="https://images.unsplash.com/photo-1516738901171-8eb4fc13bd20?auto=format&fit=crop&w=800&q=80" alt="鳩祭記念スタンプラリー">
+        </div>
+        <div class="event-content-block">
+          <div class="event-meta-row">
+            <span class="event-tag tag-committee">総務局</span>
+            <span class="event-tag tag-location">
+              <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+              校内全域（受付：昇降口前 本部テント）
+            </span>
+          </div>
+          <h2 class="event-card-title">校内周遊「鳩謎解きスタンプラリー」</h2>
+          <p class="event-card-text">
+            実行委員会が校内の各スポットに仕掛けた、屋代高校にまつわるミステリーや謎を解き明かしながら進む体験型周遊ラリー。すべてのスタンプを集めて謎をコンプリートした方には、本部テントにて、ここでしか手に入らない「第70回鳩祭限定デザイン公式ステッカー」などの記念品をプレゼントいたします！
+          </p>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <h3>第70回屋代高校鳩祭</h3>
+        <p>公式ウェブサイト</p>
+      </div>
+      <div class="footer-sitemap">
+        <h4>ナビゲーション</h4>
+        <ul>
+          <li><a href="index.html">ホーム</a></li>
+          <li><a href="about.html">鳩祭について</a></li>
+          <li><a href="news.html">お知らせ・ニュース</a></li>
+        </ul>
+      </div>
+      <div class="footer-sitemap">
+        <h4>企画・案内</h4>
+        <ul>
+          <li><a href="club_activity.html">文化部・班展示</a></li>
+          <li><a href="events.html">本部・実行委員会企画</a></li>
+          <li><a href="access.html">アクセス情報</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 第70回屋代高校鳩祭実行委員会. All Rights Reserved.</p>
+      <p>Presented by Yashiro High School Festival Committee</p>
+    </div>
+  </footer>
+
+  <script>
+    // 📱 共通ハンバーガーメニューの開閉JavaScript制御
+    const menuToggle = document.getElementById('menuToggle');
+    const navMenu = document.getElementById('navMenu');
+    
+    if(menuToggle && navMenu) {
+      menuToggle.addEventListener('click', () => {
+        menuToggle.classList.toggle('active');
+        navMenu.classList.toggle('active');
+      });
+      
+      // 画面外クリックでメニューを閉じるユーザーファースト対応
+      document.addEventListener('click', (e) => {
+        if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+          menuToggle.classList.remove('active');
+          navMenu.classList.remove('active');
+        }
+      });
+    }
+  </script>
 </body>
 </html>

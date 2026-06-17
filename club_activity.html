@@ -11,8 +11,8 @@
   <link rel="stylesheet" href="css/common.css">
 
   <style>
-    /* ==========================================================================
-       🎨 カラー＆デザインシステム（他ページから完全移植）
+/* ==========================================================================
+       🎨 カラー＆デザインシステム（他ページから完全移植・シック版）
        ========================================================================== */
     :root {
       --color-primary: #2C3A4E;     /* メイン：深みのあるブルーグレー */
@@ -20,7 +20,7 @@
       --color-key: #8DAE4B;         /* アクセント：新緑のオリーブ黄緑 */
       --color-key-light: #F4F8EC;   /* アクセント薄色 */
       --color-base: #222222;        /* テキスト：チャコールブラック */
-      --color-contrast: #D0D5DD;    /* 境界線：ライトグレー */
+      --color-contrast: #E2E8F0;    /* 境界線：ライトグレー */
       --color-white: #ffffff;
       --color-bg-light: #F8FAFC;    /* 全体背景 */
       
@@ -50,12 +50,12 @@
     }
 
     /* ==========================================================================
-       ヘッダー ＆ 右上側・横書きナビゲーションシステム（バグ修正済）
+       🌐 ヘッダー ＆ 右上側・横書きナビゲーションシステム
        ========================================================================== */
     header {
-      background-color: rgba(255, 255, 255, 0.75);
-      backdrop-filter: blur(20px) saturate(180%);
-      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      background: rgba(255, 255, 255, 0.9) !important;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       padding: 0.8rem 1.5rem;
       position: sticky;
       top: 0;
@@ -117,75 +117,173 @@
     @media (min-width: 768px) { .pc-nav { display: block; } .menu-trigger { display: none; } .fullscreen-nav { display: none !important; } }
 
     /* ==========================================================================
-       🔍 インタラクティブ・コントロールパネル（検索＆独自デザインタブ）
+       🔍 インタラクティブ・コントロールパネル（控えめでシックなデザイン）
        ========================================================================== */
     .page-header { text-align: center; padding: 3rem 1rem 1.5rem 1rem; }
     .page-header h2 { font-size: 2.2rem; font-weight: 900; color: var(--color-primary); margin-bottom: 0.5rem; letter-spacing: 0.1em; }
     .page-header p { font-size: 0.95rem; color: #64748B; font-weight: 600; }
 
     .control-panel {
-      background: var(--color-white); border-radius: 20px; padding: 2rem;
-      box-shadow: var(--shadow-sm); border: 1px solid var(--color-contrast);
-      max-width: 900px; margin: 0 auto 3rem auto;
+      background: var(--color-white); 
+      border-radius: 12px; 
+      padding: 1.5rem;
+      border: 1px solid var(--color-contrast);
+      max-width: 900px; 
+      margin: 0 auto 3rem auto;
+      box-shadow: none; /* シックにするためシャドウを除去 */
     }
-    .search-box { margin-bottom: 1.5rem; position: relative; }
+    
+    .search-box { margin-bottom: 1.5rem; position: relative; text-align: center; }
     .search-box input {
-      width: 100%; padding: 1rem 1.5rem; border: 2px solid var(--color-contrast);
-      border-radius: 12px; font-size: 1rem; font-weight: 600; background: var(--color-bg-light);
-      transition: var(--transition-smooth); margin-bottom: 0;
+      width: 100%; 
+      max-width: 400px; /* 検索欄を小さめに */
+      padding: 0.5rem 1rem; 
+      border: 1px solid var(--color-contrast);
+      border-radius: 8px; 
+      font-size: 0.9rem; 
+      font-weight: 600; 
+      background: var(--color-bg-light);
+      transition: var(--transition-smooth); 
+      margin: 0 auto;
+      display: inline-block;
     }
     .search-box input:focus {
-      border-color: var(--color-key); background: var(--color-white);
-      box-shadow: 0 0 0 4px rgba(141, 174, 75, 0.15); outline: none;
+      border-color: var(--color-key); 
+      background: var(--color-white);
+      box-shadow: 0 0 0 3px rgba(141, 174, 75, 0.15); 
+      outline: none;
     }
     
     .filter-tabs { display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: center; }
     .filter-tab {
       background: var(--color-bg-light); border: 1px solid var(--color-contrast);
-      color: var(--color-primary); padding: 0.6rem 1.2rem; font-size: 0.85rem; font-weight: 800;
+      color: var(--color-primary); padding: 0.5rem 1rem; font-size: 0.85rem; font-weight: 800;
       border-radius: 30px; cursor: pointer; transition: var(--transition-bounce);
     }
     .filter-tab:hover { border-color: var(--color-key); color: var(--color-key); background: var(--color-white); }
     .filter-tab.active { background: var(--color-key); color: var(--color-white); border-color: var(--color-key); box-shadow: 0 4px 12px rgba(141, 174, 75, 0.3); }
 
-    /* ==========================================================================
-       🗂️ リスト＆モダンアコーディオンシステム
+/* ==========================================================================
+       🗂️ リスト＆モダンアコーディオンシステム（視認性・モバイル完全対応のシック版）
        ========================================================================== */
-    .exhibit-list { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem; min-height: 200px; }
+    .exhibit-list { 
+      max-width: 900px; 
+      margin: 0 auto; 
+      display: flex; 
+      flex-direction: column; 
+      gap: 1.25rem; /* 各展示の間にしっかりとした隙間（境界）を作り、独立させる */
+      min-height: 200px; 
+    }
     
     .exhibit-item {
-      background: var(--color-white); border-radius: 16px; border: 1px solid var(--color-contrast);
-      box-shadow: var(--shadow-sm); overflow: hidden; transition: var(--transition-smooth);
+      background: var(--color-white); 
+      border-radius: 16px; /* 角を丸くして背景からの不自然な浮きをなじませる */
+      border: 1px solid var(--color-contrast); 
+      box-shadow: 0 4px 20px rgba(44, 58, 78, 0.03); /* 極薄のシックな影で高級感を演出 */
+      overflow: hidden; 
+      transition: var(--transition-smooth);
     }
-    .exhibit-item:hover { border-color: var(--color-key); box-shadow: var(--shadow-md); }
+    .exhibit-item:hover { 
+      border-color: rgba(141, 174, 75, 0.4); 
+      box-shadow: 0 10px 30px rgba(44, 58, 78, 0.06); 
+      transform: translateY(-2px); /* ホバー時にほんの少しだけ上品に浮かす */
+    }
     
     /* アコーディオンのトリガー（親要素） */
     .exhibit-trigger {
-      padding: 1.5rem 2rem; cursor: pointer; display: flex; justify-content: space-between;
-      align-items: center; user-select: none; gap: 1rem;
+      padding: 1.5rem 2rem; /* しっかりとしたパディングをとり、窮屈さを解消 */
+      cursor: pointer; 
+      display: flex; 
+      justify-content: space-between;
+      align-items: flex-start; /* アイコンを上部揃えにしてバランスを整える */
+      user-select: none; 
+      gap: 1.5rem; /* スマホでテキストとアイコンがくっつきすぎないように */
+      transition: background-color 0.3s ease;
     }
-    .exhibit-summary { display: flex; flex-direction: column; gap: 0.4rem; flex: 1; }
-    .exhibit-club-name { font-size: 0.85rem; font-weight: 800; color: var(--color-key); text-transform: uppercase; letter-spacing: 0.05em; }
-    .exhibit-title { font-size: 1.3rem; font-weight: 900; color: var(--color-primary); margin: 0; line-height: 1.3; }
+    @media (max-width: 768px) {
+      .exhibit-trigger {
+        padding: 1.25rem 1.25rem; /* モバイル時はパディングを最適化 */
+      }
+    }
+    
+    .exhibit-summary { 
+      display: flex; 
+      flex-direction: column; 
+      gap: 0.5rem; 
+      flex: 1; 
+      min-width: 0; /* 💡超重要：モバイルでテキストが枠外にあふれて隠れるのを防ぐ魔法 */
+    }
+    .exhibit-club-name { 
+      font-size: 0.85rem; 
+      font-weight: 800; 
+      color: var(--color-key); 
+      text-transform: uppercase; 
+      letter-spacing: 0.05em; 
+    }
+    .exhibit-title { 
+      font-size: 1.25rem; 
+      font-weight: 900; 
+      color: var(--color-primary); 
+      margin: 0; 
+      line-height: 1.4; 
+      transition: color 0.2s; 
+      overflow-wrap: break-word; /* 長い単語でのあふれ防止 */
+      word-break: break-word;
+    }
+    .exhibit-trigger:hover .exhibit-title {
+      color: var(--color-key);
+    }
     
     /* バッジ類 */
-    .exhibit-meta-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-top: 0.2rem; }
-    .badge { font-size: 0.75rem; font-weight: 800; padding: 0.25rem 0.75rem; border-radius: 6px; }
+    .exhibit-meta-tags { 
+      display: flex; 
+      flex-wrap: wrap; /* モバイルで画面が狭いときは自動で改行させる */
+      gap: 0.5rem; 
+      align-items: center; 
+      margin-top: 0.25rem; 
+    }
+    .badge { font-size: 0.75rem; font-weight: 800; padding: 0.25rem 0.75rem; border-radius: 6px; white-space: nowrap; }
     .badge-cat { background: var(--color-primary); color: var(--color-white); }
-    .badge-loc { background: #E2E8F0; color: #475569; }
+    .badge-loc { background: #F1F5F9; color: #475569; }
     .badge-price { background: var(--color-key-light); color: var(--color-key); border: 1px solid rgba(141, 174, 75, 0.3); }
     .badge-price.is-paid { background: #FFF5F5; color: #E53E3E; border: 1px solid rgba(229, 62, 62, 0.2); }
 
-    .arrow-icon { font-size: 1.1rem; color: var(--color-contrast); transition: var(--transition-bounce); }
+    .arrow-icon { 
+      font-size: 1.2rem; 
+      color: var(--color-contrast); 
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      flex-shrink: 0; /* 💡超重要：モバイルで画面が狭くなってもアイコンが潰れないようにする */
+      margin-top: 0.25rem;
+    }
     .exhibit-item.active .arrow-icon { transform: rotate(180deg); color: var(--color-key); }
 
     /* アコーディオンの中身（開閉領域） */
-    .exhibit-content-wrapper { height: 0; overflow: hidden; }
-    .exhibit-details { padding: 0 2rem 2rem 2rem; border-top: 1px dashed var(--color-contrast); pt: 1.5rem; margin-top: 0; }
+    .exhibit-content-wrapper {
+      height: 0;
+      overflow: hidden; 
+    }
+    .exhibit-details { 
+      padding: 0 2rem 2rem 2rem; /* 内側の余白をしっかり取る */
+      margin-top: 0; 
+    }
+    @media (max-width: 768px) {
+      .exhibit-details {
+        padding: 0 1.25rem 1.5rem 1.25rem;
+      }
+    }
     
     /* 詳細内部のグリッド */
-    .details-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-top: 1.5rem; }
-    @media(min-width: 768px) { .details-grid { grid-template-columns: 2fr 1fr; } }
+    .details-grid { 
+      display: grid; 
+      grid-template-columns: 1fr; 
+      gap: 1.5rem; 
+      margin-top: 1rem; 
+      padding-top: 1.5rem;
+      border-top: 1px dashed var(--color-contrast); /* 本文とタイトルを仕切る美しい点線 */
+    }
+    @media(min-width: 768px) { 
+      .details-grid { grid-template-columns: 2fr 1fr; } 
+    }
     
     .details-main h4 { font-size: 1.05rem; font-weight: 800; color: var(--color-primary); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
     .details-main p { color: #475569; font-size: 0.95rem; line-height: 1.7; margin: 0; }
@@ -198,20 +296,26 @@
     .notice-box { background: #FFFDF5; border-left: 4px solid #D97706; padding: 1rem; border-radius: 4px 8px 8px 4px; margin-top: 1rem; }
     .notice-box strong { color: #B45309; font-size: 0.85rem; font-weight: 800; display: block; margin-bottom: 0.25rem; }
     .notice-box p { font-size: 0.85rem; color: #78350F; margin: 0; line-height: 1.6; }
-
     /* ヒット件数なし表示 */
     .no-results { text-align: center; padding: 4rem 1rem; color: #64748B; font-weight: 700; font-size: 1.1rem; display: none; }
 
     /* ==========================================================================
        🌐 フッター ＆ サイトマップ
        ========================================================================== */
-    footer { background-color: var(--color-primary-dark); color: rgba(255, 255, 255, 0.8); padding: 5rem 1.5rem 3rem; border-top: 1px solid rgba(255, 255, 255, 0.06); }
+    footer { 
+      background-color: var(--color-primary-dark) !important; 
+      color: rgba(255, 255, 255, 0.7) !important; 
+      padding: 5rem 1.5rem 3rem !important; 
+      border-top: 1px solid rgba(255, 255, 255, 0.06); 
+      margin-top: 4rem;
+    }
     .footer-container { max-width: 1300px; margin: 0 auto; }
     .sitemap-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 3rem; margin-bottom: 4rem; }
     .sitemap-item h5 { color: var(--color-white); font-size: 1.05rem; font-weight: 800; margin-bottom: 1.5rem; letter-spacing: 0.05em; }
     .sitemap-links { display: flex; flex-direction: column; gap: 0.9rem; }
     .sitemap-links a { color: rgba(255, 255, 255, 0.65); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: var(--transition-smooth); }
     .sitemap-links a:hover { color: var(--color-key); transform: translateX(4px); }
+    
     .footer-bottom { border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 2.5rem; display: flex; flex-direction: column; gap: 1.5rem; }
     @media (min-width: 768px) { .footer-bottom { flex-direction: row; justify-content: space-between; align-items: flex-end; } }
     .footer-info-block p { margin: 0 0 0.4rem 0; font-size: 0.9rem; }
@@ -264,7 +368,7 @@
       <p>EXHIBITS & CLUBS</p>
     </div>
 
-    <div class="control-panel animate__animated animate__fadeInUp">
+    <div class="control-panel animate__animated animate__fadeInUp filter-section">
       <div class="search-box">
         <input type="text" id="searchInput" placeholder="班活名、催し物名、場所などでキーワード検索...">
       </div>
