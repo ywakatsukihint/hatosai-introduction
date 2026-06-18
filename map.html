@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>校舎マップ - 第70回屋代高校鳩祭公式ウェブサイト</title>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link rel="stylesheet" href="css/common.css">
+
+  <style>
+    /* ==========================================================================
+       🎨 1. カラー＆デザインシステム
+       ========================================================================== */
+    :root {
+      --color-primary: #2C3A4E;     /* 深みのあるブルーグレー */
+      --color-primary-dark: #131924;/* ダークネイビー */
+      --color-key: #8DAE4B;         /* 新緑のオリーブ黄緑 */
+      --color-key-light: #F4F8EC;   /* オリーブ薄色 */
+      --color-base: #222222;        
+      --color-contrast: #E2E8F0;    
+      --color-white: #ffffff;
+      --color-bg-light: #F8FAFC;    
+      --font-noto: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0; padding: 0;
+      font-family: var(--font-noto);
+      background-color: var(--color-bg-light);
+      color: var(--color-base);
+      overflow-x: hidden;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    /* ==========================================================================
+       🌐 2. ヘッダー ＆ ナビゲーション
+       ========================================================================== */
+    .main-header-modern {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(44, 58, 78, 0.08);
+      position: sticky; top: 0; z-index: 1000; padding: 0.8rem 1.5rem;
+    }
+    .header-content {
+      max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;
+    }
+    .header-title { text-decoration: none; }
+    .header-title h1 { font-size: 1.3rem; margin: 0; font-weight: 900; color: var(--color-primary); letter-spacing: 0.1em; }
+    .header-title p { margin: 0; font-size: 0.7rem; font-weight: 700; color: var(--color-key); text-transform: uppercase; }
+
+    .menu-trigger {
+      background: none; border: none; width: 44px; height: 44px; position: relative; cursor: pointer; padding: 0;
+      display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px;
+    }
+    .menu-trigger span { display: block; width: 24px; height: 2px; background-color: var(--color-primary); transition: all 0.3s; }
+    .menu-trigger.is-active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .menu-trigger.is-active span:nth-child(2) { opacity: 0; }
+    .menu-trigger.is-active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+    .fullscreen-nav {
+      position: absolute; top: 100%; right: 1.5rem; width: calc(100% - 3rem); max-width: 320px;
+      background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); border-radius: 16px;
+      padding: 1.25rem; box-shadow: 0 20px 40px rgba(44, 58, 78, 0.12); border: 1px solid rgba(44, 58, 78, 0.08);
+      opacity: 0; pointer-events: none; transform: translateY(-10px) scale(0.95); transition: all 0.3s; z-index: 1050;
+    }
+    .fullscreen-nav.is-open { pointer-events: auto; opacity: 1; transform: translateY(0) scale(1); }
+    .nav-links { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; list-style: none; padding: 0; margin: 0; text-align: center; }
+    .nav-links a {
+      color: var(--color-primary); font-size: 0.85rem; font-weight: 800; text-decoration: none;
+      padding: 0.8rem 0.5rem; display: block; background: rgba(44, 58, 78, 0.03); border-radius: 10px;
+    }
+
+    /* ==========================================================================
+       🗺️ 3. マップレイアウト ＆ ユーザーSVG最適化
+       ========================================================================== */
+    .map-page-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 6rem 1.25rem;
+    }
+
+    .page-hero { text-align: center; margin-bottom: 2rem; }
+    .page-hero h2 { font-size: 2rem; font-weight: 900; color: var(--color-primary); margin: 0 0 0.5rem 0; letter-spacing: 0.05em; }
+    .page-hero p { font-size: 0.95rem; color: #64748B; font-weight: 600; margin: 0; }
+
+    .map-card {
+      background: var(--color-white);
+      border-radius: 16px;
+      padding: 1rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--color-contrast);
+    }
+
+    .map-instruction {
+      text-align: center;
+      background: var(--color-key-light);
+      color: var(--color-primary);
+      padding: 0.8rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .svg-wrapper {
+      width: 100%;
+      overflow-x: auto; /* マップの横スクロール用 */
+      -webkit-overflow-scrolling: touch;
+      border-radius: 12px;
+      background: #FAFAFA;
+      padding: 0;
+      border: 1px solid var(--color-contrast);
+    }
+
+    /* 💡 FigmaのSVGを画面にフィットさせる魔法のクラス */
+    .campus-svg {
+      width: 100%;
+      min-width: 800px; /* スマホで見ても崩れないように最小幅を担保 */
+      height: auto;
+      display: block;
+    }
+
+    /* 背景の建物やグラウンド（クリッカブルではない部分） */
+    .campus-bg {
+      fill: #E2E8F0;
+      opacity: 0.6;
+    }
+
+    /* 🏫 クリッカブルな棟のSVG図形デザイン */
+    .building-shape {
+      fill: #ffffff;
+      stroke: #94A3B8;
+      stroke-width: 10; /* Figmaの巨大なviewBoxに合わせた太さ */
+      cursor: pointer;
+      pointer-events: all; /* 🔥スマホでのタッチバグを解消 */
+      transition: all 0.25s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* タップやマウスホバーをした時の光るエフェクト */
+    @media (hover: hover) {
+      .building-group:hover .building-shape {
+        fill: var(--color-key-light);
+        stroke: var(--color-key);
+      }
+    }
+    .building-group:active .building-shape,
+    .building-group.active .building-shape {
+      fill: var(--color-key-light);
+      stroke: var(--color-key);
+      stroke-width: 15;
+    }
+
+    .building-label {
+      font-size: 60px; /* Figmaの巨大なviewBoxに合わせたフォントサイズ */
+      font-weight: 900;
+      fill: var(--color-primary);
+      text-anchor: middle;
+      dominant-baseline: central;
+      pointer-events: none; /* 🔥文字がタッチを邪魔しないようにする */
+      user-select: none;
+    }
+
+    /* ==========================================================================
+       🗂️ 4. ドラッグ可変式ボトムシート（ポータル）
+       ========================================================================== */
+    .bottom-sheet {
+      position: fixed;
+      bottom: 0; left: 0; right: 0; margin: 0 auto;
+      width: 100%; max-width: 600px;
+      background: var(--color-white);
+      border-radius: 24px 24px 0 0;
+      box-shadow: 0 -5px 25px rgba(0, 0, 0, 0.15);
+      z-index: 2000;
+      height: 45vh;
+      min-height: 150px;
+      max-height: 85vh;
+      transform: translateY(100%);
+      display: flex; flex-direction: column;
+      touch-action: none;
+    }
+
+    .sheet-handle-area {
+      padding: 16px;
+      display: flex; justify-content: center; align-items: center;
+      cursor: grab;
+      border-bottom: 1px solid var(--color-contrast);
+    }
+    .sheet-handle-area:active { cursor: grabbing; }
+    .sheet-handle-bar {
+      width: 50px; height: 6px; background: #CBD5E1; border-radius: 3px;
+    }
+
+    .sheet-content {
+      padding: 20px 24px;
+      overflow-y: auto;
+      flex: 1;
+      touch-action: pan-y;
+    }
+
+    .sheet-header {
+      margin-bottom: 20px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .sheet-title {
+      font-size: 1.4rem; font-weight: 900; color: var(--color-primary); margin: 0;
+    }
+    .close-sheet-btn {
+      background: #F1F5F9; border: none; width: 32px; height: 32px; border-radius: 50%;
+      color: #64748B; font-weight: bold; font-size: 1.2rem; cursor: pointer;
+    }
+
+    /* 催し物のリストカード */
+    .event-list {
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .event-item {
+      display: block;
+      background: var(--color-bg-light);
+      border: 1px solid var(--color-contrast);
+      border-radius: 12px;
+      padding: 16px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.2s;
+    }
+    .event-item:hover {
+      background: var(--color-white);
+      border-color: var(--color-key);
+      box-shadow: 0 4px 12px rgba(141, 174, 75, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .event-item-meta {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;
+    }
+    .event-item-place {
+      font-size: 0.8rem; font-weight: 800; color: var(--color-white);
+      background: var(--color-primary); padding: 2px 8px; border-radius: 4px;
+    }
+    .event-item-price {
+      font-size: 0.75rem; font-weight: 800; color: #E53E3E;
+    }
+    .event-item-title {
+      font-size: 1.15rem; font-weight: 900; color: var(--color-primary-dark); margin: 0 0 4px 0;
+    }
+    .event-item-org {
+      font-size: 0.85rem; color: #64748B; font-weight: 600; margin: 0;
+    }
+    
+    .no-events { text-align: center; color: #64748B; font-weight: bold; padding: 2rem 0; }
+    
+    .sheet-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.4); backdrop-filter: blur(2px);
+      z-index: 1900; opacity: 0; pointer-events: none; transition: opacity 0.3s;
+    }
+    .sheet-overlay.active { opacity: 1; pointer-events: auto; }
+
+    /* ==========================================================================
+       🌐 5. フッター
+       ========================================================================== */
+    footer { 
+      background-color: var(--color-primary-dark); color: rgba(255, 255, 255, 0.7); 
+      padding: 3rem 1.25rem 2rem; border-top: 1px solid rgba(255, 255, 255, 0.06); 
+    }
+  </style>
+</head>
+<body>
+
+  <header class="main-header-modern">
+    <div class="header-content">
+      <a href="index.html" class="header-title">
+        <p>第70回 屋代高校文化祭</p>
+        <h1>鳩祭</h1>
+      </a>
+      <button class="menu-trigger" id="menuToggle" aria-label="メニューを開閉する">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="fullscreen-nav" id="mobileNav">
+        <ul class="nav-links">
+          <li><a href="index.html">ホーム</a></li>
+          <li><a href="exhibit.html">展示紹介</a></li>
+          <li><a href="map.html">マップ</a></li>
+          <li><a href="access.html">アクセス</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="map-page-container">
+    <div class="page-hero animate__animated animate__fadeIn">
+      <h2>校舎全体マップ</h2>
+      <p>見たい棟をタップすると、その棟で開催中の企画一覧が開きます</p>
+    </div>
+
+    <div class="map-card animate__animated animate__fadeInUp">
+      <div class="map-instruction">
+        👆 マップは左右にスワイプできます。目的の棟をタップしてください。
+      </div>
+
+      <div class="svg-wrapper">
+        <svg viewBox="800 2300 2400 1900" class="campus-svg" id="campusSvg" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+          
+          <rect x="934.775" y="2786.43" width="936" height="913" class="campus-bg" />
+          <rect x="1950.77" y="2958.43" width="140" height="266" class="campus-bg" />
+          <rect x="2778.77" y="2428.43" width="232" height="308" class="campus-bg" />
+          <rect x="2061.77" y="3398.43" width="29" height="368" class="campus-bg" />
+          <rect x="934.775" y="2454.43" width="465" height="332" class="campus-bg" />
+          <rect x="1465.77" y="2428.43" width="285" height="179" class="campus-bg" />
+          <rect x="1284.77" y="3750.43" width="486" height="409" class="campus-bg" />
+          <rect x="2395.77" y="3492.43" width="57" height="145" class="campus-bg" />
+          <rect x="2152.77" y="2874.43" width="61" height="169" class="campus-bg" />
+          <rect x="2064.77" y="2582.43" width="31" height="154" class="campus-bg" />
+          <rect x="2183.77" y="3182.43" width="37" height="151" class="campus-bg" />
+          <rect x="2537.77" y="2607.43" width="35" height="726" class="campus-bg" />
+          <rect x="1821.77" y="2513.43" width="243" height="138" class="campus-bg" />
+          <rect x="2599.77" y="2874.43" width="422" height="289" class="campus-bg" />
+          <rect x="2689.77" y="3359.43" width="312" height="309" class="campus-bg" />
+
+          <g class="building-group" id="bldg-gym1">
+            <rect x="1787" y="3766" width="472" height="327" class="building-shape" rx="20"/>
+            <text x="2023" y="3929" class="building-label">第一体育館</text>
+          </g>
+          
+          <g class="building-group" id="bldg-gym2">
+            <rect x="2600" y="2874" width="422" height="289" class="building-shape" rx="20"/>
+            <text x="2811" y="3021" class="building-label">第二体育館</text>
+          </g>
+          
+          <g class="building-group" id="bldg-other">
+            <rect x="1909" y="3378" width="152" height="240" class="building-shape" rx="20"/>
+            <text x="1985" y="3498" class="building-label" transform="rotate(-90 1985 3498)">音楽室</text>
+          </g>
+          
+          <g class="building-group" id="bldg-1">
+            <rect x="2090" y="3333" width="560" height="159" class="building-shape" rx="20"/>
+            <text x="2370" y="3412" class="building-label">1棟</text>
+          </g>
+          
+          <g class="building-group" id="bldg-2">
+            <rect x="2122" y="3043" width="415" height="139" class="building-shape" rx="20"/>
+            <text x="2329" y="3112" class="building-label">2棟</text>
+          </g>
+          
+          <g class="building-group" id="bldg-3">
+            <rect x="1999" y="2736" width="538" height="138" class="building-shape" rx="20"/>
+            <text x="2268" y="2805" class="building-label">3棟</text>
+          </g>
+          
+          <g class="building-group" id="bldg-jhs">
+            <rect x="2122" y="2428" width="598" height="179" class="building-shape" rx="20"/>
+            <text x="2421" y="2517" class="building-label">中学棟</text>
+          </g>
+
+        </svg>
+      </div>
+    </div>
+  </main>
+
+  <div class="sheet-overlay" id="sheetOverlay"></div>
+  <div id="bottomSheet" class="bottom-sheet">
+    <div class="sheet-handle-area" id="sheetHandle">
+      <div class="sheet-handle-bar"></div>
+    </div>
+    <div class="sheet-content">
+      <div class="sheet-header">
+        <h3 class="sheet-title" id="sheetTitle">棟の名前</h3>
+        <button class="close-sheet-btn" id="closeSheetBtn">✕</button>
+      </div>
+      
+      <div class="event-list" id="sheetEventList">
+        </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-bottom" style="text-align: center;">
+      <p style="font-size: 0.8rem;">© 2026 Yashiro High School Hatosai Festival. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+  <script>
+    // ==========================================================================
+    // 🗃️ 1. 各棟の催し物・企画データ（詳細ページへのリンク機能付き）
+    // ==========================================================================
+    const buildingData = {
+      "bldg-1": {
+        name: "1棟（高校3年生の教室）",
+        events: [
+          { title: "漆黒の迷宮 〜ホラー脱出ゲーム〜", org: "1年1組", place: "101教室", price: "無料", url: "exhibit.html" },
+          { title: "ハトカフェ 🕊️", org: "1年2組", place: "102教室", price: "300円", url: "exhibit.html" },
+          { title: "天体観測プレビュー", org: "地学部", place: "401教室", price: "50円", url: "club_activity.html" }
+        ]
+      },
+      "bldg-2": {
+        name: "2棟（高校2年生の教室）",
+        events: [
+          { title: "カジノロワイヤル屋代", org: "2年1組", place: "201教室", price: "無料", url: "exhibit.html" },
+          { title: "縁日フェスティバル！", org: "1年3組", place: "103教室", price: "無料", url: "exhibit.html" }
+        ]
+      },
+      "bldg-3": {
+        name: "第3棟（特別教室棟）",
+        events: [
+          { title: "魅惑のサイエンスラボ 🧪", org: "科学部", place: "化学講義室", price: "無料", url: "club_activity.html" },
+          { title: "伝統美術展", org: "美術部", place: "305教室", price: "無料", url: "club_activity.html" }
+        ]
+      },
+      "bldg-jhs": {
+        name: "附属中学棟",
+        events: [
+          { title: "附属中 学年展示・モザイクアート", org: "附属中1・2・3学年", place: "中学各教室", price: "無料", url: "exhibit.html" }
+        ]
+      },
+      "bldg-gym1": {
+        name: "第一体育館",
+        events: [
+          { title: "オープニング＆メインステージ", org: "鳩祭実行委員会・有志", place: "アリーナ", price: "無料", url: "events.html" },
+          { title: "全校制作「巨大モザイクアート」", org: "鳩祭実行委員会", place: "体育館壁面", price: "無料", url: "events.html" }
+        ]
+      },
+      "bldg-gym2": {
+        name: "第二体育館",
+        events: [
+          { title: "軽音ライブステージ", org: "軽音同好会", place: "アリーナ", price: "無料", url: "events.html" },
+          { title: "吹奏楽部演奏会", org: "吹奏楽部", place: "アリーナ", price: "無料", url: "events.html" }
+        ]
+      },
+      "bldg-other": {
+        name: "音楽室・格技室",
+        events: [
+          { title: "鳩祭スペシャルコンサート", org: "吹奏楽部 / 軽音同好会", place: "音楽室", price: "無料", url: "events.html" }
+        ]
+      }
+    };
+
+    // ==========================================================================
+    // 📱 2. UI・インタラクション制御（ボトムシート＆SVGタップ）
+    // ==========================================================================
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileNav = document.getElementById('mobileNav');
+    
+    // ハンバーガーメニュー
+    menuToggle.addEventListener('click', () => {
+      const isOpen = mobileNav.classList.contains('is-open');
+      menuToggle.classList.toggle('is-active', !isOpen);
+      mobileNav.classList.toggle('is-open', !isOpen);
+    });
+
+    const sheet = document.getElementById('bottomSheet');
+    const handle = document.getElementById('sheetHandle');
+    const overlay = document.getElementById('sheetOverlay');
+    const eventListContainer = document.getElementById('sheetEventList');
+    const sheetTitle = document.getElementById('sheetTitle');
+    const buildings = document.querySelectorAll('.building-group');
+
+    let isDragging = false;
+    let startY = 0;
+    let startHeight = 0;
+
+    // 🌟 ボトムシート（開閉ポータル）を開いてリストを構築する関数
+    function openBottomSheet(buildingId) {
+      const data = buildingData[buildingId];
+      if (!data) return;
+
+      // 見出しのセット
+      sheetTitle.textContent = data.name + " の企画";
+      
+      // リストのHTML構築
+      eventListContainer.innerHTML = ''; 
+      
+      if (data.events.length === 0) {
+        eventListContainer.innerHTML = '<div class="no-events">この棟での企画は登録されていません</div>';
+      } else {
+        data.events.forEach(event => {
+          // クリックすると詳細ページ(exhibit.htmlなど)に飛べるリンクを生成
+          const html = `
+            <a href="${event.url}" class="event-item">
+              <div class="event-item-meta">
+                <span class="event-item-place">📍 ${event.place}</span>
+                <span class="event-item-price">${event.price}</span>
+              </div>
+              <h4 class="event-item-title">${event.title}</h4>
+              <p class="event-item-org">${event.org}</p>
+            </a>
+          `;
+          eventListContainer.insertAdjacentHTML('beforeend', html);
+        });
+      }
+
+      // 選択状態の強調
+      buildings.forEach(b => b.classList.remove('active'));
+      document.getElementById(buildingId).classList.add('active');
+
+      // アニメーションで引き上げる
+      overlay.classList.add('active');
+      sheet.style.height = "45vh"; // デフォルトの高さ
+      
+      // ✅ anime() をこのように変更
+      anime({
+        targets: '#bottomSheet',
+        translateY: ['100%', '0%'],
+        duration: 400,
+        easing: 'easeOutCubic'
+      });
+    }
+
+    // 🌟 ボトムシートを閉じる関数
+    function closeBottomSheet() {
+      overlay.classList.remove('active');
+      buildings.forEach(b => b.classList.remove('active'));
+      
+      // ✅ anime() をこのように変更
+      anime({
+        targets: '#bottomSheet',
+        translateY: ['0%', '100%'], // 変更：現在の位置(0%)から下(100%)へ
+        duration: 300,
+        easing: 'easeInQuad'
+      });
+    }
+
+    // SVGマップ上の各棟にクリック（タップ）イベントを登録
+    buildings.forEach(bldg => {
+      bldg.addEventListener('click', (e) => {
+        openBottomSheet(e.currentTarget.id);
+      });
+    });
+
+    document.getElementById('closeSheetBtn').addEventListener('click', closeBottomSheet);
+    overlay.addEventListener('click', closeBottomSheet);
+
+    // ==========================================================================
+    // 🛏️ 3. ボトムシートのドラッグ（高さ可変）制御
+    // ==========================================================================
+    handle.addEventListener('pointerdown', (e) => {
+      isDragging = true;
+      startY = e.clientY;
+      startHeight = sheet.offsetHeight;
+      handle.setPointerCapture(e.pointerId);
+      sheet.style.transition = 'none'; 
+    });
+
+    window.addEventListener('pointermove', (e) => {
+      if (!isDragging) return;
+      const deltaY = startY - e.clientY; 
+      const newHeight = startHeight + deltaY;
+
+      const maxHeight = window.innerHeight * 0.85;
+      const minHeight = 150;
+
+      if (newHeight >= minHeight && newHeight <= maxHeight) {
+        sheet.style.height = `${newHeight}px`;
+      }
+    });
+
+    window.addEventListener('pointerup', () => {
+      if (!isDragging) return;
+      isDragging = false;
+      
+      // 指を離した時に高さが低すぎたら自動で閉じる（スナップ機能）
+      if (sheet.offsetHeight < 200) {
+        closeBottomSheet();
+      }
+    });
+
+  </script>
+</body>
+</html>
