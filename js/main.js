@@ -1,34 +1,23 @@
-document.addEventListener('DOMContentLoaded', function() {
-  const navToggle = document.querySelector('.nav-toggle');
-  const nav = document.querySelector('nav');
-  const backToTop = document.querySelector('.back-to-top');
-  const header = document.querySelector('header');
+document.addEventListener("DOMContentLoaded", () => {
+  // スクロール検知のオプション設定
+  const observerOptions = {
+    root: null,       // ビューポートを基準にする
+    rootMargin: "0px",
+    threshold: 0.1    // 要素が10%見えたら発火
+  };
 
-  if (navToggle && nav) {
-    navToggle.addEventListener('click', function() {
-      nav.classList.toggle('open');
-      navToggle.classList.toggle('active');
-    });
-  }
-
-  document.querySelectorAll('a[href^="#"]').forEach(function(link) {
-    link.addEventListener('click', function(event) {
-      const targetId = this.getAttribute('href').slice(1);
-      const target = document.getElementById(targetId);
-      if (target) {
-        event.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth' });
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      // 要素が画面内に入った場合
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+        // 一度アニメーションしたら監視を解除（何度も発火させたい場合はコメントアウト）
+        observer.unobserve(entry.target);
       }
     });
-  });
+  }, observerOptions);
 
-  window.addEventListener('scroll', function() {
-    const scrollY = window.scrollY || window.pageYOffset;
-    if (backToTop) {
-      backToTop.classList.toggle('visible', scrollY > 300);
-    }
-    if (header) {
-      header.classList.toggle('scrolled', scrollY > 50);
-    }
-  });
+  // ページ内の該当する要素をすべて取得して監視を開始
+  const revealElements = document.querySelectorAll(".reveal-on-scroll");
+  revealElements.forEach(el => observer.observe(el));
 });
