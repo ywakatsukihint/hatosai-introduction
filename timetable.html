@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>タイムテーブル - 第70回屋代高校鳩祭公式ウェブサイト</title>
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+
+  <style>
+    /* ==========================================================================
+       🎨 1. カラー＆デザインシステム（index.html準拠）
+       ========================================================================== */
+    :root {
+      --color-primary: #2C3A4E;
+      --color-primary-dark: #131924;
+      --color-key: #8DAE4B;
+      --color-key-light: #F4F8EC;
+      --color-base: #222222;
+      --color-contrast: #E2E8F0;
+      --color-white: #ffffff;
+      --color-bg-light: #F8FAFC;
+      --font-noto: "Noto Sans JP", "Helvetica Neue", Arial, sans-serif;
+      
+      /* タイムテーブル設定（1時間は120pxに設定） */
+      --hour-height: 120px; 
+      --col-width: 180px;
+      --time-col-width: 60px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0; padding: 0;
+      font-family: var(--font-noto);
+      background-color: var(--color-bg-light);
+      color: var(--color-base);
+      overflow-x: hidden;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    /* ==========================================================================
+       🌐 2. ヘッダー ＆ ナビゲーション
+       ========================================================================== */
+    .main-header-modern {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(44, 58, 78, 0.08);
+      position: sticky; top: 0; z-index: 2000; padding: 0.8rem 1.5rem;
+    }
+    .header-content {
+      max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;
+    }
+    .header-title { text-decoration: none; }
+    .header-title h1 { font-size: 1.3rem; margin: 0; font-weight: 900; color: var(--color-primary); letter-spacing: 0.1em; }
+    .header-title p { margin: 0; font-size: 0.7rem; font-weight: 700; color: var(--color-key); text-transform: uppercase; }
+
+    .menu-trigger {
+      background: none; border: none; width: 44px; height: 44px; position: relative; cursor: pointer; padding: 0;
+      display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px;
+    }
+    .menu-trigger span { display: block; width: 24px; height: 2px; background-color: var(--color-primary); transition: all 0.3s; }
+    .menu-trigger.is-active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .menu-trigger.is-active span:nth-child(2) { opacity: 0; }
+    .menu-trigger.is-active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+    .fullscreen-nav {
+      position: absolute; top: 100%; right: 1.5rem; width: calc(100% - 3rem); max-width: 320px;
+      background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); border-radius: 16px;
+      padding: 1.25rem; box-shadow: 0 20px 40px rgba(44, 58, 78, 0.12); border: 1px solid rgba(44, 58, 78, 0.08);
+      opacity: 0; pointer-events: none; transform: translateY(-10px) scale(0.95); transition: all 0.3s; z-index: 1050;
+    }
+    .fullscreen-nav.is-open { pointer-events: auto; opacity: 1; transform: translateY(0) scale(1); }
+    .nav-links { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; list-style: none; padding: 0; margin: 0; text-align: center; }
+    .nav-links a { color: var(--color-primary); font-size: 0.85rem; font-weight: 800; text-decoration: none; padding: 0.8rem 0.5rem; display: block; background: rgba(44, 58, 78, 0.03); border-radius: 10px; }
+
+    @media (min-width: 992px) { 
+      .pc-nav { display: block; } .menu-trigger { display: none; } .fullscreen-nav { display: none !important; } 
+    }
+
+    /* ==========================================================================
+       🗓️ 3. タイムテーブル共通レイアウト
+       ========================================================================== */
+    .page-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 6rem 1.25rem;
+    }
+
+    .page-hero { text-align: center; margin-bottom: 2rem; }
+    .page-hero h2 { font-size: 2rem; font-weight: 900; color: var(--color-primary); margin: 0 0 0.5rem 0; letter-spacing: 0.05em; }
+    .page-hero p { font-size: 0.95rem; color: #64748B; font-weight: 600; margin: 0; }
+
+    /* 1日目・2日目 切り替えタブ */
+    .day-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 1.5rem;
+    }
+    .day-tab-btn {
+      background: var(--color-white);
+      border: 2px solid var(--color-contrast);
+      color: var(--color-primary);
+      padding: 0.7rem 2rem;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      -webkit-tap-highlight-color: transparent;
+      outline: none;
+    }
+    .day-tab-btn.active {
+      background: var(--color-key);
+      border-color: var(--color-key);
+      color: var(--color-white);
+      box-shadow: 0 4px 12px rgba(141, 174, 75, 0.3);
+    }
+
+    /* タイムテーブル全体を囲うスクロール領域 */
+    .timetable-wrapper {
+      background: var(--color-white);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--color-contrast);
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch; /* スマホで滑らかに横スクロール */
+      position: relative;
+    }
+
+    /* タイムテーブル本体のグリッド構造 */
+    .timetable-grid {
+      display: flex;
+      flex-direction: column;
+      min-width: max-content; /* 内部要素に合わせて横幅を拡張 */
+      position: relative;
+    }
+
+    /* 📌 ヘッダー行（場所の名前） */
+    .timetable-header-row {
+      display: flex;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--color-bg-light);
+      border-bottom: 2px solid var(--color-contrast);
+    }
+    .corner-empty {
+      width: var(--time-col-width);
+      min-width: var(--time-col-width);
+      position: sticky;
+      left: 0;
+      z-index: 101;
+      background: var(--color-bg-light);
+      border-right: 1px solid var(--color-contrast);
+    }
+    .location-header {
+      width: var(--col-width);
+      min-width: var(--col-width);
+      padding: 1rem 0;
+      text-align: center;
+      font-weight: 900;
+      color: var(--color-primary);
+      font-size: 0.95rem;
+      border-right: 1px solid var(--color-contrast);
+    }
+
+    /* 📌 ボディ行（時間枠とイベント配置エリア） */
+    .timetable-body-row {
+      display: flex;
+      position: relative;
+      /* 横方向の罫線（1時間ごとに引く魔法の背景グラデーション） */
+      background-image: linear-gradient(to bottom, #E2E8F0 1px, transparent 1px);
+      background-size: 100% var(--hour-height);
+    }
+
+    /* 左側の時間列（常に左端に固定） */
+    .time-column {
+      width: var(--time-col-width);
+      min-width: var(--time-col-width);
+      position: sticky;
+      left: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.95);
+      border-right: 1px solid var(--color-contrast);
+    }
+    .time-label {
+      height: var(--hour-height);
+      text-align: center;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #64748B;
+      padding-top: 5px;
+      /* 背景の罫線と合わせるためのネガティブマージン調整 */
+      transform: translateY(-10px);
+    }
+
+    /* 各場所の列 */
+    .location-column {
+      width: var(--col-width);
+      min-width: var(--col-width);
+      position: relative;
+      border-right: 1px dashed var(--color-contrast);
+    }
+
+    /* ==========================================================================
+       🎟️ 4. 企画カード（イベントブロック）
+       ========================================================================== */
+    .event-card {
+      position: absolute;
+      left: 4px;
+      width: calc(100% - 8px);
+      border-radius: 8px;
+      padding: 8px;
+      text-decoration: none;
+      color: inherit;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      border-left: 4px solid var(--color-primary); /* デフォルトの左枠線 */
+    }
+    .event-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      z-index: 10;
+    }
+
+    .event-time {
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: rgba(0,0,0,0.6);
+      margin-bottom: 2px;
+    }
+    .event-title {
+      font-size: 0.85rem;
+      font-weight: 900;
+      line-height: 1.3;
+      margin: 0 0 4px 0;
+      color: var(--color-primary-dark);
+      /* 長すぎるタイトルを省略 */
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .event-org {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #64748B;
+      margin-top: auto;
+    }
+
+    /* 企画のジャンルごとのカラーリング設定 */
+    .type-stage { background: #E0F2FE; border-left-color: #0284C7; } /* ステージ系（青） */
+    .type-music { background: #FEF08A; border-left-color: #CA8A04; } /* 音楽系（黄） */
+    .type-exhibit { background: #DCFCE7; border-left-color: #16A34A; } /* 展示系（緑） */
+    .type-special { background: #FCE7F3; border-left-color: #DB2777; } /* 特別企画（ピンク） */
+
+    /* フッター */
+    footer { background-color: var(--color-primary-dark); color: rgba(255, 255, 255, 0.7); padding: 3rem 1.25rem 2rem; border-top: 1px solid rgba(255, 255, 255, 0.06); }
+  </style>
+</head>
+<body>
+
+  <header class="main-header-modern">
+    <div class="header-content">
+      <a href="index.html" class="header-title">
+        <p>第70回 屋代高校文化祭</p>
+        <h1>鳩祭</h1>
+      </a>
+      <button class="menu-trigger" id="menuToggle" aria-label="メニューを開閉する">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="fullscreen-nav" id="mobileNav">
+        <ul class="nav-links">
+          <li><a href="index.html">ホーム</a></li>
+          <li><a href="timetable.html" class="active">タイムテーブル</a></li>
+          <li><a href="map.html">マップ</a></li>
+          <li><a href="exhibit.html">展示紹介</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page-container">
+    <div class="page-hero animate__animated animate__fadeIn">
+      <h2>タイムテーブル</h2>
+      <p>各企画のブロックをタップすると詳細ページへ移動します。</p>
+    </div>
+
+    <div class="day-tabs animate__animated animate__fadeInUp">
+      <button class="day-tab-btn active" data-day="day1">1日目 (6/27)</button>
+      <button class="day-tab-btn" data-day="day2">2日目 (6/28)</button>
+    </div>
+
+    <div class="timetable-wrapper animate__animated animate__fadeInUp" id="timetableWrapper">
+      <div class="timetable-grid">
+        
+        <div class="timetable-header-row">
+          <div class="corner-empty"></div>
+          <div class="location-header">第一体育館</div>
+          <div class="location-header">第二体育館</div>
+          <div class="location-header">中庭</div>
+          <div class="location-header">1棟</div>
+          <div class="location-header">2棟</div>
+          <div class="location-header">3棟</div>
+          <div class="location-header">中学棟</div>
+        </div>
+
+        <div class="timetable-body-row" id="timetableBody">
+          <div class="time-column" id="timeAxis">
+            </div>
+
+          <div class="location-column" id="col-gym1"></div>
+          <div class="location-column" id="col-gym2"></div>
+          <div class="location-column" id="col-courtyard"></div>
+          <div class="location-column" id="col-bldg1"></div>
+          <div class="location-column" id="col-bldg2"></div>
+          <div class="location-column" id="col-bldg3"></div>
+          <div class="location-column" id="col-jhs"></div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div style="text-align: center; font-size: 0.8rem;">
+      <p>© 2026 Yashiro High School Hatosai Festival. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // ==========================================================================
+    // 📱 ナビゲーションメニュー制御
+    // ==========================================================================
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileNav = document.getElementById('mobileNav');
+    menuToggle.addEventListener('click', () => {
+      const isOpen = mobileNav.classList.contains('is-open');
+      menuToggle.classList.toggle('is-active', !isOpen);
+      mobileNav.classList.toggle('is-open', !isOpen);
+    });
+
+    // ==========================================================================
+    // ⏰ タイムテーブル データ＆描画ロジック
+    // ==========================================================================
+    
+    // 全体の開始・終了時間設定（9:00〜16:00の場合）
+    const START_HOUR = 9;
+    const END_HOUR = 16;
+    // 1分あたりのピクセル数（1時間=120pxなので、1分=2px）
+    const PIXELS_PER_MINUTE = 120 / 60; 
+
+    // 🗃️ イベントデータ
+    // type: 'stage'(青), 'music'(黄), 'exhibit'(緑), 'special'(ピンク)
+    // location: gym1, gym2, courtyard, bldg1, bldg2, bldg3, jhs
+    const eventsData = {
+      day1: [
+        { title: "オープニングセレモニー", org: "実行委員会", location: "gym1", start: "09:00", end: "10:00", type: "special", url: "events.html" },
+        { title: "吹奏楽部 スペシャルライブ", org: "吹奏楽部", location: "gym1", start: "10:30", end: "12:00", type: "music", url: "club_activity.html" },
+        { title: "有志バンド『The Pigeons』", org: "有志団体", location: "gym1", start: "13:00", end: "14:00", type: "music", url: "club_activity.html" },
+        { title: "ダンス部 パフォーマンス", org: "ダンス部", location: "gym2", start: "11:00", end: "12:30", type: "stage", url: "club_activity.html" },
+        { title: "中庭 軽音ライブ", org: "軽音同好会", location: "courtyard", start: "12:00", end: "15:00", type: "music", url: "club_activity.html" },
+        { title: "1棟 クラス展示・縁日", org: "1年各クラス", location: "bldg1", start: "10:00", end: "15:30", type: "exhibit", url: "exhibit.html" },
+        { title: "2棟 お化け屋敷", org: "2年有志", location: "bldg2", start: "10:00", end: "15:30", type: "special", url: "exhibit.html" },
+        { title: "美術展・科学実験", org: "美術部・科学部", location: "bldg3", start: "09:30", end: "16:00", type: "exhibit", url: "club_activity.html" },
+        { title: "附属中 学年展示", org: "附属中学校", location: "jhs", start: "09:30", end: "15:00", type: "exhibit", url: "exhibit.html" }
+      ],
+      day2: [
+        { title: "ミス・ミスターコンテスト", org: "実行委員会", location: "gym1", start: "10:00", end: "12:00", type: "stage", url: "events.html" },
+        { title: "全校制作モザイクアートお披露目", org: "実行委員会", location: "gym1", start: "13:30", end: "14:30", type: "special", url: "events.html" },
+        { title: "クロージングセレモニー", org: "実行委員会", location: "gym1", start: "15:00", end: "16:00", type: "special", url: "events.html" },
+        { title: "軽音フェス DAY2", org: "軽音同好会", location: "courtyard", start: "09:30", end: "14:00", type: "music", url: "club_activity.html" },
+        { title: "展示企画 一般公開", org: "各クラス・班", location: "bldg1", start: "09:00", end: "14:30", type: "exhibit", url: "exhibit.html" },
+        { title: "展示企画 一般公開", org: "各クラス・班", location: "bldg2", start: "09:00", end: "14:30", type: "exhibit", url: "exhibit.html" }
+      ]
+    };
+
+    // 時間文字列("HH:MM")を 分(Minutes) に変換
+    function timeToMinutes(timeStr) {
+      const [h, m] = timeStr.split(':').map(Number);
+      return h * 60 + m;
+    }
+
+    // 🌟 タイムテーブルの描画関数
+    function renderTimetable(dayKey) {
+      // 1. 時間軸ラベルの生成
+      const timeAxis = document.getElementById('timeAxis');
+      timeAxis.innerHTML = '';
+      for (let h = START_HOUR; h <= END_HOUR; h++) {
+        timeAxis.innerHTML += `<div class="time-label">${h}:00</div>`;
+      }
+      // 高さ設定（時間数 × 1時間分の高さ）
+      const totalHours = END_HOUR - START_HOUR + 1; // +1は最後の線を表示するため
+      document.getElementById('timetableBody').style.height = `${totalHours * 120}px`;
+
+      // 2. 各列のクリア
+      const locations = ['gym1', 'gym2', 'courtyard', 'bldg1', 'bldg2', 'bldg3', 'jhs'];
+      locations.forEach(loc => {
+        document.getElementById(`col-${loc}`).innerHTML = '';
+      });
+
+      // 3. イベントブロックの配置
+      const events = eventsData[dayKey] || [];
+      const startMinsBase = START_HOUR * 60; // 基準となる開始分数（9:00 = 540分）
+
+      events.forEach(ev => {
+        const startMins = timeToMinutes(ev.start) - startMinsBase;
+        const durationMins = timeToMinutes(ev.end) - timeToMinutes(ev.start);
+        
+        const topPx = startMins * PIXELS_PER_MINUTE;
+        const heightPx = durationMins * PIXELS_PER_MINUTE;
+
+        const col = document.getElementById(`col-${ev.location}`);
+        if (col) {
+          const card = document.createElement('a');
+          card.href = ev.url;
+          card.className = `event-card type-${ev.type}`;
+          // JSでtopとheightを動的に計算して絶対配置する
+          card.style.top = `${topPx}px`;
+          card.style.height = `${heightPx}px`;
+          
+          card.innerHTML = `
+            <div class="event-time">${ev.start} - ${ev.end}</div>
+            <h4 class="event-title">${ev.title}</h4>
+            <div class="event-org">${ev.org}</div>
+          `;
+          col.appendChild(card);
+        }
+      });
+    }
+
+    // ==========================================================================
+    // 🗓️ タブ切り替え制御
+    // ==========================================================================
+    const tabBtns = document.querySelectorAll('.day-tab-btn');
+    const wrapper = document.getElementById('timetableWrapper');
+
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        // 同じタブをクリックした場合は何もしない
+        if(e.currentTarget.classList.contains('active')) return;
+
+        tabBtns.forEach(b => b.classList.remove('active'));
+        e.currentTarget.classList.add('active');
+
+        const dayKey = e.currentTarget.getAttribute('data-day');
+
+        // Anime.jsで切り替えアニメーション（フェードアウト→再描画→フェードイン）
+        anime({
+          targets: wrapper,
+          opacity: 0,
+          translateY: 10,
+          duration: 200,
+          easing: 'easeInQuad',
+          complete: () => {
+            renderTimetable(dayKey);
+            anime({
+              targets: wrapper,
+              opacity: [0, 1],
+              translateY: [10, 0],
+              duration: 400,
+              easing: 'easeOutCubic'
+            });
+          }
+        });
+      });
+    });
+
+    // 初期化（1日目を描画）
+    renderTimetable('day1');
+
+  </script>
+</body>
+</html>
