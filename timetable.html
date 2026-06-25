@@ -42,43 +42,252 @@
     }
 
     /* ==========================================================================
-       🌐 2. ヘッダー ＆ ナビゲーション
+       ヘッダー ＆ 右上側・横書きナビゲーションシステム
        ========================================================================== */
-    .main-header-modern {
-      background: rgba(255, 255, 255, 0.9);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+    header {
+      background-color: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      padding: 0.8rem 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
       border-bottom: 1px solid rgba(44, 58, 78, 0.08);
-      position: sticky; top: 0; z-index: 2000; padding: 0.8rem 1.5rem;
+      transition: var(--transition-smooth);
     }
     .header-content {
-      max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-    .header-title { text-decoration: none; }
-    .header-title h1 { font-size: 1.3rem; margin: 0; font-weight: 900; color: var(--color-primary); letter-spacing: 0.1em; }
-    .header-title p { margin: 0; font-size: 0.7rem; font-weight: 700; color: var(--color-key); text-transform: uppercase; }
+    .header-title h1 {
+      font-size: 1.3rem;
+      margin: 0;
+      font-weight: 900;
+      color: var(--color-primary);
+      letter-spacing: 0.1em;
+    }
+    .header-title p {
+      margin: 0;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--color-key);
+      text-transform: uppercase;
+    }
 
+    /* PC・タブレット用：右上側の常時横書きナビゲーション */
+    .pc-nav {
+      display: none;
+    }
+    .pc-nav-links {
+      display: flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      gap: 2.2rem;
+    }
+    .pc-nav-links a {
+      color: var(--color-primary);
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 0.9rem;
+      position: relative;
+      padding: 0.4rem 0;
+      transition: var(--transition-smooth);
+    }
+    .pc-nav-links a::after {
+      content: "";
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background-color: var(--color-key);
+      transition: var(--transition-smooth);
+    }
+    .pc-nav-links a:hover {
+      color: var(--color-key);
+    }
+    .pc-nav-links a:hover::after {
+      width: 100%;
+    }
+    
+    /* 🟢 【改善】現在位置を示すアクティブステート（迷子防止） */
+    .pc-nav-links a.active, .nav-links a.active {
+      color: var(--color-key) !important;
+      font-weight: 900;
+    }
+    .pc-nav-links a.active::after {
+      width: 100%;
+    }
+
+    /* スマホ用ハンバーガーツマミ */
     .menu-trigger {
-      background: none; border: none; width: 44px; height: 44px; position: relative; cursor: pointer; padding: 0;
-      display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px;
+      background: none;
+      border: none;
+      width: 44px;
+      height: 44px;
+      position: relative;
+      cursor: pointer;
+      z-index: 1100;
+      padding: 0;
+      box-shadow: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
     }
-    .menu-trigger span { display: block; width: 24px; height: 2px; background-color: var(--color-primary); transition: all 0.3s; }
-    .menu-trigger.is-active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-    .menu-trigger.is-active span:nth-child(2) { opacity: 0; }
-    .menu-trigger.is-active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+    .menu-trigger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background-color: var(--color-primary);
+      transition: var(--transition-bounce);
+      transform-origin: center;
+    }
+    .menu-trigger.is-active span:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+    .menu-trigger.is-active span:nth-child(2) {
+      opacity: 0;
+    }
+    .menu-trigger.is-active span:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
 
+    /* スマホ用：右上側にコンパクトに現れるナビメニュー */
     .fullscreen-nav {
-      position: absolute; top: 100%; right: 1.5rem; width: calc(100% - 3rem); max-width: 320px;
-      background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); border-radius: 16px;
-      padding: 1.25rem; box-shadow: 0 20px 40px rgba(44, 58, 78, 0.12); border: 1px solid rgba(44, 58, 78, 0.08);
-      opacity: 0; pointer-events: none; transform: translateY(-10px) scale(0.95); transition: all 0.3s; z-index: 1050;
+      position: absolute;
+      top: 100%;
+      right: 1.5rem;
+      width: calc(100% - 3rem);
+      max-width: 320px;
+      height: auto;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 1050;
+      border-radius: 16px;
+      padding: 1.25rem;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(44, 58, 78, 0.08);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-10px) scale(0.95);
     }
-    .fullscreen-nav.is-open { pointer-events: auto; opacity: 1; transform: translateY(0) scale(1); }
-    .nav-links { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; list-style: none; padding: 0; margin: 0; text-align: center; }
-    .nav-links a { color: var(--color-primary); font-size: 0.85rem; font-weight: 800; text-decoration: none; padding: 0.8rem 0.5rem; display: block; background: rgba(44, 58, 78, 0.03); border-radius: 10px; }
+    .fullscreen-nav.is-open {
+      pointer-events: auto;
+    }
+    .nav-links {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      text-align: center;
+    }
+    .nav-links a {
+      color: var(--color-primary);
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-decoration: none;
+      padding: 0.8rem 0.5rem;
+      display: block;
+      background: rgba(44, 58, 78, 0.03);
+      border-radius: 10px;
+      transition: var(--transition-smooth);
+    }
+    .nav-links a:hover {
+      color: var(--color-white);
+      background-color: var(--color-key);
+    }
 
-    @media (min-width: 992px) { 
-      .pc-nav { display: block; } .menu-trigger { display: none; } .fullscreen-nav { display: none !important; } 
+    @media (min-width: 768px) {
+      .pc-nav { display: block; }
+      .menu-trigger { display: none; }
+      .fullscreen-nav { display: none !important; }
+    }
+
+        /* ==========================================================================
+       🌐 フッター ＆ サイトマップ（文字サイズ階層を完全に再整理）
+       ========================================================================== */
+    footer {
+      background-color: var(--color-primary-dark);
+      color: rgba(255, 255, 255, 0.8);
+      padding: 5rem 1.5rem 3rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .footer-container {
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+    .sitemap-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 3rem;
+      margin-bottom: 4rem;
+    }
+    
+    /* 🟢 【改善】h5(大見出し)・リンク本文・コピーライトのジャンプ率（階層構造）を美しく整理 */
+    .sitemap-item h5 {
+      color: var(--color-white);
+      font-size: 1.05rem; /* 見出しをパッと際立たせる */
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.05em;
+    }
+    .sitemap-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+    .sitemap-links a {
+      color: rgba(255, 255, 255, 0.65);
+      text-decoration: none;
+      font-size: 0.9rem; /* 本文として最も読みやすい絶妙なサイズ */
+      font-weight: 500;
+      transition: var(--transition-smooth);
+    }
+    .sitemap-links a:hover {
+      color: var(--color-key);
+      transform: translateX(4px);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    @media (min-width: 768px) {
+      .footer-bottom {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-end;
+      }
+    }
+    .footer-info-block p {
+      margin: 0 0 0.4rem 0;
+      font-size: 0.9rem;
+      color: var(--color-white);
+    }
+    .footer-info-block .school-name {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--color-white);
+    }
+    .footer-info-block a {
+      color: var(--color-key);
+      text-decoration: none;
+    }
+    
+    .copyright {
+      font-size: 0.75rem; /* コピーライトは最も小さく静かに配置 */
+      color: rgba(255, 255, 255, 0.645);
+      margin: 0;
     }
 
     /* ==========================================================================
@@ -263,27 +472,42 @@
     .type-exhibit { background: #DCFCE7; border-left-color: #16A34A; } /* 展示系（緑） */
     .type-special { background: #FCE7F3; border-left-color: #DB2777; } /* 特別企画（ピンク） */
 
-    /* フッター */
-    footer { background-color: var(--color-primary-dark); color: rgba(255, 255, 255, 0.7); padding: 3rem 1.25rem 2rem; border-top: 1px solid rgba(255, 255, 255, 0.06); }
   </style>
 </head>
 <body>
 
-  <header class="main-header-modern">
+  <header>
     <div class="header-content">
-      <a href="index.html" class="header-title">
-        <p>第70回 屋代高校文化祭</p>
-        <h1>鳩祭</h1>
-      </a>
+      <div class="header-title">
+        <h1>第70回 鳩祭</h1>
+        <p>Yashiro High School Festival 2026</p>
+      </div>
+      
+      <nav class="pc-nav">
+        <ul class="pc-nav-links">
+          <li><a href="index.html" class="active">ホーム</a></li>
+          <li><a href="about.html">鳩祭について</a></li>
+          <li><a href="events.html">企画紹介</a></li>
+          <li><a href="club_activity.html">班の企画</a></li>
+          <li><a href="exhibit.html">クラス展・縁日</a></li>
+          <li><a href="news.html">お知らせ</a></li>
+        </ul>
+      </nav>
+
       <button class="menu-trigger" id="menuToggle" aria-label="メニューを開閉する">
-        <span></span><span></span><span></span>
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
+
       <nav class="fullscreen-nav" id="mobileNav">
         <ul class="nav-links">
-          <li><a href="index.html">ホーム</a></li>
-          <li><a href="timetable.html" class="active">タイムテーブル</a></li>
-          <li><a href="map.html">マップ</a></li>
-          <li><a href="exhibit.html">展示紹介</a></li>
+          <li><a href="index.html" class="active">ホーム</a></li>
+          <li><a href="about.html">鳩祭について</a></li>
+          <li><a href="events.html">企画紹介</a></li>
+          <li><a href="club_activity.html">班の企画</a></li>
+          <li><a href="exhibit.html">クラス展・縁日</a></li>
+          <li><a href="news.html">お知らせ</a></li>
         </ul>
       </nav>
     </div>
@@ -332,21 +556,83 @@
   </main>
 
   <footer>
-    <div style="text-align: center; font-size: 0.8rem;">
-      <p>© 2026 Yashiro High School Hatosai Festival. All Rights Reserved.</p>
+    <div class="footer-container">
+      <div class="sitemap-group">
+        <div class="sitemap-item">
+          <h5>催し物・案内</h5>
+          <div class="sitemap-links">
+            <a href="events.html">本部・実行委員会企画</a>
+            <a href="club_activity.html">班の展示</a>
+            <a href="exhibit.html">クラス展・縁日</a>
+            <a href="timetable.html">タイムテーブル</a>
+            <a href="map.html">マップ</a>
+          </div>
+        </div>
+        <div class="sitemap-item">
+          <h5>来場者向け情報</h5>
+          <div class="sitemap-links">
+            <a href="about.html">開催概要</a>
+            <a href="access.html">アクセス・地図</a>
+            <a href="faq.html">よくあるご質問</a>
+          </div>
+        </div>
+        <div class="sitemap-item">
+          <h5>その他リンク</h5>
+          <div class="sitemap-links">
+            <a href="https://www.yashiro-hs.ed.jp/" target="_blank" rel="noopener">長野県屋代高等学校 公式HP</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-info-block">
+          <p class="school-name">第70回屋代高校鳩祭実行委員会</p>
+          <p>〒387-8501 長野県千曲市屋代1000</p>
+        </div>
+        <div class="footer-copyright-block">
+          <p class="copyright">© 2026 Yashiro High School Hatosai Festival. All Rights Reserved.</p>
+        </div>
+      </div>
     </div>
   </footer>
 
   <script>
-    // ==========================================================================
-    // 📱 ナビゲーションメニュー制御
-    // ==========================================================================
-    const menuToggle = document.getElementById('menuToggle');
-    const mobileNav = document.getElementById('mobileNav');
-    menuToggle.addEventListener('click', () => {
-      const isOpen = mobileNav.classList.contains('is-open');
-      menuToggle.classList.toggle('is-active', !isOpen);
-      mobileNav.classList.toggle('is-open', !isOpen);
+    document.addEventListener("DOMContentLoaded", () => {
+
+      // ------------------------------------------------------------------------
+      // 📱 スマホメニューのトグル ＆ バウンス弾むインタラクション
+      // ------------------------------------------------------------------------
+      const menuToggle = document.getElementById('menuToggle');
+      const mobileNav = document.getElementById('mobileNav');
+      let isMenuOpen = false;
+
+      menuToggle.addEventListener('click', () => {
+        isMenuOpen = !isMenuOpen;
+        menuToggle.classList.toggle('is-active', isMenuOpen);
+        mobileNav.classList.toggle('is-open', isMenuOpen);
+
+        if (isMenuOpen) {
+          // 開くときは弾むように気持ちよく展開
+          anime({
+            targets: mobileNav,
+            opacity: [0, 1],
+            translateY: [-10, 0],
+            scale: [0.95, 1],
+            duration: 500,
+            easing: 'easeOutElastic(1, .75)' // 💡 弾む動きを追加
+          });
+        } else {
+          // 閉じるときはスッとスマートに消す
+          anime({
+            targets: mobileNav,
+            opacity: [1, 0],
+            translateY: [0, -10],
+            scale: [1, 0.95],
+            duration: 250,
+            easing: 'easeInQuad'
+          });
+        }
+      });
     });
 
     // ==========================================================================

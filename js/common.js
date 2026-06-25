@@ -1,38 +1,37 @@
-// ① モバイルメニューの開閉制御
-const menuToggle = document.getElementById('menuToggle');
-const navMenu = document.getElementById('navMenu');
+    document.addEventListener("DOMContentLoaded", () => {
 
-if (menuToggle && navMenu) {
-  menuToggle.addEventListener('click', () => {
-    menuToggle.classList.toggle('active');
-    navMenu.classList.toggle('active');
-  });
+      // ------------------------------------------------------------------------
+      // 📱 スマホメニューのトグル ＆ バウンス弾むインタラクション
+      // ------------------------------------------------------------------------
+      const menuToggle = document.getElementById('menuToggle');
+      const mobileNav = document.getElementById('mobileNav');
+      let isMenuOpen = false;
 
-  // メニュー内のリンクをクリックしたら閉じる（スマホ対策）
-  navMenu.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      menuToggle.classList.remove('active');
-      navMenu.classList.remove('active');
+      menuToggle.addEventListener('click', () => {
+        isMenuOpen = !isMenuOpen;
+        menuToggle.classList.toggle('is-active', isMenuOpen);
+        mobileNav.classList.toggle('is-open', isMenuOpen);
+
+        if (isMenuOpen) {
+          // 開くときは弾むように気持ちよく展開
+          anime({
+            targets: mobileNav,
+            opacity: [0, 1],
+            translateY: [-10, 0],
+            scale: [0.95, 1],
+            duration: 500,
+            easing: 'easeOutElastic(1, .75)' // 💡 弾む動きを追加
+          });
+        } else {
+          // 閉じるときはスッとスマートに消す
+          anime({
+            targets: mobileNav,
+            opacity: [1, 0],
+            translateY: [0, -10],
+            scale: [1, 0.95],
+            duration: 250,
+            easing: 'easeInQuad'
+          });
+        }
+      });
     });
-  });
-}
-
-// ② スクロール連動フェードイン（Intersection Observer）
-const observerOptions = {
-  root: null,
-  rootMargin: "0px",
-  threshold: 0.05
-};
-
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('is-shown');
-      observer.unobserve(entry.target); // 軽量化のため一度表示されたら監視解除
-    }
-  });
-}, observerOptions);
-
-document.querySelectorAll('.scroll-fade').forEach(el => {
-  observer.observe(el);
-});

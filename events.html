@@ -46,115 +46,252 @@
     }
 
     /* ==========================================================================
-       🧱 共通ヘッダーシステム（index.htmlと完全同期仕様）
+       ヘッダー ＆ 右上側・横書きナビゲーションシステム
        ========================================================================== */
-    .main-header {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(44, 58, 78, 0.06);
+    header {
+      background-color: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      padding: 0.8rem 1.5rem;
       position: sticky;
       top: 0;
       z-index: 1000;
-      padding: 0.75rem 0;
-      transition: all 0.3s ease;
+      border-bottom: 1px solid rgba(44, 58, 78, 0.08);
+      transition: var(--transition-smooth);
     }
-    .header-container {
-      max-width: 1200px;
+    .header-content {
+      max-width: 1300px;
       margin: 0 auto;
-      padding: 0 1.5rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .header-logo {
-      display: flex;
-      align-items: center;
-      text-decoration: none;
-    }
-    .logo-text {
-      font-size: 1.25rem;
+    .header-title h1 {
+      font-size: 1.3rem;
+      margin: 0;
       font-weight: 900;
       color: var(--color-primary);
-      letter-spacing: 0.05em;
+      letter-spacing: 0.1em;
     }
-    .nav-menu {
-      display: flex;
+    .header-title p {
+      margin: 0;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--color-key);
+      text-transform: uppercase;
     }
-    .nav-menu ul {
+
+    /* PC・タブレット用：右上側の常時横書きナビゲーション */
+    .pc-nav {
+      display: none;
+    }
+    .pc-nav-links {
       display: flex;
       list-style: none;
       margin: 0;
       padding: 0;
-      gap: 1.75rem;
+      gap: 2.2rem;
     }
-    .nav-menu a {
+    .pc-nav-links a {
       color: var(--color-primary);
-      font-weight: 700;
-      font-size: 0.95rem;
       text-decoration: none;
-      transition: color 0.2s ease;
+      font-weight: 800;
+      font-size: 0.9rem;
       position: relative;
-      padding: 0.25rem 0;
+      padding: 0.4rem 0;
+      transition: var(--transition-smooth);
     }
-    .nav-menu a:hover, .nav-menu a.active {
+    .pc-nav-links a::after {
+      content: "";
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background-color: var(--color-key);
+      transition: var(--transition-smooth);
+    }
+    .pc-nav-links a:hover {
       color: var(--color-key);
     }
-    .nav-menu a::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background-color: var(--color-key);
-      transition: width 0.3s ease;
+    .pc-nav-links a:hover::after {
+      width: 100%;
     }
-    .nav-menu a:hover::after, .nav-menu a.active::after {
+    
+    /* 🟢 【改善】現在位置を示すアクティブステート（迷子防止） */
+    .pc-nav-links a.active, .nav-links a.active {
+      color: var(--color-key) !important;
+      font-weight: 900;
+    }
+    .pc-nav-links a.active::after {
       width: 100%;
     }
 
-    /* ハンバーガーメニュー（モバイル用） */
-    .menu-toggle {
-      display: none;
-      flex-direction: column;
-      justify-content: space-between;
-      width: 30px;
-      height: 21px;
-      background: transparent;
+    /* スマホ用ハンバーガーツマミ */
+    .menu-trigger {
+      background: none;
       border: none;
+      width: 44px;
+      height: 44px;
+      position: relative;
       cursor: pointer;
-      padding: 0;
       z-index: 1100;
+      padding: 0;
+      box-shadow: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
     }
-    .menu-toggle span {
-      width: 100%;
-      height: 3px;
+    .menu-trigger span {
+      display: block;
+      width: 24px;
+      height: 2px;
       background-color: var(--color-primary);
-      border-radius: 10px;
-      transition: all 0.3s ease;
+      transition: var(--transition-bounce);
+      transform-origin: center;
+    }
+    .menu-trigger.is-active span:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+    .menu-trigger.is-active span:nth-child(2) {
+      opacity: 0;
+    }
+    .menu-trigger.is-active span:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
     }
 
-    @media (max-width: 992px) {
-      .menu-toggle { display: flex; }
-      .nav-menu {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        width: 80%;
-        max-width: 320px;
-        height: 100vh;
-        background: var(--color-white);
-        box-shadow: -10px 0 30px rgba(0,0,0,0.05);
-        padding: 6rem 2rem 2rem 2rem;
-        transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    /* スマホ用：右上側にコンパクトに現れるナビメニュー */
+    .fullscreen-nav {
+      position: absolute;
+      top: 100%;
+      right: 1.5rem;
+      width: calc(100% - 3rem);
+      max-width: 320px;
+      height: auto;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 1050;
+      border-radius: 16px;
+      padding: 1.25rem;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(44, 58, 78, 0.08);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-10px) scale(0.95);
+    }
+    .fullscreen-nav.is-open {
+      pointer-events: auto;
+    }
+    .nav-links {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      text-align: center;
+    }
+    .nav-links a {
+      color: var(--color-primary);
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-decoration: none;
+      padding: 0.8rem 0.5rem;
+      display: block;
+      background: rgba(44, 58, 78, 0.03);
+      border-radius: 10px;
+      transition: var(--transition-smooth);
+    }
+    .nav-links a:hover {
+      color: var(--color-white);
+      background-color: var(--color-key);
+    }
+
+    @media (min-width: 768px) {
+      .pc-nav { display: block; }
+      .menu-trigger { display: none; }
+      .fullscreen-nav { display: none !important; }
+    }
+
+        /* ==========================================================================
+       🌐 フッター ＆ サイトマップ（文字サイズ階層を完全に再整理）
+       ========================================================================== */
+    footer {
+      background-color: var(--color-primary-dark);
+      color: rgba(255, 255, 255, 0.8);
+      padding: 5rem 1.5rem 3rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .footer-container {
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+    .sitemap-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 3rem;
+      margin-bottom: 4rem;
+    }
+    
+    /* 🟢 【改善】h5(大見出し)・リンク本文・コピーライトのジャンプ率（階層構造）を美しく整理 */
+    .sitemap-item h5 {
+      color: var(--color-white);
+      font-size: 1.05rem; /* 見出しをパッと際立たせる */
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.05em;
+    }
+    .sitemap-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+    .sitemap-links a {
+      color: rgba(255, 255, 255, 0.65);
+      text-decoration: none;
+      font-size: 0.9rem; /* 本文として最も読みやすい絶妙なサイズ */
+      font-weight: 500;
+      transition: var(--transition-smooth);
+    }
+    .sitemap-links a:hover {
+      color: var(--color-key);
+      transform: translateX(4px);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    @media (min-width: 768px) {
+      .footer-bottom {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-end;
       }
-      .nav-menu.active { right: 0; }
-      .nav-menu ul { flex-direction: column; gap: 2rem; }
-      .nav-menu a { font-size: 1.1rem; }
-      .menu-toggle.active span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
-      .menu-toggle.active span:nth-child(2) { opacity: 0; }
-      .menu-toggle.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+    }
+    .footer-info-block p {
+      margin: 0 0 0.4rem 0;
+      font-size: 0.9rem;
+      color: var(--color-white);
+    }
+    .footer-info-block .school-name {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--color-white);
+    }
+    .footer-info-block a {
+      color: var(--color-key);
+      text-decoration: none;
+    }
+    
+    .copyright {
+      font-size: 0.75rem; /* コピーライトは最も小さく静かに配置 */
+      color: rgba(255, 255, 255, 0.645);
+      margin: 0;
     }
 
     /* ==========================================================================
@@ -319,103 +456,45 @@
       }
     }
 
-    /* ==========================================================================
-       🌐 共通フッターシステム（index.htmlと完全同期・文字階層整理版）
-       ========================================================================== */
-    .main-footer {
-      background-color: var(--color-primary-dark);
-      color: rgba(255, 255, 255, 0.7);
-      padding: 4.5rem 1.5rem 2rem 1.5rem;
-      font-size: 0.9rem;
-    }
-    .footer-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1.5fr repeat(2, 1fr);
-      gap: 3rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      padding-bottom: 3.5rem;
-    }
-    .footer-brand h3 {
-      color: var(--color-white);
-      font-size: 1.35rem;
-      font-weight: 900;
-      margin: 0 0 0.5rem 0;
-      letter-spacing: 0.05em;
-    }
-    .footer-brand p {
-      margin: 0;
-      font-size: 0.85rem;
-      color: rgba(255, 255, 255, 0.4);
-    }
-    .footer-sitemap h4 {
-      color: var(--color-white);
-      font-size: 0.95rem;
-      font-weight: 800;
-      margin: 0 0 1.25rem 0;
-      letter-spacing: 0.05em;
-    }
-    .footer-sitemap ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-    .footer-sitemap a {
-      color: rgba(255, 255, 255, 0.6);
-      text-decoration: none;
-      transition: color 0.2s ease;
-    }
-    .footer-sitemap a:hover {
-      color: var(--color-key);
-    }
-    .footer-bottom {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding-top: 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-      font-size: 0.8rem;
-      color: rgba(255, 255, 255, 0.35);
-    }
-    .footer-bottom p { margin: 0; }
 
-    @media (max-width: 768px) {
-      .footer-container {
-        grid-template-columns: 1fr;
-        gap: 2.5rem;
-        padding-bottom: 2.5rem;
-      }
-      .main-footer { padding: 3.5rem 1.25rem 2rem 1.25rem; }
-    }
   </style>
 </head>
 <body>
 
   <div class="nature-bg-decoration"></div>
 
-  <header class="main-header">
-    <div class="header-container">
-      <a href="index.html" class="header-logo">
-        <span class="logo-text">第70回 鳩祭</span>
-      </a>
-      <button class="menu-toggle" id="menuToggle" aria-label="メニューを開閉する">
-        <span></span><span></span><span></span>
-      </button>
-      <nav class="nav-menu" id="navMenu">
-        <ul>
-          <li><a href="index.html">ホーム</a></li>
+  <header>
+    <div class="header-content">
+      <div class="header-title">
+        <h1>第70回 鳩祭</h1>
+        <p>Yashiro High School Festival 2026</p>
+      </div>
+      
+      <nav class="pc-nav">
+        <ul class="pc-nav-links">
+          <li><a href="index.html" class="active">ホーム</a></li>
           <li><a href="about.html">鳩祭について</a></li>
+          <li><a href="events.html">企画紹介</a></li>
+          <li><a href="club_activity.html">班の企画</a></li>
+          <li><a href="exhibit.html">クラス展・縁日</a></li>
           <li><a href="news.html">お知らせ</a></li>
-          <li><a href="club_activity.html">文化部・班展示</a></li>
-          <li><a href="events.html" class="active">本部・委員会企画</a></li>
-          <li><a href="access.html">アクセス</a></li>
+        </ul>
+      </nav>
+
+      <button class="menu-trigger" id="menuToggle" aria-label="メニューを開閉する">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <nav class="fullscreen-nav" id="mobileNav">
+        <ul class="nav-links">
+          <li><a href="index.html" class="active">ホーム</a></li>
+          <li><a href="about.html">鳩祭について</a></li>
+          <li><a href="events.html">企画紹介</a></li>
+          <li><a href="club_activity.html">班の企画</a></li>
+          <li><a href="exhibit.html">クラス展・縁日</a></li>
+          <li><a href="news.html">お知らせ</a></li>
         </ul>
       </nav>
     </div>
@@ -515,54 +594,85 @@
     </section>
   </main>
 
-  <footer class="main-footer">
+  <footer>
     <div class="footer-container">
-      <div class="footer-brand">
-        <h3>第70回屋代高校鳩祭</h3>
-        <p>公式ウェブサイト</p>
+      <div class="sitemap-group">
+        <div class="sitemap-item">
+          <h5>催し物・案内</h5>
+          <div class="sitemap-links">
+            <a href="events.html">本部・実行委員会企画</a>
+            <a href="club_activity.html">班の展示</a>
+            <a href="exhibit.html">クラス展・縁日</a>
+            <a href="timetable.html">タイムテーブル</a>
+            <a href="map.html">マップ</a>
+          </div>
+        </div>
+        <div class="sitemap-item">
+          <h5>来場者向け情報</h5>
+          <div class="sitemap-links">
+            <a href="about.html">開催概要</a>
+            <a href="access.html">アクセス・地図</a>
+            <a href="faq.html">よくあるご質問</a>
+          </div>
+        </div>
+        <div class="sitemap-item">
+          <h5>その他リンク</h5>
+          <div class="sitemap-links">
+            <a href="https://www.yashiro-hs.ed.jp/" target="_blank" rel="noopener">長野県屋代高等学校 公式HP</a>
+          </div>
+        </div>
       </div>
-      <div class="footer-sitemap">
-        <h4>ナビゲーション</h4>
-        <ul>
-          <li><a href="index.html">ホーム</a></li>
-          <li><a href="about.html">鳩祭について</a></li>
-          <li><a href="news.html">お知らせ・ニュース</a></li>
-        </ul>
+
+      <div class="footer-bottom">
+        <div class="footer-info-block">
+          <p class="school-name">第70回屋代高校鳩祭実行委員会</p>
+          <p>〒387-8501 長野県千曲市屋代1000</p>
+        </div>
+        <div class="footer-copyright-block">
+          <p class="copyright">© 2026 Yashiro High School Hatosai Festival. All Rights Reserved.</p>
+        </div>
       </div>
-      <div class="footer-sitemap">
-        <h4>企画・案内</h4>
-        <ul>
-          <li><a href="club_activity.html">文化部・班展示</a></li>
-          <li><a href="events.html">本部・実行委員会企画</a></li>
-          <li><a href="access.html">アクセス情報</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; 2026 第70回屋代高校鳩祭実行委員会. All Rights Reserved.</p>
-      <p>Presented by Yashiro High School Festival Committee</p>
     </div>
   </footer>
 
   <script>
-    // 📱 共通ハンバーガーメニューの開閉JavaScript制御
-    const menuToggle = document.getElementById('menuToggle');
-    const navMenu = document.getElementById('navMenu');
-    
-    if(menuToggle && navMenu) {
+    document.addEventListener("DOMContentLoaded", () => {
+
+      // ------------------------------------------------------------------------
+      // 📱 スマホメニューのトグル ＆ バウンス弾むインタラクション
+      // ------------------------------------------------------------------------
+      const menuToggle = document.getElementById('menuToggle');
+      const mobileNav = document.getElementById('mobileNav');
+      let isMenuOpen = false;
+
       menuToggle.addEventListener('click', () => {
-        menuToggle.classList.toggle('active');
-        navMenu.classList.toggle('active');
-      });
-      
-      // 画面外クリックでメニューを閉じるユーザーファースト対応
-      document.addEventListener('click', (e) => {
-        if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
-          menuToggle.classList.remove('active');
-          navMenu.classList.remove('active');
+        isMenuOpen = !isMenuOpen;
+        menuToggle.classList.toggle('is-active', isMenuOpen);
+        mobileNav.classList.toggle('is-open', isMenuOpen);
+
+        if (isMenuOpen) {
+          // 開くときは弾むように気持ちよく展開
+          anime({
+            targets: mobileNav,
+            opacity: [0, 1],
+            translateY: [-10, 0],
+            scale: [0.95, 1],
+            duration: 500,
+            easing: 'easeOutElastic(1, .75)' // 💡 弾む動きを追加
+          });
+        } else {
+          // 閉じるときはスッとスマートに消す
+          anime({
+            targets: mobileNav,
+            opacity: [1, 0],
+            translateY: [0, -10],
+            scale: [1, 0.95],
+            duration: 250,
+            easing: 'easeInQuad'
+          });
         }
       });
-    }
+    });
   </script>
 </body>
 </html>

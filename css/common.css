@@ -1,317 +1,248 @@
-/* ==========================================================================
-   1. デザイン思想・基本ルール
-   ========================================================================== */
-:root {
-  --primary-grad: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-  --bg-light: #f8fafc;
-  --text-main: #1e293b;
-  --text-sub: #64748b;
-}
+    /* ==========================================================================
+       ヘッダー ＆ 右上側・横書きナビゲーションシステム
+       ========================================================================== */
+    header {
+      background-color: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      padding: 0.8rem 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(44, 58, 78, 0.08);
+      transition: var(--transition-smooth);
+    }
+    .header-content {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header-title h1 {
+      font-size: 1.3rem;
+      margin: 0;
+      font-weight: 900;
+      color: var(--color-primary);
+      letter-spacing: 0.1em;
+    }
+    .header-title p {
+      margin: 0;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--color-key);
+      text-transform: uppercase;
+    }
 
-* {
-  box-sizing: border-box;
-}
+    /* PC・タブレット用：右上側の常時横書きナビゲーション */
+    .pc-nav {
+      display: none;
+    }
+    .pc-nav-links {
+      display: flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      gap: 2.2rem;
+    }
+    .pc-nav-links a {
+      color: var(--color-primary);
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 0.9rem;
+      position: relative;
+      padding: 0.4rem 0;
+      transition: var(--transition-smooth);
+    }
+    .pc-nav-links a::after {
+      content: "";
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background-color: var(--color-key);
+      transition: var(--transition-smooth);
+    }
+    .pc-nav-links a:hover {
+      color: var(--color-key);
+    }
+    .pc-nav-links a:hover::after {
+      width: 100%;
+    }
+    
+    /* 🟢 【改善】現在位置を示すアクティブステート（迷子防止） */
+    .pc-nav-links a.active, .nav-links a.active {
+      color: var(--color-key) !important;
+      font-weight: 900;
+    }
+    .pc-nav-links a.active::after {
+      width: 100%;
+    }
 
-body {
-  font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: var(--bg-light);
-  color: var(--text-main);
-  min-height: 100vh;
-  overflow-x: hidden;
-  letter-spacing: 0.03em;
-}
+    /* スマホ用ハンバーガーツマミ */
+    .menu-trigger {
+      background: none;
+      border: none;
+      width: 44px;
+      height: 44px;
+      position: relative;
+      cursor: pointer;
+      z-index: 1100;
+      padding: 0;
+      box-shadow: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+    }
+    .menu-trigger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background-color: var(--color-primary);
+      transition: var(--transition-bounce);
+      transform-origin: center;
+    }
+    .menu-trigger.is-active span:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+    .menu-trigger.is-active span:nth-child(2) {
+      opacity: 0;
+    }
+    .menu-trigger.is-active span:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
 
-main {
-  max-width: 1140px;
-  margin: 0 auto;
-  padding: 2.5rem 1.2rem;
-}
+    /* スマホ用：右上側にコンパクトに現れるナビメニュー */
+    .fullscreen-nav {
+      position: absolute;
+      top: 100%;
+      right: 1.5rem;
+      width: calc(100% - 3rem);
+      max-width: 320px;
+      height: auto;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 1050;
+      border-radius: 16px;
+      padding: 1.25rem;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(44, 58, 78, 0.08);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-10px) scale(0.95);
+    }
+    .fullscreen-nav.is-open {
+      pointer-events: auto;
+    }
+    .nav-links {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      text-align: center;
+    }
+    .nav-links a {
+      color: var(--color-primary);
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-decoration: none;
+      padding: 0.8rem 0.5rem;
+      display: block;
+      background: rgba(44, 58, 78, 0.03);
+      border-radius: 10px;
+      transition: var(--transition-smooth);
+    }
+    .nav-links a:hover {
+      color: var(--color-white);
+      background-color: var(--color-key);
+    }
 
-section {
-  margin-bottom: 5.5rem;
-  background: transparent;
-  box-shadow: none;
-  padding: 0;
-}
+    @media (min-width: 768px) {
+      .pc-nav { display: block; }
+      .menu-trigger { display: none; }
+      .fullscreen-nav { display: none !important; }
+    }
 
-section h2, section h3.section-title {
-  font-size: 1.75rem;
-  font-weight: 800;
-  color: var(--text-main);
-  border: none;
-  padding: 0;
-  margin-bottom: 2rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
+        /* ==========================================================================
+       🌐 フッター ＆ サイトマップ（文字サイズ階層を完全に再整理）
+       ========================================================================== */
+    footer {
+      background-color: var(--color-primary-dark);
+      color: rgba(255, 255, 255, 0.8);
+      padding: 5rem 1.5rem 3rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .footer-container {
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+    .sitemap-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 3rem;
+      margin-bottom: 4rem;
+    }
+    
+    /* 🟢 【改善】h5(大見出し)・リンク本文・コピーライトのジャンプ率（階層構造）を美しく整理 */
+    .sitemap-item h5 {
+      color: var(--color-white);
+      font-size: 1.05rem; /* 見出しをパッと際立たせる */
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.05em;
+    }
+    .sitemap-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+    .sitemap-links a {
+      color: rgba(255, 255, 255, 0.65);
+      text-decoration: none;
+      font-size: 0.9rem; /* 本文として最も読みやすい絶妙なサイズ */
+      font-weight: 500;
+      transition: var(--transition-smooth);
+    }
+    .sitemap-links a:hover {
+      color: var(--color-key);
+      transform: translateX(4px);
+    }
 
-section h2::after, section h3.section-title::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: #e2e8f0;
-}
-
-/* ==========================================================================
-   2. 固定ヘッダー ＆ ハンバーガーメニュー
-   ========================================================================== */
-header {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  padding: 0.8rem 1.5rem;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  transition: all 0.3s;
-}
-
-.header-content {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.header-title h1 {
-  font-size: 1.25rem;
-  margin: 0;
-  font-weight: 800;
-  background: var(--primary-grad);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.header-title p {
-  margin: 0.1rem 0 0 0;
-  font-size: 0.75rem;
-  color: var(--text-sub);
-  font-weight: 600;
-}
-
-.menu-toggle {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  z-index: 1100;
-}
-
-.menu-toggle span {
-  display: block;
-  width: 26px;
-  height: 2px;
-  background: var(--text-main);
-  transition: all 0.3s ease;
-}
-
-.menu-toggle.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-.menu-toggle.active span:nth-child(2) { opacity: 0; }
-.menu-toggle.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
-
-nav {
-  position: fixed;
-  top: 0;
-  right: -100%;
-  width: 80%;
-  max-width: 300px;
-  height: 100vh;
-  background: white;
-  box-shadow: -10px 0 30px rgba(0,0,0,0.05);
-  display: flex;
-  flex-direction: column;
-  padding: 6rem 2rem 2rem 2rem;
-  gap: 1.5rem;
-  transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  z-index: 1050;
-}
-
-nav.active { right: 0; }
-
-nav a {
-  font-size: 1.1rem;
-  color: var(--text-main);
-  text-decoration: none;
-  font-weight: 600;
-  border-bottom: 1px solid #f1f5f9;
-  padding-bottom: 0.75rem;
-  transition: color 0.3s;
-}
-
-nav a:hover { color: #4f46e5; }
-
-/* ==========================================================================
-   3. 共通UIパーツ（カード、リスト、ボタン）
-   ========================================================================== */
-.grid {
-  display: grid;
-  gap: 2rem;
-}
-
-.card {
-  background: white;
-  border-radius: 16px;
-  border: none;
-  overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s;
-  display: flex;
-  flex-direction: column;
-}
-
-.card-body {
-  padding: 1.5rem;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.card h3 {
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin: 0 0 0.75rem 0;
-  color: var(--text-main);
-}
-
-.card p {
-  font-size: 0.95rem;
-  color: var(--text-sub);
-  line-height: 1.6;
-  margin: 0 0 1.5rem 0;
-  flex: 1;
-}
-
-.card button, section button {
-  background: #f1f5f9;
-  color: #4f46e5;
-  border: none;
-  font-weight: 700;
-  font-size: 0.9rem;
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s;
-  width: 100%;
-  margin: 0;
-}
-
-.card button:hover, section button:hover {
-  background: #4f46e5;
-  color: white;
-}
-
-.info-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.info-list li {
-  padding: 0.75rem 0;
-  border-bottom: 1px solid #f1f5f9;
-  font-size: 0.95rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* ==========================================================================
-   4. 共通アニメーション（スクロールフェードイン）
-   ========================================================================== */
-.scroll-fade {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.scroll-fade.is-shown {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* ==========================================================================
-   5. フッター ＆ サイトマップ（完全同期用）
-   ========================================================================== */
-footer {
-  background: #0f172a !important;
-  color: #94a3b8 !important;
-  padding: 4rem 1.5rem 2rem 1.5rem;
-  font-size: 0.9rem;
-}
-
-.footer-container {
-  max-width: 1140px;
-  margin: 0 auto;
-}
-
-.sitemap {
-  display: grid;
-  gap: 2.5rem;
-  margin-bottom: 3.5rem;
-  border-bottom: 1px solid #334155;
-  padding-bottom: 3rem;
-}
-
-.sitemap-item strong {
-  color: white;
-  display: block;
-  margin-bottom: 1rem;
-  font-size: 0.95rem;
-  letter-spacing: 0.05em;
-}
-
-.sitemap-item a {
-  display: block;
-  color: #94a3b8;
-  text-decoration: none;
-  margin: 0.5rem 0;
-  font-size: 0.85rem;
-  transition: color 0.3s;
-}
-
-.sitemap-item a:hover { color: white; }
-
-.footer-bottom {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  align-items: center;
-  text-align: center;
-  font-size: 0.8rem;
-}
-
-/* ==========================================================================
-   6. レスポンシブ（PC表示）の共通ルール
-   ========================================================================== */
-@media (min-width: 768px) {
-  .menu-toggle { display: none; }
-  nav {
-    position: static;
-    width: auto;
-    height: auto;
-    background: none;
-    box-shadow: none;
-    flex-direction: row;
-    padding: 0;
-    gap: 2rem;
-  }
-  nav a {
-    font-size: 0.9rem;
-    border-bottom: 2px solid transparent;
-    padding-bottom: 0.2rem;
-  }
-  nav a:hover { border-bottom-color: #4f46e5; }
-  .grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
-  .grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
-  .grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
-  .sitemap { grid-template-columns: repeat(4, 1fr); }
-  .footer-bottom { flex-direction: row; justify-content: space-between; text-align: left; }
-}
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    @media (min-width: 768px) {
+      .footer-bottom {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-end;
+      }
+    }
+    .footer-info-block p {
+      margin: 0 0 0.4rem 0;
+      font-size: 0.9rem;
+      color: var(--color-white);
+    }
+    .footer-info-block .school-name {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--color-white);
+    }
+    .footer-info-block a {
+      color: var(--color-key);
+      text-decoration: none;
+    }
+    
+    .copyright {
+      font-size: 0.75rem; /* コピーライトは最も小さく静かに配置 */
+      color: rgba(255, 255, 255, 0.645);
+      margin: 0;
+    }
