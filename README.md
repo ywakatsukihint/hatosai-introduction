@@ -57,3 +57,10 @@
 ├── data/                       # 協賛企業情報などの各種JSONデータ
 ├── js/                         # JavaScript・外部ライブラリ群
 └── 屋代高校フロアマップ/          # マップ制御に使用するCSVデータ
+
+---
+
+## ライセンス (Copyright)
+
+© 2026 Yashiro High School Hatosai Festival. All Rights Reserved.
+本ウェブサイトのコンテンツ、デザイン、およびソースコードの著作権は、屋代高校鳩祭実行委員会に帰属します。
