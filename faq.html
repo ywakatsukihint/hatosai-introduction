@@ -482,12 +482,12 @@
       
       <nav class="pc-nav">
         <ul class="pc-nav-links">
-          <li><a href="index.html" class="active">ホーム</a></li>
+          <li><a href="index.html">ホーム</a></li>
           <li><a href="about.html">鳩祭について</a></li>
           <li><a href="events.html">企画紹介</a></li>
           <li><a href="club_activity.html">班の企画</a></li>
           <li><a href="exhibit.html">クラス展・縁日</a></li>
-          <li><a href="news.html">お知らせ</a></li>
+          <li><a href="crowd.html">混雑状況マップ</a></li>
         </ul>
       </nav>
 
@@ -499,12 +499,12 @@
 
       <nav class="fullscreen-nav" id="mobileNav">
         <ul class="nav-links">
-          <li><a href="index.html" class="active">ホーム</a></li>
+          <li><a href="index.html">ホーム</a></li>
           <li><a href="about.html">鳩祭について</a></li>
           <li><a href="events.html">企画紹介</a></li>
           <li><a href="club_activity.html">班の企画</a></li>
           <li><a href="exhibit.html">クラス展・縁日</a></li>
-          <li><a href="news.html">お知らせ</a></li>
+          <li><a href="crowd.html">混雑状況マップ</a></li>
         </ul>
       </nav>
     </div>
@@ -513,163 +513,11 @@
   <main class="faq-page-container">
     <div class="page-hero animate__animated animate__fadeIn">
       <h2>FAQ / よくある質問</h2>
-      <p>ご来場前や企画に関する疑問はこちらをご確認ください。</p>
+      <p>ご来場前や各企画に関する疑問はこちらをご確認ください。</p>
     </div>
 
-    <div class="faq-tabs animate__animated animate__fadeInUp">
-      <button class="faq-tab-btn active" data-filter="all">すべて</button>
-      <button class="faq-tab-btn" data-filter="reception">来場・受付</button>
-      <button class="faq-tab-btn" data-filter="events">企画・展示</button>
-      <button class="faq-tab-btn" data-filter="facility">飲食・設備</button>
-    </div>
-
-    <div class="faq-list-container">
-      
-      <div class="faq-category-section" data-category="reception">
-        <h3 class="faq-category-title">🚶 来場・受付について</h3>
-        
-        <div class="faq-item">
-          <div class="faq-question">
-            <div class="q-icon">Q</div>
-            <div class="q-content">
-              <h4 class="q-text">入場にチケットや事前予約は必要ですか？</h4>
-              <div class="faq-tags">
-                <span class="faq-tag tag-org">総務局</span>
-                <span class="faq-tag tag-type">一般来場者向け</span>
-              </div>
-            </div>
-            <svg class="q-arrow" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-          </div>
-          <div class="faq-answer-wrapper">
-            <div class="faq-answer-inner">
-              <div class="a-icon">A</div>
-              <p class="a-text">
-                一般公開日においては、事前の予約やチケットは一切不要です。どなたでも無料でご入場いただけます。受付にてパンフレットをお受け取りの上、校内をお楽しみください。
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <div class="faq-question">
-            <div class="q-icon">Q</div>
-            <div class="q-content">
-              <h4 class="q-text">車で来場したいのですが、駐車場はありますか？</h4>
-              <div class="faq-tags">
-                <span class="faq-tag tag-org">鳩祭実行委員会</span>
-                <span class="faq-tag tag-alert">アクセス・注意事項</span>
-              </div>
-            </div>
-            <svg class="q-arrow" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-          </div>
-          <div class="faq-answer-wrapper">
-            <div class="faq-answer-inner">
-              <div class="a-icon">A</div>
-              <p class="a-text">
-                本校敷地内および周辺に、来場者様用の駐車場はご用意しておりません。近隣店舗への無断駐車は固くお断りしておりますので、必ず公共交通機関（しなの鉄道 屋代高校前駅より徒歩数分）をご利用くださいますようお願い申し上げます。
-              </p>
-            </div>
-          </div>
-        </div>
+    <div class="faq-list-container" id="faq-list-container">
       </div>
-
-      <div class="faq-category-section" data-category="events">
-        <h3 class="faq-category-title">🎨 企画・展示について</h3>
-
-        <div class="faq-item">
-          <div class="faq-question">
-            <div class="q-icon">Q</div>
-            <div class="q-content">
-              <h4 class="q-text">お化け屋敷やアトラクションに年齢制限はありますか？</h4>
-              <div class="faq-tags">
-                <span class="faq-tag tag-org">1年・2年クラス企画</span>
-                <span class="faq-tag tag-type">お子様連れ</span>
-              </div>
-            </div>
-            <svg class="q-arrow" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-          </div>
-          <div class="faq-answer-wrapper">
-            <div class="faq-answer-inner">
-              <div class="a-icon">A</div>
-              <p class="a-text">
-                基本的にはどなたでもご参加いただけますが、一部のホラー系企画（お化け屋敷など）では、心臓の弱い方や小さなお子様のご入場をご遠慮いただく場合がございます。詳細は各企画の入り口にある注意事項ボード、または当サイトの「マップ」の詳細機能からご確認ください。
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <div class="faq-question">
-            <div class="q-icon">Q</div>
-            <div class="q-content">
-              <h4 class="q-text">ステージ企画のタイムスケジュールを知りたいです。</h4>
-              <div class="faq-tags">
-                <span class="faq-tag tag-org">ステージ局</span>
-                <span class="faq-tag tag-type">イベント情報</span>
-              </div>
-            </div>
-            <svg class="q-arrow" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-          </div>
-          <div class="faq-answer-wrapper">
-            <div class="faq-answer-inner">
-              <div class="a-icon">A</div>
-              <p class="a-text">
-                タイムスケジュールは、当日受付でお配りする公式パンフレット、および当サイトの「本部・実行委員会企画」ページにて公開しております。なお、進行状況や天候（雨天時は第一体育館へ変更など）により、時間が前後する場合がございますのでご了承ください。
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="faq-category-section" data-category="facility">
-        <h3 class="faq-category-title">🍱 飲食・設備について</h3>
-
-        <div class="faq-item">
-          <div class="faq-question">
-            <div class="q-icon">Q</div>
-            <div class="q-content">
-              <h4 class="q-text">昼食をとる場所や、飲食物の販売はありますか？</h4>
-              <div class="faq-tags">
-                <span class="faq-tag tag-org">食品衛生局</span>
-                <span class="faq-tag tag-type">飲食・休憩</span>
-              </div>
-            </div>
-            <svg class="q-arrow" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-          </div>
-          <div class="faq-answer-wrapper">
-            <div class="faq-answer-inner">
-              <div class="a-icon">A</div>
-              <p class="a-text">
-                はい、中庭周辺のテントおよび一部の教室にて、軽食やスイーツ、ドリンクなどの販売を行っております。購入された飲食物は、指定の休憩スペース（中庭・生徒ホール等）でお召し上がりください。※歩きスマホや歩き食べはご遠慮いただいております。
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="faq-item">
-          <div class="faq-question">
-            <div class="q-icon">Q</div>
-            <div class="q-content">
-              <h4 class="q-text">授乳室やオムツ替えシートはありますか？</h4>
-              <div class="faq-tags">
-                <span class="faq-tag tag-org">総務局</span>
-                <span class="faq-tag tag-type">バリアフリー・設備</span>
-              </div>
-            </div>
-            <svg class="q-arrow" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
-          </div>
-          <div class="faq-answer-wrapper">
-            <div class="faq-answer-inner">
-              <div class="a-icon">A</div>
-              <p class="a-text">
-                管理棟の1階に、救護室と兼用の授乳・オムツ替えスペースをご用意しております。ご利用の際は、お近くの実行委員（スタッフ証を首から下げた生徒）または本部テントまでお気軽にお声掛けください。
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
   </main>
 
   <footer>
@@ -683,6 +531,7 @@
             <a href="exhibit.html">クラス展・縁日</a>
             <a href="timetable.html">タイムテーブル</a>
             <a href="map.html">マップ</a>
+            <a href="crowd.html">混雑状況マップ</a>
           </div>
         </div>
         <div class="sitemap-item">
@@ -716,47 +565,194 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
   
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-
-      // ------------------------------------------------------------------------
-      // 📱 スマホメニューのトグル ＆ バウンス弾むインタラクション
-      // ------------------------------------------------------------------------
-      const menuToggle = document.getElementById('menuToggle');
-      const mobileNav = document.getElementById('mobileNav');
-      let isMenuOpen = false;
-
+    // ==========================================================================
+    // 📱 ナビゲーションメニュー制御
+    // ==========================================================================
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileNav = document.getElementById('mobileNav');
+    
+    if (menuToggle && mobileNav) {
       menuToggle.addEventListener('click', () => {
-        isMenuOpen = !isMenuOpen;
-        menuToggle.classList.toggle('is-active', isMenuOpen);
-        mobileNav.classList.toggle('is-open', isMenuOpen);
-
-        if (isMenuOpen) {
-          // 開くときは弾むように気持ちよく展開
-          anime({
-            targets: mobileNav,
-            opacity: [0, 1],
-            translateY: [-10, 0],
-            scale: [0.95, 1],
-            duration: 500,
-            easing: 'easeOutElastic(1, .75)' // 💡 弾む動きを追加
-          });
-        } else {
-          // 閉じるときはスッとスマートに消す
-          anime({
-            targets: mobileNav,
-            opacity: [1, 0],
-            translateY: [0, -10],
-            scale: [1, 0.95],
-            duration: 250,
-            easing: 'easeInQuad'
-          });
-        }
+        const isOpen = mobileNav.classList.contains('is-open');
+        menuToggle.classList.toggle('is-active', !isOpen);
+        mobileNav.classList.toggle('is-open', !isOpen);
       });
-    });
+    }
 
     // ==========================================================================
-    // 💬 アコーディオン（開閉）制御 - Anime.jsで滑らかに
+    // 🗃️ FAQデータ（JSON形式）- ここを編集するだけでQ&Aを追加・変更できます
     // ==========================================================================
+    const faqData = [
+  {
+    "sectionTitle": "全体に関する質問",
+    "icon": "",
+    "faqs": [
+      {
+        "org": "",
+        "question": "",
+        "answer": ""
+      }
+    ]
+  },
+  {
+    "sectionTitle": "本部・鳩祭実行委員会企画に関する質問",
+    "icon": "",
+    "faqs": [
+      {
+        "org": "理数科展係",
+        "question": "難しい内容の実験ばかりですか？",
+        "answer": "そんなことありません！スライドも使いながら楽しくわかりやすく説明します！"
+      }
+    ]
+  },
+  {
+    "sectionTitle": "班の展示に関する質問",
+    "icon": "",
+    "faqs": [
+      {
+        "org": "ダンス班",
+        "question": "ダンス発表中に、手拍子をしたり声を出したりしてもいいですか？",
+        "answer": "手拍子をしたり、声を出したりして盛り上がっても全然OK！"
+      },
+      {
+        "org": "英語班",
+        "question": "ディベートは難しいですか？",
+        "answer": "身近なトピックでディベートを行い、とても面白いです！\n日本語で説明もするので気軽に来てください！"
+      },
+      {
+        "org": "剣道班",
+        "question": "剣道班の模擬店の場所はどこですか？",
+        "answer": "被服室です\n中庭から見て右に進むと第二体育館とゴミ捨て場の間に通路がありますのでそこに入ってまっすぐ進むと奥に家庭科室があります。その左手前にあります"
+      },
+      {
+        "org": "山岳班",
+        "question": "値引や割引などはありますか？",
+        "answer": "ありません。三代前の班長が三次方程式を解いてから無くなりました。"
+      },
+      {
+        "org": "山岳班",
+        "question": "円錐形ですか？",
+        "answer": "円筒形です。"
+      },
+      {
+        "org": "写真班",
+        "question": "普段どんな活動をしてますか？",
+        "answer": "定期的に写真班で撮影会を行ったり、コンテストへの出品用の写真を印刷したりしています"
+      },
+      {
+        "org": "女子バレーボール班",
+        "question": "かき氷は、シロップ単体での購入はできますか？",
+        "answer": "シロップ単体での購入はNGです。"
+      },
+      {
+        "org": "将棋班",
+        "question": "将棋をやったことがなくても大丈夫ですか。",
+        "answer": "全く問題ないです。班員が丁寧に教えます。"
+      },
+      {
+        "org": "数学アルゴリズム班",
+        "question": "数学アルゴリズム班は何を展示していますか？",
+        "answer": "レポートや立体物などの展示の他、本を配ったり、突然ライブが始まるかも。"
+      },
+      {
+        "org": "数学アルゴリズム班",
+        "question": "数学苦手だと楽しめない？",
+        "answer": "楽しめるはず！今年は算数レベルで面白いことをやってる人もいます！"
+      },
+      {
+        "org": "数学アルゴリズム班",
+        "question": "この問題わかんないんだけど、会場で聞いてもいい？",
+        "answer": "ふっふっふ…数学班の手にかかれば…あれ？俺も解けない…"
+      },
+      {
+        "org": "数学アルゴリズム班",
+        "question": "会場に選択公理を持って行ってもいいですか？",
+        "answer": "入り口で一言かけてください。検討します。"
+      },
+      {
+        "org": "茶道班",
+        "question": "一回のお点前で何人入れますか？",
+        "answer": "およそ20人くらいです。"
+      },
+      {
+        "org": "茶道班",
+        "question": "子供も入れますか？",
+        "answer": "大歓迎です！子供用のお茶碗の用意もありますのでお気軽にお越しください。"
+      },
+      {
+        "org": "天文班",
+        "question": "天文ドームの入り口の場所がわかりません。",
+        "answer": "1棟の大階段を4階まで登り切ったら右手にある「天文ドームへようこそ」と大きく書かれた白い扉が入り口です。"
+      },
+      {
+        "org": "天文班",
+        "question": "プラネタリウムはいつ行けば見ることができますか？",
+        "answer": "プラネタリウムは常時上映していますが、天文班員による解説の関係で20分ごとに時間を区切っています。物理教室前のホワイトボードに次の上映時間が書かれていると思うのでそちらを参照してください。"
+      },
+      {
+        "org": "文学班",
+        "question": "立ち読みして良いですか？",
+        "answer": "大歓迎です。"
+      },
+      {
+        "org": "理化班",
+        "question": "カルメ焼きは安全ですか？",
+        "answer": "実験用ではなく、食用の原料と器具を使っていますので、安心してください。"
+      },
+      {
+        "org": "理化班",
+        "question": "カルメ焼き、スライムは持ち帰れますか？",
+        "answer": "はい。カルメ焼きは食べ切るのが大変なので、持ち帰って少しづつ食べてください。"
+      }
+    ]
+  }
+];
+
+    // ==========================================================================
+    // ⚙️ HTMLの自動生成とアコーディオン（開閉）制御
+    // ==========================================================================
+    const faqContainer = document.getElementById('faq-list-container');
+    
+    // JSONからHTMLを組み立てて流し込む
+    let htmlContent = "";
+    faqData.forEach(section => {
+      htmlContent += `
+      <div class="faq-category-section animate__animated animate__fadeInUp">
+        <h3 class="faq-category-title">${section.icon} ${section.sectionTitle}</h3>
+      `;
+      
+      section.faqs.forEach(faq => {
+        const formattedAnswer = faq.answer.replace(/\n/g, '<br>'); // 改行対応
+        htmlContent += `
+        <div class="faq-item">
+          <div class="faq-question">
+            <div class="q-icon">Q</div>
+            <div class="q-content">
+              <h4 class="q-text">${faq.question}</h4>
+              <div class="faq-tags">
+                <span class="faq-tag tag-org">${faq.org}</span>
+              </div>
+            </div>
+            <svg class="q-arrow" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+          </div>
+          <div class="faq-answer-wrapper">
+            <div class="faq-answer-inner">
+              <div class="a-icon">A</div>
+              <p class="a-text">${formattedAnswer}</p>
+            </div>
+          </div>
+        </div>
+        `;
+      });
+      htmlContent += `</div>`;
+    });
+    
+    // コンテナに流し込み
+    if (faqContainer) {
+      faqContainer.innerHTML = htmlContent;
+    }
+
+    // アコーディオンのクリック処理
     const faqItems = document.querySelectorAll('.faq-item');
 
     faqItems.forEach(item => {
@@ -767,7 +763,7 @@
       question.addEventListener('click', () => {
         const isOpen = item.classList.contains('is-open');
 
-        // 他のアコーディオンを閉じる（見やすさ重視の排他制御）
+        // 他のアコーディオンを閉じる（排他制御）
         faqItems.forEach(otherItem => {
           if (otherItem !== item && otherItem.classList.contains('is-open')) {
             otherItem.classList.remove('is-open');
@@ -791,63 +787,13 @@
           });
         } else {
           item.classList.add('is-open');
-          // innerの実際の高さを取得してアニメーションさせる
           anime({
             targets: answerWrapper,
             height: answerInner.offsetHeight,
             duration: 400,
-            easing: 'cubicBezier(0.16, 1, 0.3, 1)' // モダンでしなやかなイージング
+            easing: 'cubicBezier(0.16, 1, 0.3, 1)'
           });
         }
-      });
-    });
-
-    // ==========================================================================
-    // 🏷️ カテゴリフィルター（タブ切り替え）制御
-    // ==========================================================================
-    const tabBtns = document.querySelectorAll('.faq-tab-btn');
-    const sections = document.querySelectorAll('.faq-category-section');
-
-    tabBtns.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        // ボタンのアクティブ状態切り替え
-        tabBtns.forEach(b => b.classList.remove('active'));
-        e.currentTarget.classList.add('active');
-
-        const filterValue = e.currentTarget.getAttribute('data-filter');
-
-        // 一旦すべてのセクションをフワッと消す
-        anime({
-          targets: '.faq-category-section',
-          opacity: 0,
-          translateY: 10,
-          duration: 200,
-          easing: 'easeInQuad',
-          complete: () => {
-            // 非表示・表示の切り替え
-            let targetsToAnimate = [];
-            sections.forEach(sec => {
-              if (filterValue === 'all' || sec.getAttribute('data-category') === filterValue) {
-                sec.style.display = 'block';
-                targetsToAnimate.push(sec);
-              } else {
-                sec.style.display = 'none';
-              }
-            });
-
-            // 選ばれたセクションをフワッと出す
-            if (targetsToAnimate.length > 0) {
-              anime({
-                targets: targetsToAnimate,
-                opacity: [0, 1],
-                translateY: [10, 0],
-                duration: 400,
-                delay: anime.stagger(100),
-                easing: 'easeOutCubic'
-              });
-            }
-          }
-        });
       });
     });
   </script>

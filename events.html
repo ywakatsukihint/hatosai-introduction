@@ -472,12 +472,12 @@
       
       <nav class="pc-nav">
         <ul class="pc-nav-links">
-          <li><a href="index.html" class="active">ホーム</a></li>
+          <li><a href="index.html">ホーム</a></li>
           <li><a href="about.html">鳩祭について</a></li>
-          <li><a href="events.html">企画紹介</a></li>
+          <li><a href="events.html" class="active">企画紹介</a></li>
           <li><a href="club_activity.html">班の企画</a></li>
           <li><a href="exhibit.html">クラス展・縁日</a></li>
-          <li><a href="news.html">お知らせ</a></li>
+          <li><a href="crowd.html">混雑状況マップ</a></li>
         </ul>
       </nav>
 
@@ -489,12 +489,12 @@
 
       <nav class="fullscreen-nav" id="mobileNav">
         <ul class="nav-links">
-          <li><a href="index.html" class="active">ホーム</a></li>
+          <li><a href="index.html">ホーム</a></li>
           <li><a href="about.html">鳩祭について</a></li>
-          <li><a href="events.html">企画紹介</a></li>
+          <li><a href="events.html" class="active">企画紹介</a></li>
           <li><a href="club_activity.html">班の企画</a></li>
           <li><a href="exhibit.html">クラス展・縁日</a></li>
-          <li><a href="news.html">お知らせ</a></li>
+          <li><a href="crowd.html">混雑状況マップ</a></li>
         </ul>
       </nav>
     </div>
@@ -531,6 +531,7 @@
             <a href="exhibit.html">クラス展・縁日</a>
             <a href="timetable.html">タイムテーブル</a>
             <a href="map.html">マップ</a>
+            <a href="crowd.html">混雑状況マップ</a>
           </div>
         </div>
         <div class="sitemap-item">
@@ -568,77 +569,87 @@
     // 🗃️ 1. デモデータ（events.json が読み込めなかった場合のバックアップ）
     // ==========================================================================
     const demoEventsData = [
-      {
-      "id": "event-001",
-      "title": "みんなの鳩会議",
-      "desc": "信州そばの提供\nわんこそば大会",
-      "image": "",
-      "place": "中学棟技術室",
-      "price": "1杯500円",
-      "time": "9:00-売り切れまで\n12:00～13:00 わんこそば大会",
-      "notice": "そばアレルギーをお持ちの方は注意してください！！"
-      },
-      {
-      "id": "event-002",
-      "title": "ステンドグラスアート",
-      "desc": "色とりどりのセロハンを使い、みんなで一つの作品を作ります。",
-      "image": "",
-      "place": "1棟4階多目的室",
-      "price": "無料",
-      "time": "常時展示",
-      "notice": ""
-      },
-      {
-      "id": "event-003",
-      "title": "理数科展",
-      "desc": "理数科クラスの1.2年生が実験を行います。\nスライムやシャボン玉など身近なものから、化学反応で色が変わる実験まで、様々な実験を用意してます。\n実際に体験してもらう時間もあるので、少しでも面白そうだと思ったらぜひお越しください！",
-      "image": "",
-      "place": "3棟3階理科実験室",
-      "price": "無料",
-      "time": "1年生、2年生の発表それぞれ1時間",
-      "notice": ""
-      },
-      {
-      "id": "event-004",
-      "title": "中庭企画",
-      "desc": "ヤプリーグ\n鳩祭2日目に行われます。各クラス代表3名で様々なクイズに挑んでもらいます。今年はスリーリーグ、ハイパーボンバー、パーセントバルーン、トロッコアドベンチャーを実施します。決勝戦は中夜祭にて大型スクリーンを用いた特別ステージ！熱いクイズ対決をぜひご覧下さい！\n\nチャンバラ大会\n鳩祭2日目に行われます！ルールは相手の肩についた風船を剣で割るor落とした方の勝ちです。剣は当たっても痛くない剣を使用するため痛くも痒くもありません！決勝戦は後夜祭で行われ、初の野外ステージとなります。夕日をバックにした熱い戦いは盛り上がること間違いなし！\n\nなりきり選手権\n鳩祭3日目の午前に行われます。好きなキャラクター、芸能人、歴史上の人物、先生などになりきって、会場を盛り上げてもらいます。クオリティ重視でもノリ重視でも大歓迎！決勝戦は後夜祭で行われます！\n\n格付けチェック\n鳩祭3日目に行われます！ルールは数種類の似た食べ物を食べたり似た写真を見てどちらが高級かなどを判断してもらい、五感を使ってほかの人と勝負します。",
-      "image": "",
-      "place": "中庭",
-      "price": "無料",
-      "time": "土曜日\nヤプリーグ10時30分～13時40分\nチャンバラ大会13時45分～15時00分\n日曜日\nなりきり選手権9時45分～11時45分\n格付けチェック12時～15時00分",
-      "notice": "熱中症対策をしながら観戦をお願いします。見てくれた方にはプレゼントも！"
-      },
-      {
-      "id": "event-005",
-      "title": "ハトヤ喫茶",
-      "desc": "惣菜パンやスイーツ、ドリンクなど",
-      "image": "",
-      "place": "合宿所一階",
-      "price": "100円〜300円",
-      "time": "10時開店15時閉店(売り切れ次第終了)",
-      "notice": "お支払いは現金のみとなります\n容器は適切な場所に捨ててください"
-      },
-      {
-      "id": "event-006",
-      "title": "ハト１",
-      "desc": "多種目リレー",
-      "image": "",
-      "place": "晴れ→校庭、雨→体育",
-      "price": "無料",
-      "time": "9:05スタート / 1時間30分ほど",
-      "notice": "自分のクラスがいつからスタートなのか､また自分は誰の次で何番目か､把握して間違えのないようお願いします。"
-      },
-      {
-      "id": "event-007",
-      "title": "中夜祭 Special Stage",
-      "desc": "中夜祭でお見せしきれなかった有志発表を、3日目に行います。普段生徒限定の中夜祭を一般の方もご覧いただけるスペシャルステージです！最高の音楽とパフォーマンスで、文化祭最後のお昼を一緒に盛り上がりましょう！",
-      "image": "",
-      "place": "第二体育館",
-      "price": "無料",
-      "time": "30分ほど / バンド発表/白馬八方太鼓",
-      "notice": ""
-      }
-    ];
+  {
+	"id": "event-001",
+	"title": "みんなの鳩会議",
+	"desc": "信州そばの提供\nわんこそば大会",
+	"image": "",
+	"place": "中学棟技術室",
+	"price": "1杯500円",
+	"time": "9:00-売り切れまで\n12:00～13:00 わんこそば大会",
+	"notice": "そばアレルギーをお持ちの方は注意してください！！"
+  },
+  {
+	"id": "event-002",
+	"title": "ステンドグラスアート",
+	"desc": "色とりどりのセロハンを使い、みんなで一つの作品を作ります。",
+	"image": "",
+	"place": "1棟4階多目的室",
+	"price": "無料",
+	"time": "常時展示",
+	"notice": ""
+  },
+  {
+	"id": "event-003",
+	"title": "理数科展",
+	"desc": "理数科クラスの1.2年生が実験を行います。\nスライムやシャボン玉など身近なものから、化学反応で色が変わる実験まで、様々な実験を用意してます。\n実際に体験してもらう時間もあるので、少しでも面白そうだと思ったらぜひお越しください！",
+	"image": "",
+	"place": "3棟3階理科実験室",
+	"price": "無料",
+	"time": "1年生、2年生の発表それぞれ1時間",
+	"notice": ""
+  },
+  {
+	"id": "event-004",
+	"title": "中庭企画",
+	"desc": "ヤプリーグ\n鳩祭2日目に行われます。各クラス代表3名で様々なクイズに挑んでもらいます。今年はスリーリーグ、ハイパーボンバー、パーセントバルーン、トロッコアドベンチャーを実施します。決勝戦は中夜祭にて大型スクリーンを用いた特別ステージ！熱いクイズ対決をぜひご覧下さい！\n\nチャンバラ大会\n鳩祭2日目に行われます！ルールは相手の肩についた風船を剣で割るor落とした方の勝ちです。剣は当たっても痛くない剣を使用するため痛くも痒くもありません！決勝戦は後夜祭で行われ、初の野外ステージとなります。夕日をバックにした熱い戦いは盛り上がること間違いなし！\n\nなりきり選手権\n鳩祭3日目の午前に行われます。好きなキャラクター、芸能人、歴史上の人物、先生などになりきって、会場を盛り上げてもらいます。クオリティ重視でもノリ重視でも大歓迎！決勝戦は後夜祭で行われます！\n\n格付けチェック\n鳩祭3日目に行われます！ルールは数種類の似た食べ物を食べたり似た写真を見てどちらが高級かなどを判断してもらい、五感を使ってほかの人と勝負します。",
+	"image": "",
+	"place": "中庭",
+	"price": "無料",
+	"time": "土曜日\nヤプリーグ10時30分～13時40分\nチャンバラ大会13時45分～15時00分\n日曜日\nなりきり選手権9時45分～11時45分\n格付けチェック12時～15時00分",
+	"notice": "熱中症対策をしながら観戦をお願いします。見てくれた方にはプレゼントも！"
+  },
+  {
+	"id": "event-005",
+	"title": "ハトヤ喫茶",
+	"desc": "惣菜パンやスイーツ、ドリンクなど",
+	"image": "",
+	"place": "合宿所一階",
+	"price": "100円〜300円",
+	"time": "10時開店15時閉店(売り切れ次第終了)",
+	"notice": "お支払いは現金のみとなります\n容器は適切な場所に捨ててください"
+  },
+  {
+	"id": "event-006",
+	"title": "ハト１",
+	"desc": "多種目リレー",
+	"image": "",
+	"place": "晴れ→校庭、雨→体育",
+	"price": "無料",
+	"time": "9:05スタート / 1時間30分ほど",
+	"notice": "自分のクラスがいつからスタートなのか､また自分は誰の次で何番目か､把握して間違えのないようお願いします。"
+  },
+  {
+	"id": "event-007",
+	"title": "中夜祭 Special Stage",
+	"desc": "中夜祭でお見せしきれなかった有志発表を、3日目に行います。普段生徒限定の中夜祭を一般の方もご覧いただけるスペシャルステージです！最高の音楽とパフォーマンスで、文化祭最後のお昼を一緒に盛り上がりましょう！",
+	"image": "",
+	"place": "第二体育館",
+	"price": "無料",
+	"time": "30分ほど / バンド発表/白馬八方太鼓",
+	"notice": ""
+  },
+  {
+	"id": "event-008",
+	"title": "図書館展",
+	"desc": "全校から古本を集めて古本市を行います！",
+	"image": "",
+	"place": "3棟2階理科講義室",
+	"price": "一冊100円で、少なくなってきたら半額にします！",
+	"time": "27日",
+	"notice": "エアコンがないので暑さ対策をしてください。"
+  }
+];
 
     document.addEventListener("DOMContentLoaded", () => {
 
@@ -731,9 +742,6 @@
         // ④ 最終的なHTMLカードの構築
         const cardHtml = `
           <div class="event-card animate__animated animate__fadeInUp" style="animation-delay: ${delay}s; border: 1px solid var(--color-contrast); border-radius: 16px; overflow: hidden; margin-bottom: 2rem; background: var(--color-white); box-shadow: 0 10px 30px rgba(0,0,0,0.03);">
-            <div class="event-image-block" style="height: 250px; overflow: hidden;">
-              <img src="${imgSrc}" alt="${event.title}" style="width: 100%; height: 100%; object-fit: cover;">
-            </div>
             <div class="event-content-block" style="padding: 2rem;">
               <div class="event-meta-row" style="margin-bottom: 1rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
                 <span class="event-tag tag-committee" style="background: var(--color-primary); color: white; padding: 4px 10px; border-radius: 30px; font-size: 0.75rem; font-weight: 700;">実行委員会企画</span>

@@ -37,7 +37,7 @@
   {
     "id": "sponsor-006",
     "name": "株式会社武田組",
-    "logo": "",
+    "logo": "assets/images/sponsors/takedagumi.png",
     "url": "https://kk-takedagumi.co.jp",
     "catchphrase": "「BUILD　THE　NEXT.　次の景色を創る」"
   },
@@ -151,14 +151,14 @@
     "name": "まじょの介護便",
     "logo": "assets/images/sponsors/majonokaigobin.png",
     "url": "",
-    "catchphrase": "A"
+    "catchphrase": ""
   },
   {
     "id": "sponsor-023",
     "name": "安川整形外科クリニック",
     "logo": "assets/images/sponsors/yasukawa_orthopedic_clinic.png",
     "url": "",
-    "catchphrase": "A"
+    "catchphrase": ""
   },
   {
     "id": "sponsor-024",
