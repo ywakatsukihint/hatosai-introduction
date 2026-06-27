@@ -1130,7 +1130,7 @@
           </a>
 
           <a href="club_activity.html" style="text-decoration: none;">
-            <di_v class="showcase-card hover-lift anime-card">
+            <div class="showcase-card hover-lift anime-card">
               <div class="img-zoom-wrapper">
                 <img src="assets/images/IMG_3478.JPG" alt="班展示" class="initial-zoom">
               </div>
@@ -1138,7 +1138,7 @@
                 <h3 class="showcase-card-title">班展示</h3>
                 <p class="showcase-card-text">各班による、日々の活動の集大成をご覧ください！</p>
               </div>
-            </di_v>
+            </div>
           </a>
 
         </div>
@@ -1400,7 +1400,7 @@
             // ✨ 優先順位③：Festival Highlights (Showcase カード)
             if (target.classList.contains('showcase-section')) {
               anime({ // タイトルを先行してフェードイン
-                targets: target.querySelector('.section-title-modern'),
+                targets: target.querySelectorAll('.section-title-modern'),
                 opacity: [0, 1],
                 translateY: [20, 0],
                 duration: 600,
