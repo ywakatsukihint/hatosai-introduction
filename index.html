@@ -1015,10 +1015,12 @@
 
   <header>
     <div class="header-content">
-      <div class="header-title">
-        <h1>第70回 鳩祭</h1>
-        <p>Yashiro High School Festival 2026</p>
-      </div>
+      <a href="index.html" style="text-decoration: none;">
+        <div class="header-title">
+          <h1>第70回 鳩祭</h1>
+          <p>Yashiro High School Festival 2026</p>
+        </div>
+      </a>
       
       <nav class="pc-nav">
         <ul class="pc-nav-links">
@@ -1089,6 +1091,13 @@
             </div>
             <div class="news-mini-title">鳩祭ホームページを公開しました！</div>
           </a>
+          <a href="news.html" class="news-mini-item anime-news-row">
+            <div class="news-meta">
+              <span class="news-date">2026.06.27</span>
+              <span class="news-label">重要</span>
+            </div>
+            <div class="news-mini-title">青色パンフレットのタイムテーブルの修正について</div>
+          </a>
         </div>
       </section>
 
@@ -1096,35 +1105,41 @@
         <h2 class="section-title-modern">Festival Highlights</h2>
         <div class="showcase-grid">
           
-          <div class="showcase-card hover-lift anime-card">
-            <div class="img-zoom-wrapper">
-              <img src="assets/images/スクリーンショット 2026-06-26 121624.png" alt="本部展" class="initial-zoom">
+          <a href="events.html" style="text-decoration: none;">
+            <div class="showcase-card hover-lift anime-card">
+              <div class="img-zoom-wrapper">
+                <img src="assets/images/スクリーンショット 2026-06-26 121624.png" alt="本部展" class="initial-zoom">
+              </div>
+              <div class="showcase-card-body">
+                <h3 class="showcase-card-title">本部・実行委員会企画</h3>
+                <p class="showcase-card-text">ワクワクの発表やおいしい食べもの、アートまでがラインナップ！</p>
+              </div>
             </div>
-            <div class="showcase-card-body">
-              <h3 class="showcase-card-title">本部・実行委員会企画</h3>
-              <p class="showcase-card-text">ワクワクの発表やおいしい食べもの、アートまでがラインナップ！</p>
-            </div>
-          </div>
+          </a>
 
-          <div class="showcase-card hover-lift anime-card">
-            <div class="img-zoom-wrapper">
-              <img src="assets/images/IMG_4549.JPEG" alt="クラス展" class="initial-zoom">
+          <a href="exhibit.html" style="text-decoration: none;">
+            <div class="showcase-card hover-lift anime-card">
+              <div class="img-zoom-wrapper">
+                <img src="assets/images/IMG_4549.JPEG" alt="クラス展" class="initial-zoom">
+              </div>
+              <div class="showcase-card-body">
+                <h3 class="showcase-card-title">縁日・クラス展</h3>
+                <p class="showcase-card-text">各クラスが準備を重ねた、圧倒的クオリティを誇るアトラクションが勢揃い！</p>
+              </div>
             </div>
-            <div class="showcase-card-body">
-              <h3 class="showcase-card-title">縁日・クラス展</h3>
-              <p class="showcase-card-text">各クラスが準備を重ねた、圧倒的クオリティを誇るアトラクションが勢揃い！</p>
-            </div>
-          </div>
+          </a>
 
-          <div class="showcase-card hover-lift anime-card">
-            <div class="img-zoom-wrapper">
-              <img src="assets/images/IMG_3478.JPG" alt="班展示" class="initial-zoom">
-            </div>
-            <div class="showcase-card-body">
-              <h3 class="showcase-card-title">班展示</h3>
-              <p class="showcase-card-text">各班による、日々の活動の集大成をご覧ください！</p>
-            </div>
-          </div>
+          <a href="club_activity.html" style="text-decoration: none;">
+            <di_v class="showcase-card hover-lift anime-card">
+              <div class="img-zoom-wrapper">
+                <img src="assets/images/IMG_3478.JPG" alt="班展示" class="initial-zoom">
+              </div>
+              <div class="showcase-card-body">
+                <h3 class="showcase-card-title">班展示</h3>
+                <p class="showcase-card-text">各班による、日々の活動の集大成をご覧ください！</p>
+              </div>
+            </di_v>
+          </a>
 
         </div>
       </section>
@@ -1773,10 +1788,11 @@
         const logoSrc = sponsor.logo || 'data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22200%22%20height%3D%2280%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23E2E8F0%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%2394A3B8%22%20font-size%3D%2214%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3ENo%20Image%3C%2Ftext%3E%3C%2Fsvg%3E';
 
         // カードのHTML
+        console.log(sponsor.url)
         const cardHTML = `
           <div class="sponsor-card" style="border: 1px solid var(--color-contrast); border-radius: 12px; padding: 1.5rem; text-align: center; transition: transform 0.2s, box-shadow 0.2s; background: var(--color-bg-light); display: flex; flex-direction: column;">
             
-            <a href="${sponsor.url}" target="_blank" rel="noopener noreferrer" style="display: block; margin-bottom: 1rem; text-decoration: none;">
+            <a ${sponsor.url ? 'href="'+sponsor.url+'"' : ''} target="_blank" rel="noopener noreferrer" style="display: block; margin-bottom: 1rem; text-decoration: none;">
               <div style="height: 80px; display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem;">
                 <img src="${logoSrc}" alt="${sponsor.name} ロゴ" style="max-height: 100%; max-width: 100%; object-fit: contain;">
               </div>
